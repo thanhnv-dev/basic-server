@@ -1,0 +1,25 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@src": "./src",
+          "@configs": "./src/configs",
+          "@constants": "./src/constants",
+          "@controllers": "./src/controllers",
+          "@middleware": "./src/middleware",
+          "@models": "./src/models",
+          "@routes": "./src/routes",
+          "@services": "./src/services",
+          "@utils": "./src/utils",
+          "@validate": "./src/validate"
+        },
+        "extensions": [".js", ".mjs"]
+      }
+    ],
+    ["@babel/plugin-transform-runtime"]
+  ]
+}

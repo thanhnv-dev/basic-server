@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*"],
+      "@configs/*": ["src/configs/*"],
+      "@configs": ["src/configs"],
+      "@constants/*": ["src/constants/*"],
+      "@constants": ["src/constants"],
+      "@controllers/*": ["src/controllers/*"],
+      "@controllers": ["src/controllers"],
+      "@middleware/*": ["src/middleware/*"],
+      "@middleware": ["src/middleware"],
+      "@models/*": ["src/models/*"],
+      "@models": ["src/models"],
+      "@routes/*": ["src/routes/*"],
+      "@routes": ["src/routes"],
+      "@services/*": ["src/services/*"],
+      "@services": ["src/services"],
+      "@utils/*": ["src/utils/*"],
+      "@utils": ["src/utils"],
+      "@validate/*": ["src/validate/*"],
+      "@validate": ["src/validate"]
+    }
+  }
+}
