@@ -36,6 +36,14 @@ export const signInValidateSchema = Joi.object({
   password: validateStringRequired().min(6),
 });
 
+export const sendVerificationCodeValidateSchema = Joi.object({
+  email: emailVelidate(),
+});
+
+export const verifyCodeSchema = Joi.object({
+  code: validateNumber(),
+});
+
 export const refreshTokenValidateSchema = Joi.object({
   refreshToken: validateStringRequired(),
 });

@@ -1,12 +1,22 @@
-import {createTransport} from 'nodemailer';
-const {BREVO_PASS, BREVO_USER} = require('../constants/index.js');
+const {createTransport} = require('nodemailer');
+const emailjs = require('@emailjs/nodejs');
+const {generateRandomCode, hasPassed60Seconds} = require('../utils/index.js');
 
-const generateRandomCode = () => {
-  return Math.floor(100000 + Math.random() * 900000);
-};
-const send = async email => {
-  const verificationCode = generateRandomCode();
+const {
+  BREVO_PASS,
+  BREVO_USER,
+  MAILJS_SERVICE_ID_1,
+  MAILJS_TEMPLATE_ID_1,
+  MAILJS_PUBLIC_KEY_1,
+  MAILJS_PRIVATE_KEY_1,
+  MAILJS_PUBLIC_KEY_2,
+  MAILJS_PRIVATE_KEY_2,
+  MAILJS_SERVICE_ID_2,
+  MAILJS_TEMPLATE_ID_2,
+} = require('../constants/index.js');
+const VerificationCodeModel = require('../models/verificationCode.model.js');
 
+const sendByBrevoService = async (verificationCode, email) => {
   const transporter = createTransport({
     host: 'smtp-relay.brevo.com',
     port: 587,
@@ -15,24 +25,167 @@ const send = async email => {
       pass: BREVO_PASS,
     },
   });
+
   const mailOptions = {
     from: BREVO_USER,
     to: email,
     subject: `${verificationCode} is your verification code`,
-    html: `<div> <h1>Verify Your Account</h1><p>Hello,</p> <p>Here is your verification code:</p><p><strong>Verification Code:</strong> ${verificationCode}</p><p>Please use this code to complete the account verification process. Please note that this code is only valid for a short period of time.</p><p>Thank you for joining us!</p><p>Best regards,</p><p>Thanh Nguyen</p></div>`,
+    html: `<div> <h1>Verify Your Account</h1><p>Hello,</p> <p>Here is your verification code:</p><p><strong>Verification Code:</strong> ${verificationCode}</p><p>Please use this code to complete the account verification process. Please note that this code is only valid for a short period of time.</p><p>Thank you for joining us!</p><p>Best regards</p></div>`,
   };
 
   try {
     await transporter.sendMail(mailOptions);
     return {
-      status: 200,
-      res: {msg: 'Email sent successfully!', code: verificationCode},
+      status: true,
+      msg: `Send by Brevo Service successfully!`,
     };
   } catch (error) {
+    return {
+      status: false,
+      msg: `Send by Brevo Service failed!`,
+    };
+  }
+};
+
+const sendByEmailJSService = async (
+  count,
+  publicKey,
+  privateKey,
+  serviceId,
+  templateId,
+  verificationCode,
+  email,
+) => {
+  emailjs.init({
+    publicKey: publicKey,
+    privateKey: privateKey,
+  });
+
+  const templateParams = {
+    verificationCode: verificationCode,
+    to: email,
+  };
+
+  try {
+    await emailjs.send(serviceId, templateId, templateParams);
+
+    return {
+      status: true,
+      msg: `Send by EmailJS Service ${count} successfully!`,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      msg: `Send by EmailJS Service ${count} failed!`,
+    };
+  }
+};
+
+const sendEmail = async (verificationCode, email) => {
+  const sendByEmailJSService_1 = await sendByEmailJSService(
+    1,
+    MAILJS_PUBLIC_KEY_1,
+    MAILJS_PRIVATE_KEY_1,
+    MAILJS_SERVICE_ID_1,
+    MAILJS_TEMPLATE_ID_1,
+    verificationCode,
+    email,
+  );
+
+  if (sendByEmailJSService_1.status) {
+    return {status: true, msg: sendByEmailJSService_1.msg};
+  } else {
+    const sendByEmailJSService_2 = await sendByEmailJSService(
+      2,
+      MAILJS_PUBLIC_KEY_2,
+      MAILJS_PRIVATE_KEY_2,
+      MAILJS_SERVICE_ID_2,
+      MAILJS_TEMPLATE_ID_2,
+      verificationCode,
+      email,
+    );
+
+    if (sendByEmailJSService_2.status) {
+      return {status: true, msg: sendByEmailJSService_2.msg};
+    } else {
+      sendByBrevoService(verificationCode, email);
+    }
+  }
+};
+
+const checkDataAndUpdateVerificationCode = async (email, verificationCode) => {
+  const findMail = await VerificationCodeModel.findOne({email});
+
+  if (findMail) {
+    const updateVerificationCodeResult = await VerificationCodeModel.updateOne(
+      {email},
+      {code: verificationCode},
+    );
+    if (updateVerificationCodeResult.acknowledged) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    const newVerificationCodeData = new VerificationCodeModel({
+      email,
+      code: verificationCode,
+    });
+    const newData = await newVerificationCodeData.save();
+    if (newData) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+
+const sendVerificationCode = async email => {
+  const verificationCode = generateRandomCode();
+
+  const checkDataResutl = await checkDataAndUpdateVerificationCode(
+    email,
+    verificationCode,
+  );
+
+  if (checkDataResutl) {
+    const sendResult = await sendEmail(verificationCode, email);
+
+    if (sendResult.status) {
+      return {
+        status: 200,
+        res: {msg: 'Email sent successfully!', code: verificationCode},
+        msg: sendResult.msg,
+      };
+    } else {
+      return {status: 400, res: {msg: 'Somthing went wrong!'}};
+    }
+  } else {
     return {status: 400, res: {msg: 'Somthing went wrong!'}};
   }
 };
 
+const verifyCodeService = async code => {
+  const findCodeResult = await VerificationCodeModel.findOne({code});
+
+  if (findCodeResult) {
+    const lastUpdatedTime = findCodeResult.updatedAt;
+    const codeDataBase = findCodeResult.code;
+    const hasPassed = hasPassed60Seconds(lastUpdatedTime);
+    if (!hasPassed && code == codeDataBase) {
+      return {
+        status: 200,
+        res: {msg: 'Verified successfully!'},
+      };
+    }
+  }
+  return {
+    status: 400,
+    res: {msg: 'The verification code is incorrect or has expired!'},
+  };
+};
+
 module.exports = {
-  send,
+  sendVerificationCode,
+  verifyCodeService,
 };

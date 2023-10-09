@@ -34,6 +34,15 @@ const findUserByRefreshToken = async refreshToken => {
   return result;
 };
 
+const updateTokensWithEmail = async ({email, newToken, newRefreshToken}) => {
+  const updateTokensResult = await UserModel.updateOne(
+    {email},
+    {$set: {token: newToken, refreshToken: newRefreshToken}},
+  );
+
+  return updateTokensResult.acknowledged;
+};
+
 const signUp = async req => {
   const {email} = req.body;
 
