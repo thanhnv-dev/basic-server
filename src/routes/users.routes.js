@@ -1,9 +1,10 @@
 const express = require('express');
 const usersController = require('../controllers/user.controller.js');
-const validateParams = require('@middleware/ValidateParams.js').default;
+const validateParams = require('../middleware/ValidateParams.js').default;
 const {
   signUpValidateSchema,
   refreshTokenValidateSchema,
+  signInValidateSchema,
 } = require('@validate/schema.js');
 const JWToken = require('../middleware/JWToken.js');
 
@@ -14,6 +15,7 @@ router.post(
   validateParams(signUpValidateSchema),
   usersController.signUp,
 );
+
 router.get('/profile', JWToken.verifyToken, usersController.profile);
 
 router.post(
@@ -22,8 +24,10 @@ router.post(
   usersController.refreshToken,
 );
 
-router.post('/signup-with-email', usersController.signUpWithEmail);
-router.post('/update-avatar', usersController.updateAvatar);
-router.post('/update-informations', usersController.updateInformations);
+router.post(
+  '/sign-in',
+  validateParams(signInValidateSchema),
+  usersController.signIn,
+);
 
 module.exports = router;

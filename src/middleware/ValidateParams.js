@@ -1,4 +1,4 @@
-const Log = require('@utils/log.js');
+const Log = require('../utils/log.js');
 
 const validateParams = schema => (req, res, next) => {
   const {error, value} = schema.validate(req.body);

@@ -31,6 +31,11 @@ export const signUpValidateSchema = Joi.object({
   phoneNumber: validateString(),
 });
 
+export const signInValidateSchema = Joi.object({
+  email: emailVelidate(),
+  password: validateStringRequired().min(6),
+});
+
 export const refreshTokenValidateSchema = Joi.object({
   refreshToken: validateStringRequired(),
 });
