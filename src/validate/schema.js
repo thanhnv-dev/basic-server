@@ -11,10 +11,6 @@ function validateNumber() {
   return Joi.number().integer().required();
 }
 
-function validateBoolean() {
-  return Joi.boolean().required();
-}
-
 const emailVelidate = () => {
   return validateString().email({
     minDomainSegments: 2,
