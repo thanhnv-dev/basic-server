@@ -8,8 +8,6 @@ const {PORT} = require('./src/constants/index.js');
 db.connect().then(() => {
   const app = express();
 
-  // app.use(helmet());
-
   app.use(cors());
 
   app.use(express.urlencoded({extended: true}));
