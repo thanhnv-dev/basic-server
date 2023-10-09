@@ -145,12 +145,12 @@ const refreshToken = async req => {
 
   const verifyRefreshTokenResult = JWToken.verifyRefreshToken(refreshToken);
 
-  if (verifyRefreshTokenResult) {
-    const findUserByRefreshTokenResult = await findUserByRefreshToken(
-      refreshToken,
-    );
+  const findUserByRefreshTokenResult = await findUserByRefreshToken(
+    refreshToken,
+  );
 
-    const email = findUserByRefreshTokenResult.email;
+  if (verifyRefreshTokenResult && findUserByRefreshTokenResult) {
+    const email = findUserByRefreshTokenResult?.email;
 
     const {newToken, newRefreshToken} = JWToken.createTokens({email});
 

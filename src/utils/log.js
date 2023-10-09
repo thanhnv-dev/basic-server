@@ -12,20 +12,20 @@ const path = ({method, url}) => {
 const text = data => {
   if (typeof data === 'array') {
     data.forEach(element => {
-      console.log(`| ${element}`);
+      console.log(`| [MSG] ${element}`);
     });
   }
   if (typeof data === 'string') {
-    console.log(`| ${data}`);
+    console.log(`| [MSG] ${data}`);
   }
 };
 
 const status = code => {
   if (code === 200) {
-    console.log('| Successfully!');
+    console.log('| [STATUS] Successfully!');
   }
   if (code === 400) {
-    console.log('| Failure!');
+    console.log('| [STATUS] Failure!');
   }
 };
 
