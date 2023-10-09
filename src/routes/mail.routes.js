@@ -4,7 +4,7 @@ const validateParams = require('../middleware/ValidateParams.js').default;
 const {
   sendVerificationCodeValidateSchema,
   verifyCodeSchema,
-} = require('@validate/schema.js');
+} = require('../validate/schema.js');
 
 const router = express.Router();
 

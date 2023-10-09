@@ -5,7 +5,7 @@ const {
   signUpValidateSchema,
   refreshTokenValidateSchema,
   signInValidateSchema,
-} = require('@validate/schema.js');
+} = require('../validate/schema.js');
 const JWToken = require('../middleware/JWToken.js');
 
 const router = express.Router();
