@@ -6,12 +6,22 @@ const {
   ACCESS_REFRESH_TOKEN_SECRET,
 } = require('../constants/index.js');
 
+const createTokens = data => {
+  const newToken = jwt.sign(data, ACCESS_TOKEN_SECRET, {
+    expiresIn: TOKEN_EXPIRES_TIME,
+  });
+  const newRefreshToken = jwt.sign(data, ACCESS_REFRESH_TOKEN_SECRET, {
+    expiresIn: REFRESH_TOKEN_EXPIRES_TIME,
+  });
+  return {newToken, newRefreshToken};
+};
 const createToken = data => {
   const token = jwt.sign(data, ACCESS_TOKEN_SECRET, {
     expiresIn: TOKEN_EXPIRES_TIME,
   });
   return token;
 };
+
 const createRefreshToken = data => {
   const refreshToken = jwt.sign(data, ACCESS_REFRESH_TOKEN_SECRET, {
     expiresIn: REFRESH_TOKEN_EXPIRES_TIME,
@@ -35,4 +45,32 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = {createToken, createRefreshToken, verifyToken};
+const getTokenFromRequest = req => {
+  const authorizationHeader = req.headers['authorization'];
+  // 'Beaer [token]'
+  return authorizationHeader?.split(' ')[1];
+};
+
+const checkToken = token => {
+  if (!token) return 403;
+  jwt.verify(token, ACCESS_TOKEN_SECRET, (err, data) => {
+    if (err) return 401;
+    return true;
+  });
+};
+
+const verifyRefreshToken = token => {
+  return jwt.verify(token, ACCESS_REFRESH_TOKEN_SECRET, (err, data) => {
+    return err ? false : true;
+  });
+};
+
+module.exports = {
+  createToken,
+  createRefreshToken,
+  verifyToken,
+  checkToken,
+  getTokenFromRequest,
+  verifyRefreshToken,
+  createTokens,
+};

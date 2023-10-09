@@ -11,6 +11,7 @@ const UserSchema = new Schema(
     gender: {type: String, default: null},
     phoneNumber: {type: String, default: null},
     token: {type: String, default: null},
+    refreshToken: {type: String, default: null},
   },
   {timestamps: true, versionKey: false},
 );

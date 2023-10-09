@@ -30,11 +30,10 @@ const status = code => {
 };
 
 const request = ({req, msg, code}) => {
-  console.log(req.body);
   separation2();
   path({method: req.method, url: req.originalUrl});
-  separation1();
-  req.body ? params(req.body) : null;
+  req?.body?.lenght > 0 ? separation1() : null;
+  req?.body?.lenght > 0 ? params(req.body) : null;
   code ? separation1() : null;
   msg ? text(msg) : null;
   code ? status(code) : null;

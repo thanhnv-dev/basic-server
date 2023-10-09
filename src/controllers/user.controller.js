@@ -1,19 +1,6 @@
 const UserService = require('../services/user.service.js');
 const Log = require('../utils/log.js');
 
-const profile = async (req, res) => {
-  console.log('====================================');
-  console.log('| [GET] /user/profile');
-  console.log('| ----------------------------------');
-
-  const profileResult = await UserService.profile(req);
-
-  console.log('|', profileResult.res.msg);
-
-  console.log('====================================');
-  return res.status(profileResult.status).json(profileResult.res);
-};
-
 const updateInformations = async (req, res) => {
   const {userName, email, password, dateOfBirth, gender, phoneNumber} =
     req.body;
@@ -109,6 +96,30 @@ const signUp = async (req, res) => {
   return res.status(signUpResult.status).json(signUpResult.res);
 };
 
+const profile = async (req, res) => {
+  const profileResult = await UserService.profile(req);
+
+  Log.request({
+    req: req,
+    msg: profileResult?.res?.msg,
+    code: profileResult.status,
+  });
+
+  return res.status(profileResult.status).json(profileResult.res);
+};
+
+const refreshToken = async (req, res) => {
+  const refreshTokenResult = await UserService.refreshToken(req);
+
+  Log.request({
+    req: req,
+    msg: refreshTokenResult?.res?.msg,
+    code: refreshTokenResult.status,
+  });
+
+  return res.status(refreshTokenResult.status).json(refreshTokenResult.res);
+};
+
 module.exports = {
   signUp,
   signUpWithEmail,
@@ -116,4 +127,5 @@ module.exports = {
   signInWithGoogle,
   updateAvatar,
   updateInformations,
+  refreshToken,
 };
