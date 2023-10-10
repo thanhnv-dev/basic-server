@@ -173,8 +173,19 @@ const signIn = async (req) => {
     });
 
     if (updateTokensResult) {
+      const resUserData = findUserByEmailAndPassword.toObject();
+      resUserData.id = resUserData._id;
+      delete resUserData._id;
+      delete resUserData.createdAt;
+      delete resUserData.updatedAt;
+      delete resUserData.token;
+      delete resUserData.refreshToken;
       const res = {
-        results: { token: newToken, refreshToken: newRefreshToken },
+        results: {
+          ...resUserData,
+          token: newToken,
+          refreshToken: newRefreshToken,
+        },
         msg: "Sign In Successfully!",
       };
       return { status: 200, res };
