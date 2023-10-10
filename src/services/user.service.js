@@ -1,7 +1,7 @@
-const UserModel = require('../models/user.model.js');
-const JWToken = require('../middleware/JWToken.js');
+const UserModel = require("../models/user.model.js");
+const JWToken = require("../middleware/JWToken.js");
 
-const findUserByEmail = async email => {
+const findUserByEmail = async (email) => {
   const result = await UserModel.findOne({
     email: email?.toLowerCase(),
   });
@@ -9,7 +9,7 @@ const findUserByEmail = async email => {
   return result;
 };
 
-const findUserById = async id => {
+const findUserById = async (id) => {
   try {
     const result = await UserModel.findById(id);
     return result;
@@ -18,7 +18,7 @@ const findUserById = async id => {
   }
 };
 
-const findUserByToken = async token => {
+const findUserByToken = async (token) => {
   const result = await UserModel.findOne({
     token,
   });
@@ -26,7 +26,7 @@ const findUserByToken = async token => {
   return result;
 };
 
-const findUserByRefreshToken = async refreshToken => {
+const findUserByRefreshToken = async (refreshToken) => {
   const result = await UserModel.findOne({
     refreshToken,
   });
@@ -34,27 +34,27 @@ const findUserByRefreshToken = async refreshToken => {
   return result;
 };
 
-const updateTokensWithEmail = async ({email, newToken, newRefreshToken}) => {
+const updateTokensWithEmail = async ({ email, newToken, newRefreshToken }) => {
   const updateTokensResult = await UserModel.updateOne(
-    {email},
-    {$set: {token: newToken, refreshToken: newRefreshToken}},
+    { email },
+    { $set: { token: newToken, refreshToken: newRefreshToken } }
   );
 
   return updateTokensResult.acknowledged;
 };
 
-const signUp = async req => {
-  const {email} = req.body;
+const signUp = async (req) => {
+  const { email } = req.body;
 
   const findUserByEmailResult = await findUserByEmail(email);
 
   if (findUserByEmailResult) {
-    return {status: 400, res: {msg: 'Email was registered!'}};
+    return { status: 400, res: { msg: "Email was registered!" } };
   } else {
-    const token = JWToken.createToken({email});
-    const refreshToken = JWToken.createRefreshToken({email});
+    const token = JWToken.createToken({ email });
+    const refreshToken = JWToken.createRefreshToken({ email });
 
-    const newUser = new UserModel({...req.body, token, refreshToken});
+    const newUser = new UserModel({ ...req.body, token, refreshToken });
 
     const createUserResult = await newUser.save();
     const resData = createUserResult.toObject();
@@ -66,12 +66,12 @@ const signUp = async req => {
 
     return {
       status: 200,
-      res: {...resData, msg: 'Sign Up Success!'},
+      res: { ...resData, msg: "Sign Up Success!" },
     };
   }
 };
 
-const profile = async req => {
+const profile = async (req) => {
   const token = JWToken.getTokenFromRequest(req);
 
   const findUserByTokenResult = await findUserByToken(token);
@@ -79,9 +79,9 @@ const profile = async req => {
   if (findUserByTokenResult) {
     const email = findUserByTokenResult.email;
 
-    const {newToken, newRefreshToken} = JWToken.createTokens({email});
+    const { newToken, newRefreshToken } = JWToken.createTokens({ email });
 
-    const updateTokensResult = updateTokensWithEmail({
+    const updateTokensResult = await updateTokensWithEmail({
       email,
       newToken,
       newRefreshToken,
@@ -98,36 +98,36 @@ const profile = async req => {
       delete resUserData.updatedAt;
       const res = {
         results: resUserData,
-        msg: 'Get profile Successfully!',
+        msg: "Get profile Successfully!",
       };
-      return {status: 200, res};
+      return { status: 200, res };
     } else {
       return {
         status: 400,
-        res: {msg: 'Something went wrong!'},
+        res: { msg: "Something went wrong!" },
       };
     }
   } else {
     return {
       status: 403,
-      res: {msg: 'Forbidden'},
+      res: { msg: "Forbidden" },
     };
   }
 };
 
-const refreshToken = async req => {
-  const {refreshToken} = req.body;
+const refreshToken = async (req) => {
+  const { refreshToken } = req.body;
 
   const verifyRefreshTokenResult = JWToken.verifyRefreshToken(refreshToken);
 
   const findUserByRefreshTokenResult = await findUserByRefreshToken(
-    refreshToken,
+    refreshToken
   );
 
   if (verifyRefreshTokenResult && findUserByRefreshTokenResult) {
     const email = findUserByRefreshTokenResult?.email;
 
-    const {newToken, newRefreshToken} = JWToken.createTokens({email});
+    const { newToken, newRefreshToken } = JWToken.createTokens({ email });
 
     const updateTokensResult = await updateTokensWithEmail({
       email,
@@ -137,26 +137,26 @@ const refreshToken = async req => {
 
     if (updateTokensResult) {
       const res = {
-        results: {token: newToken, refreshToken: newRefreshToken},
-        msg: 'Refresh token Successfully!',
+        results: { token: newToken, refreshToken: newRefreshToken },
+        msg: "Refresh token Successfully!",
       };
-      return {status: 200, res};
+      return { status: 200, res };
     } else {
       return {
         status: 400,
-        res: {msg: 'Something went wrong!'},
+        res: { msg: "Something went wrong!" },
       };
     }
   } else {
     return {
       status: 403,
-      res: {msg: 'Forbidden'},
+      res: { msg: "Forbidden" },
     };
   }
 };
 
-const signIn = async req => {
-  const {email, password} = req.body;
+const signIn = async (req) => {
+  const { email, password } = req.body;
 
   const findUserByEmailAndPassword = UserModel.findOne({
     email,
@@ -164,7 +164,7 @@ const signIn = async req => {
   });
 
   if (findUserByEmailAndPassword) {
-    const {newToken, newRefreshToken} = JWToken.createTokens({email});
+    const { newToken, newRefreshToken } = JWToken.createTokens({ email });
 
     const updateTokensResult = await updateTokensWithEmail({
       email,
@@ -174,20 +174,20 @@ const signIn = async req => {
 
     if (updateTokensResult) {
       const res = {
-        results: {token: newToken, refreshToken: newRefreshToken},
-        msg: 'Sign In Successfully!',
+        results: { token: newToken, refreshToken: newRefreshToken },
+        msg: "Sign In Successfully!",
       };
-      return {status: 200, res};
+      return { status: 200, res };
     } else {
       return {
         status: 400,
-        res: {msg: 'Something went wrong!'},
+        res: { msg: "Something went wrong!" },
       };
     }
   } else {
     return {
       status: 400,
-      res: {msg: 'Account information is incorrect!'},
+      res: { msg: "Account information is incorrect!" },
     };
   }
 };
