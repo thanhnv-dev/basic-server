@@ -154,7 +154,7 @@ const sendVerificationCode = async email => {
     if (sendResult.status) {
       return {
         status: 200,
-        res: {msg: 'Email sent successfully!', code: verificationCode},
+        res: {msg: 'Email sent successfully!'},
         msg: sendResult.msg,
       };
     } else {
