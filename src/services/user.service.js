@@ -66,7 +66,7 @@ const signUp = async (req) => {
 
     return {
       status: 200,
-      res: { ...resData, msg: "Sign Up Success!" },
+      res: { results: resData, msg: "Sign Up Success!" },
     };
   }
 };
