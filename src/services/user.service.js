@@ -158,7 +158,7 @@ const refreshToken = async (req) => {
 const signIn = async (req) => {
   const { email, password } = req.body;
 
-  const findUserByEmailAndPassword = UserModel.findOne({
+  const findUserByEmailAndPassword = await UserModel.findOne({
     email,
     password,
   });
