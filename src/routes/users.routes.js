@@ -5,6 +5,8 @@ const {
   signUpValidateSchema,
   refreshTokenValidateSchema,
   signInValidateSchema,
+  profileValidateSchema,
+  customTokenValidateSchema,
 } = require('../validate/schema.js');
 const JWToken = require('../middleware/JWToken.js');
 
@@ -16,8 +18,6 @@ router.post(
   usersController.signUp,
 );
 
-router.get('/profile', JWToken.verifyToken, usersController.profile);
-
 router.post(
   '/refresh-token',
   validateParams(refreshTokenValidateSchema),
@@ -28,6 +28,20 @@ router.post(
   '/sign-in',
   validateParams(signInValidateSchema),
   usersController.signIn,
+);
+
+router.post(
+  '/custom-token',
+  validateParams(customTokenValidateSchema),
+  usersController.customToken,
+);
+
+router.use(JWToken.verifyToken);
+
+router.get(
+  '/profile',
+  validateParams(profileValidateSchema),
+  usersController.profile,
 );
 
 module.exports = router;

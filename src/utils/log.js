@@ -30,13 +30,22 @@ const status = code => {
 };
 
 const request = ({req, msg, code}) => {
+  const numberOfFields = Object.keys(req.body).length;
+
   separation2();
+
   path({method: req.method, url: req.originalUrl});
-  req?.body?.lenght > 0 ? separation1() : null;
-  req?.body?.lenght > 0 ? params(req.body) : null;
+
+  numberOfFields > 0 ? separation1() : null;
+
+  numberOfFields > 0 ? params(req.body) : null;
+
   code ? separation1() : null;
+
   msg ? text(msg) : null;
+
   code ? status(code) : null;
+
   separation2();
 };
 

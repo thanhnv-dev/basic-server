@@ -10,8 +10,7 @@ const UserSchema = new Schema(
     dateOfBirth: {type: String, default: null},
     gender: {type: String, default: null},
     phoneNumber: {type: String, default: null},
-    token: {type: String, default: null},
-    refreshToken: {type: String, default: null},
+    isVerifiedEmail: {type: Boolean, default: false},
   },
   {timestamps: true, versionKey: false},
 );

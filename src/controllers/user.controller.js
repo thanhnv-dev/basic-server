@@ -49,9 +49,22 @@ const refreshToken = async (req, res) => {
   return res.status(refreshTokenResult.status).json(refreshTokenResult.res);
 };
 
+const customToken = async (req, res) => {
+  const refreshTokenResult = await UserService.customToken(req);
+
+  Log.request({
+    req: req,
+    msg: refreshTokenResult?.res?.msg,
+    code: refreshTokenResult.status,
+  });
+
+  return res.status(refreshTokenResult.status).json(refreshTokenResult.res);
+};
+
 module.exports = {
   signUp,
   profile,
   signIn,
   refreshToken,
+  customToken,
 };

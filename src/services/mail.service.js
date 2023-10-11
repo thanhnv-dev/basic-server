@@ -1,6 +1,6 @@
 const {createTransport} = require('nodemailer');
 const emailjs = require('@emailjs/nodejs');
-const {generateRandomCode, hasPassed60Seconds} = require('../utils/index.js');
+const {generateRandomCode, hasPassed2Minutes} = require('../utils/index.js');
 
 const {
   BREVO_PASS,
@@ -15,6 +15,7 @@ const {
   MAILJS_TEMPLATE_ID_2,
 } = require('../constants/index.js');
 const VerificationCodeModel = require('../models/verificationCode.model.js');
+const UserModel = require('../models/user.model.js');
 
 const sendByBrevoService = async (verificationCode, email) => {
   const transporter = createTransport({
@@ -167,12 +168,30 @@ const sendVerificationCode = async email => {
 
 const verifyCodeService = async code => {
   const findCodeResult = await VerificationCodeModel.findOne({code});
+  const email = findCodeResult.email;
 
   if (findCodeResult) {
     const lastUpdatedTime = findCodeResult.updatedAt;
     const codeDataBase = findCodeResult.code;
-    const hasPassed = hasPassed60Seconds(lastUpdatedTime);
+    const hasPassed = hasPassed2Minutes(lastUpdatedTime);
     if (!hasPassed && code == codeDataBase) {
+      const findUserByEmail = await UserModel.findOne({
+        email: email?.toLowerCase(),
+      });
+
+      if (findUserByEmail) {
+        const updateUserResult = await UserModel.updateOne(
+          {email},
+          {isVerifiedEmail: true},
+        );
+
+        if (!updateUserResult.acknowledged) {
+          return {
+            status: 400,
+            res: {msg: 'Something went wrong!'},
+          };
+        }
+      }
       return {
         status: 200,
         res: {msg: 'Verified successfully!'},

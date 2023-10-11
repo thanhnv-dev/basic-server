@@ -43,3 +43,13 @@ export const verifyCodeSchema = Joi.object({
 export const refreshTokenValidateSchema = Joi.object({
   refreshToken: validateStringRequired(),
 });
+
+export const profileValidateSchema = Joi.object({
+  id: validateStringRequired(),
+});
+
+export const customTokenValidateSchema = Joi.object({
+  expiresIn: Joi.string()
+    .regex(/[smhd]/)
+    .required(),
+});
