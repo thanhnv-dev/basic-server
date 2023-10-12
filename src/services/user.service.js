@@ -159,10 +159,40 @@ const customToken = async req => {
   return {status: 200, res};
 };
 
+const deleteUser = async req => {
+  const {email, password} = req.body;
+
+  const findUserByEmailAndPassword = await UserModel.findOne({
+    email,
+    password,
+  });
+  if (findUserByEmailAndPassword) {
+    const deleteUserResult = await UserModel.deleteOne({email});
+
+    if (deleteUserResult.deletedCount) {
+      const res = {
+        msg: 'Account deleted successfully!',
+      };
+      return {status: 200, res};
+    } else {
+      return {
+        status: 400,
+        res: {msg: 'Something went wrong!'},
+      };
+    }
+  } else {
+    return {
+      status: 400,
+      res: {msg: 'Account information is incorrect!'},
+    };
+  }
+};
+
 module.exports = {
   signUp,
   profile,
   refreshToken,
   signIn,
   customToken,
+  deleteUser,
 };

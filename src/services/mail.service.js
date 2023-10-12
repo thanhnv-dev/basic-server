@@ -142,26 +142,30 @@ const checkDataAndUpdateVerificationCode = async (email, verificationCode) => {
 };
 
 const sendVerificationCode = async email => {
-  const verificationCode = generateRandomCode();
-
-  const checkDataResutl = await checkDataAndUpdateVerificationCode(
-    email,
-    verificationCode,
-  );
-
-  if (checkDataResutl) {
-    const sendResult = await sendEmail(verificationCode, email);
-
-    if (sendResult.status) {
-      return {
-        status: 200,
-        res: {msg: 'Email sent successfully!'},
-        msg: sendResult.msg,
-      };
-    } else {
-      return {status: 400, res: {msg: 'Somthing went wrong!'}};
-    }
+  const findUserByEmail = await UserModel.findOne({
+    email: email?.toLowerCase(),
+  });
+  if (findUserByEmail && findUserByEmail.isVerifiedEmail) {
+    return {status: 400, res: {msg: 'This email has been verified!'}};
   } else {
+    const verificationCode = generateRandomCode();
+
+    const checkDataResutl = await checkDataAndUpdateVerificationCode(
+      email,
+      verificationCode,
+    );
+
+    if (checkDataResutl) {
+      const sendResult = await sendEmail(verificationCode, email);
+
+      if (sendResult.status) {
+        return {
+          status: 200,
+          res: {msg: 'Email sent successfully!'},
+          msg: sendResult.msg,
+        };
+      }
+    }
     return {status: 400, res: {msg: 'Somthing went wrong!'}};
   }
 };

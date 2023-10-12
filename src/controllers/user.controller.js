@@ -50,15 +50,27 @@ const refreshToken = async (req, res) => {
 };
 
 const customToken = async (req, res) => {
-  const refreshTokenResult = await UserService.customToken(req);
+  const customTokenResult = await UserService.customToken(req);
 
   Log.request({
     req: req,
-    msg: refreshTokenResult?.res?.msg,
-    code: refreshTokenResult.status,
+    msg: customTokenResult?.res?.msg,
+    code: customTokenResult.status,
   });
 
-  return res.status(refreshTokenResult.status).json(refreshTokenResult.res);
+  return res.status(customTokenResult.status).json(customTokenResult.res);
+};
+
+const deleteUser = async (req, res) => {
+  const deleteUserResult = await UserService.deleteUser(req);
+
+  Log.request({
+    req: req,
+    msg: deleteUserResult?.res?.msg,
+    code: deleteUserResult.status,
+  });
+
+  return res.status(deleteUserResult.status).json(deleteUserResult.res);
 };
 
 module.exports = {
@@ -67,4 +79,5 @@ module.exports = {
   signIn,
   refreshToken,
   customToken,
+  deleteUser,
 };

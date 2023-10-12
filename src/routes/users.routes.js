@@ -44,4 +44,10 @@ router.get(
   usersController.profile,
 );
 
+router.post(
+  '/delete',
+  validateParams(signInValidateSchema),
+  usersController.deleteUser,
+);
+
 module.exports = router;
