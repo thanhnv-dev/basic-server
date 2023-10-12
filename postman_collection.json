@@ -1,0 +1,484 @@
+{
+	"info": {
+		"_postman_id": "724df5cf-eb19-49c0-948e-cacf42a1913b",
+		"name": "Basic Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23229989"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "sign-up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    const userId = jsonData.id;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"    pm.collectionVariables.set(\"id\", userId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"thanhnv\",\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/sign-up",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    const userId = jsonData.id;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"    pm.collectionVariables.set(\"id\", userId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/sign-in",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"}",
+									"if (pm.response.code === 401) {",
+									"    pm.sendRequest({",
+									"        url: pm.collectionVariables.get('base_url'),",
+									"        method: 'POST',",
+									"        header: {",
+									"            'Content-Type': 'application/json',",
+									"        },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({",
+									"                refreshToken: pm.collectionVariables.get('refreshToken')",
+									"            })",
+									"        },",
+									"        function(err, response) {",
+									"            if (response.code === 200) {",
+									"                const jsonData = pm.response.json().results;",
+									"                const authToken = jsonData.token;",
+									"                const authRefreshToken = jsonData.refreshToken;",
+									"                pm.collectionVariables.set(\"token\", authToken);",
+									"                pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"            }",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/profile?id={{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/refresh-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "custom-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expiresIn\": \"20s\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/custom-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"custom-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/delete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mail",
+			"item": [
+				{
+					"name": "send-verification-code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const code = jsonData.code;",
+									"pm.collectionVariables.set(\"code\", code);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mail/send-verification-code",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mail",
+								"send-verification-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const code = jsonData.code;",
+									"pm.collectionVariables.set(\"code\", code);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"111081\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mail/verify-code",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mail",
+								"verify-code"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "local_base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}
