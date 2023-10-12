@@ -2,7 +2,7 @@
 
 ## Contents
 
-- [Base URL](#-base-url)
+- [Base URL](#base-url)
 - [Sign Up](#sign-up)
 - [Sign In](#sign-in)
 - [Profile](#profile)
@@ -37,7 +37,6 @@ user/sign-up
 - **`userName`**
 
   Requirements:
-
   - Required
   - `String` type
   - Min length is 3
@@ -45,18 +44,16 @@ user/sign-up
 - **`email`**
 
   Requirements:
-
   - Required
   - `Email` type
 
 - **`password`**
 
   Requirements:
-
   - Required
   - `String` type
   - Min length is 6
-
+  
   Recommend: `encryption`
 
 - **`dateOfBirth`**
@@ -69,14 +66,12 @@ user/sign-up
 - **`gender`**
 
   Requirements:
-
   - Optional
   - `String` type
 
 - **`phoneNumber`**
 
   Requirements:
-
   - Optional
   - `String` type
 
@@ -120,23 +115,16 @@ user/sign-up
   ```
 
 # Sign In
-
 ### End Point
-
 ```
 user/sign-in
 ```
-
 ### Method
-
 **`POST`**
-
 ### Parameter
-
 - **`userName`**
 
   Requirements:
-
   - Required
   - `String` type
   - Min length is 3
@@ -144,20 +132,18 @@ user/sign-in
 - **`email`**
 
   Requirements:
-
   - Required
   - `Email` type
 
 - **`password`**
 
   Requirements:
-
   - Required
   - `String` type
   - Min length is 6
 
   Recommend: `encryption`
-
+  
 ### Successful Response
 
 ```
