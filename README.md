@@ -32,14 +32,14 @@ https://common-api-v1.vercel.app/
 
 ### Parameter
 
-| Field Name    |                                           Requirements                                           | <div style="text-align:left">Note</div> |
-| :------------ | :----------------------------------------------------------------------------------------------: | --------------------------------------: |
-| `userName`    | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 3 type</div> |                                         |
-| `email`       |                <div style="text-align:left">- Required <br/> - `Email` type</div>                |                                         |
-| `password`    | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 6 type</div> |                  Recommend:`encryption` |
-| `dateOfBirth` |               <div style="text-align:left">- Optional <br/> - `String` type </div>               |                                         |
-| `gender`      |               <div style="text-align:left">- Optional <br/> - `String` type </div>               |                                         |
-| `phoneNumber` |               <div style="text-align:left">- Optional <br/> - `String` type </div>               |                                         |
+| Field Name    | Requirements                                                  | Note                   |
+| :------------ | :------------------------------------------------------------ | :--------------------- |
+| `userName`    | - Required <br/> - `String` type <br/> - Min length is 3 type |                        |
+| `email`       | - Required <br/> - `Email` type                               |                        |
+| `password`    | - Required <br/> - `String` type <br/> - Min length is 6 type | Recommend:`encryption` |
+| `dateOfBirth` | - Optional <br/> - `String` type                              |                        |
+| `gender`      | - Optional <br/> - `String` type                              |                        |
+| `phoneNumber` | - Optional <br/> - `String` type                              |                        |
 
 ### Successful Response Example
 
@@ -94,11 +94,11 @@ user/sign-in
 
 ### Parameter
 
-| Field Name |                                           Requirements                                           | <div style="text-align:left">Note</div> |
-| :--------- | :----------------------------------------------------------------------------------------------: | --------------------------------------: |
-| `userName` | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 3 type</div> |                                         |
-| `email`    |                <div style="text-align:left">- Required <br/> - `Email` type</div>                |                                         |
-| `password` | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 6 type</div> |                  Recommend:`encryption` |
+| Field Name | Requirements                                                  | Note                   |
+| :--------- | :------------------------------------------------------------ | ---------------------- |
+| `userName` | - Required <br/> - `String` type <br/> - Min length is 3 type |                        |
+| `email`    | - Required <br/> - `Email` type                               |                        |
+| `password` | - Required <br/> - `String` type <br/> - Min length is 6 type | Recommend:`encryption` |
 
 ### Successful Response
 
