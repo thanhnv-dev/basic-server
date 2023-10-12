@@ -24,9 +24,7 @@ https://common-api-v1.vercel.app/
 
 ### End Point
 
-```
-user/sign-up
-```
+`user/sign-up`
 
 ### Method
 
@@ -34,46 +32,14 @@ user/sign-up
 
 ### Parameter
 
-- **`userName`**
-
-  Requirements:
-  - Required
-  - `String` type
-  - Min length is 3
-
-- **`email`**
-
-  Requirements:
-  - Required
-  - `Email` type
-
-- **`password`**
-
-  Requirements:
-  - Required
-  - `String` type
-  - Min length is 6
-  
-  Recommend: `encryption`
-
-- **`dateOfBirth`**
-
-  Requirements:
-
-  - Optional
-  - `String` type
-
-- **`gender`**
-
-  Requirements:
-  - Optional
-  - `String` type
-
-- **`phoneNumber`**
-
-  Requirements:
-  - Optional
-  - `String` type
+| Field Name    |                                           Requirements                                           | <div style="text-align:left">Note</div> |
+| :------------ | :----------------------------------------------------------------------------------------------: | --------------------------------------: |
+| `userName`    | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 3 type</div> |                                         |
+| `email`       |                <div style="text-align:left">- Required <br/> - `Email` type</div>                |                                         |
+| `password`    | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 6 type</div> |                  Recommend:`encryption` |
+| `dateOfBirth` |               <div style="text-align:left">- Optional <br/> - `String` type </div>               |                                         |
+| `gender`      |               <div style="text-align:left">- Optional <br/> - `String` type </div>               |                                         |
+| `phoneNumber` |               <div style="text-align:left">- Optional <br/> - `String` type </div>               |                                         |
 
 ### Successful Response Example
 
@@ -115,35 +81,25 @@ user/sign-up
   ```
 
 # Sign In
+
 ### End Point
+
 ```
 user/sign-in
 ```
+
 ### Method
+
 **`POST`**
+
 ### Parameter
-- **`userName`**
 
-  Requirements:
-  - Required
-  - `String` type
-  - Min length is 3
+| Field Name |                                           Requirements                                           | <div style="text-align:left">Note</div> |
+| :--------- | :----------------------------------------------------------------------------------------------: | --------------------------------------: |
+| `userName` | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 3 type</div> |                                         |
+| `email`    |                <div style="text-align:left">- Required <br/> - `Email` type</div>                |                                         |
+| `password` | <div style="text-align:left">- Required <br/> - `String` type <br/> - Min length is 6 type</div> |                  Recommend:`encryption` |
 
-- **`email`**
-
-  Requirements:
-  - Required
-  - `Email` type
-
-- **`password`**
-
-  Requirements:
-  - Required
-  - `String` type
-  - Min length is 6
-
-  Recommend: `encryption`
-  
 ### Successful Response
 
 ```
