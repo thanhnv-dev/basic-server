@@ -74,6 +74,7 @@ const profile = async req => {
     delete resUserData._id;
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
+    delete resData.password;
 
     const res = {
       results: {...resUserData, token: newToken, refreshToken: newRefreshToken},
@@ -127,6 +128,7 @@ const signIn = async req => {
     delete resUserData._id;
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
+    delete resData.password;
 
     const res = {
       results: {
