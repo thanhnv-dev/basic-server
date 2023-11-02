@@ -14,6 +14,10 @@
 - [Delete](#delete)
 - [Send Verification Code](#send-verification-code)
 - [Verify code](#verify-code)
+- [Categories](#categories)
+- [Restaurants](#restaurants)
+- [Restaurant](#restaurant)
+- [Dish](#dish)
 
 # Notes
 
@@ -426,3 +430,251 @@ mail/verify-code
     "msg": "The verification code is incorrect or has expired!"
 }
 ```
+
+# Categories
+
+> Get data categories
+
+### End Point
+
+```
+app/categories
+```
+
+### Method
+
+**`GET`**
+
+### Bearer token required
+
+### Successful Response Example
+
+```
+{
+    "msg": "Get categories successfully!",
+    "result": [
+        {
+            "_id": "6541da16f015a8f58288420b",
+            "category_name": "Donat",
+            "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/category%2Fdonat.png?alt=media&token=0b7cb09c-7185-4cc7-b1b4-f9074e845e23&_gl=1*g72zi8*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTA5NzAuNjAuMC4w"
+        },
+        {
+            "_id": "6541da2f19041491f445f862",
+            "category_name": "Hot Dog",
+            "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/category%2Fhotdog.png?alt=media&token=ec7f5873-5ceb-4e94-9db2-4b03e281c30b&_gl=1*5cam9u*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTEwNjQuNjAuMC4w"
+        }
+    ]
+}
+```
+
+### Error Response Examples
+
+- **`Unauthorized`**
+  ```
+  {
+    msg: 'Unauthorized'
+  }
+  ```
+
+# Restaurants
+
+> Get data of many restaurants
+
+### End Point
+
+```
+app/restaurants
+```
+
+### Method
+
+**`GET`**
+
+### Bearer token required
+
+### Successful Response Example
+
+```
+{
+    "msg": "Get restaurants successfully!",
+    "result": [
+        {
+            "_id": "6543711a67951e9e9c2a312a",
+            "restaurant_name": "Restaurant 1",
+            "review_count": 50,
+            "review_star": 4.3,
+            "tags": [
+                "BURGER",
+                "CHICKET",
+                "FAST FOOD"
+            ],
+            "delivery_description": {
+                "delivery_fee": true,
+                "delivery_time": "10-15 mins"
+            },
+            "verify": true,
+            "background_image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/food%2Ffood1.png?alt=media&token=77e7dc5f-1d65-4d48-b215-ca3b46697672&_gl=1*1hblm6*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODkwNTk5OS40Mi4xLjE2OTg5MDYxMTQuNi4wLjA.",
+            "restaurant_image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/restaurant_avt%2Fr_avt1.png?alt=media&token=2c4cd6dc-2058-471c-ba4a-c4e55c10c785&_gl=1*s50xp6*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODkwNTk5OS40Mi4xLjE2OTg5MDYzNDEuNTEuMC4w"
+        },
+    ]
+}
+```
+
+### Error Response Examples
+
+- **`Unauthorized`**
+  ```
+  {
+    msg: 'Unauthorized'
+  }
+  ```
+
+# Restaurant
+
+> Get data of a restaurant
+
+### End Point
+
+```
+app/restaurant
+```
+
+### Method
+
+**`GET`**
+
+### Bearer token required
+
+### Query parameter
+
+| Field Name | Requirements                     | Note |
+| :--------- | :------------------------------- | ---- |
+| `id`       | - Required <br/> - `String` type |      |
+
+### Successful Response Example
+
+```
+{
+    "msg": "Get restaurant successfully!",
+    "result": [
+        {
+            "_id": "6541d0b362c8dd3b531d9a6b",
+            "parent_id": "6543711a67951e9e9c2a312a",
+            "dish_name": "Ground Beef Tacos",
+            "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/food%2Ffood1.png?alt=media&token=77e7dc5f-1d65-4d48-b215-ca3b46697672&_gl=1*1dmf3w8*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE2MjUuNDcuMC4w",
+            "description": "Brown the beef better. Lean ground beef - I like to use 85% lean angus. Garlic - use fresh  chopped. Spices - chili powder, cumin, onion powder.",
+            "price": 9.5,
+            "review_count": 30,
+            "review_star": 4.5,
+            "toppings": [
+                {
+                    "id": 1,
+                    "topping_name": "Pepper Julienned",
+                    "price": 2.3,
+                    "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/topping%2Ftopping3.png?alt=media&token=c2667ef9-d955-4db4-9e73-9b00c477a1c9&_gl=1*3n5hyw*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE4MjIuMTAuMC4w"
+                },
+                {
+                    "id": 2,
+                    "topping_name": "Baby Spinach",
+                    "price": 4.7,
+                    "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/topping%2Ftopping2.png?alt=media&token=ee8b44b5-0abd-4bb5-a032-b26eac185855&_gl=1*n50esp*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE3ODIuNTAuMC4w"
+                },
+                {
+                    "id": 3,
+                    "topping_name": "Masroom",
+                    "price": 4.7,
+                    "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/topping%2Ftopping1.png?alt=media&token=38941a24-4ce6-48ab-8e82-99d545bd0841&_gl=1*1ux5d5d*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE4NDIuNTguMC4w"
+                }
+            ]
+        }
+    ]
+}
+```
+
+### Error Response Examples
+
+- **`Field required / Unauthorized`**
+  ```
+  {
+    "msg": "\"id\" is not allowed to be empty"
+  }
+  ```
+  ```
+  {
+    msg: 'Unauthorized'
+  }
+  ```
+
+# Dish
+
+> Get data dish
+
+### End Point
+
+```
+app/dish
+```
+
+### Method
+
+**`GET`**
+
+### Bearer token required
+
+### Query parameter
+
+| Field Name | Requirements                     | Note |
+| :--------- | :------------------------------- | ---- |
+| `id`       | - Required <br/> - `String` type |      |
+
+### Successful Response Example
+
+```
+{
+    "msg": "Get restaurant successfully!",
+    "result": {
+        "_id": "6541d0b362c8dd3b531d9a6b",
+        "parent_id": "6543711a67951e9e9c2a312a",
+        "dish_name": "Ground Beef Tacos",
+        "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/food%2Ffood1.png?alt=media&token=77e7dc5f-1d65-4d48-b215-ca3b46697672&_gl=1*1dmf3w8*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE2MjUuNDcuMC4w",
+        "description": "Brown the beef better. Lean ground beef - I like to use 85% lean angus. Garlic - use fresh  chopped. Spices - chili powder, cumin, onion powder.",
+        "price": 9.5,
+        "review_count": 30,
+        "review_star": 4.5,
+        "toppings": [
+            {
+                "id": 1,
+                "topping_name": "Pepper Julienned",
+                "price": 2.3,
+                "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/topping%2Ftopping3.png?alt=media&token=c2667ef9-d955-4db4-9e73-9b00c477a1c9&_gl=1*3n5hyw*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE4MjIuMTAuMC4w"
+            },
+            {
+                "id": 2,
+                "topping_name": "Baby Spinach",
+                "price": 4.7,
+                "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/topping%2Ftopping2.png?alt=media&token=ee8b44b5-0abd-4bb5-a032-b26eac185855&_gl=1*n50esp*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE3ODIuNTAuMC4w"
+            },
+            {
+                "id": 3,
+                "topping_name": "Masroom",
+                "price": 4.7,
+                "image_url": "https://firebasestorage.googleapis.com/v0/b/basic-server-31577.appspot.com/o/topping%2Ftopping1.png?alt=media&token=38941a24-4ce6-48ab-8e82-99d545bd0841&_gl=1*1ux5d5d*_ga*NTY5NDM2ODgzLjE2OTE2NTAxMzI.*_ga_CW55HF8NVT*MTY5ODgxMDY4MS40MC4xLjE2OTg4MTE4NDIuNTguMC4w"
+            }
+        ]
+    }
+}
+```
+
+### Error Response Examples
+
+- **`Field required / Unauthorized`**
+  ```
+  {
+    "msg": "\"id\" is not allowed to be empty"
+  }
+  ```
+  ```
+  {
+    msg: 'Unauthorized'
+  }
+  ```
