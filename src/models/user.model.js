@@ -4,13 +4,13 @@ const {Schema} = mongoose;
 
 const UserSchema = new Schema(
   {
-    userName: {type: String},
+    user_name: {type: String},
     email: {type: String},
     password: {type: String},
-    dateOfBirth: {type: String, default: null},
+    date_of_birth: {type: String, default: null},
     gender: {type: String, default: null},
-    phoneNumber: {type: String, default: null},
-    isVerifiedEmail: {type: Boolean, default: false},
+    phone_number: {type: String, default: null},
+    is_verified_email: {type: Boolean, default: false},
   },
   {timestamps: true, versionKey: false},
 );
