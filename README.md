@@ -1,11 +1,35 @@
 # Basic server
 
-[Postman collection](https://github.com/thanhnv-dev/basic-server/blob/main/postman_collection.json)
 
-## Contents
+# Contents
 
 - [Notes](#notes)
+- [Api List](#api_list)
 - [Base URL](#base-url)
+- [Postman collection](https://github.com/thanhnv-dev/basic-server/blob/main/postman_collection.json)
+- [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
+
+# Notes
+
+### Api `send-verification-code` and `verify-code`
+
+| Case                                                                                                                                                   | Note                                                                                                              |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| - The email sent to the `send-verification-code` api has been `sign-up`<br/> - Never `verify-code` or field `isVerifiedEmail` in user data is `false`  | - When verification is successful(`verify-code`), field `isVerifiedEmail` in user data will be changed to `true`. |
+| - The email sent to the `send-verification-code` api has been `sign-up`<br/> - Already `verify-code` or field `isVerifiedEmail` in user data is `true` | - Sending the request will fail because the email has already been verified.                                      |
+| - The email sent to the `send-verification-code` api has not been `sign-up`                                                                            | - Sending the request will fail because the email needs to be `sign-up`                                           |
+
+### Status codes
+
+| Case               | Status code | Note         |
+| :----------------- | :---------- | :----------- |
+| Susccess           | 200         |              |
+| Failed             | 400         |              |
+| Tokens expire      | 401         | Unauthorized |
+| Token is incorrect | 403         | Forbidden    |
+
+# Api List
+
 - [Sign Up](#sign-up)
 - [Sign In](#sign-in)
 - [Profile](#profile)
@@ -19,29 +43,10 @@
 - [Restaurant](#restaurant)
 - [Dish](#dish)
 
-# Notes
-
-### Api `send-verification-code` and `verify-code`
-
-| Case                                                                                                                                                   | Note                                                                                                              |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
-| - The email sent to the `send-verification-code` api has been `sign-up`<br/> - Never `verify-code` or field `isVerifiedEmail` in user data is `false`  | - When verification is successful(`verify-code`), field `isVerifiedEmail` in user data will be changed to `true`. |
-| - The email sent to the `send-verification-code` api has been `sign-up`<br/> - Already `verify-code` or field `isVerifiedEmail` in user data is `true` | - Sending the request will fail because the email has already been verified.                                      |
-| - The email sent to the `send-verification-code` api has not been `sign-up`                                                                            | -This process will be separate from user data and will not change user data because the email is not `sign-up`    |
-
-### Status codes
-
-| Case               | Status code | Note         |
-| :----------------- | :---------- | :----------- |
-| Susccess           | 200         |              |
-| Failed             | 400         |              |
-| Tokens expire      | 401         | Unauthorized |
-| Token is incorrect | 403         | Forbidden    |
-
 # Base URL
 
 ```
-https://common-api-v1.vercel.app/
+https://common-api-v1.vercel.app
 ```
 
 # Sign Up
