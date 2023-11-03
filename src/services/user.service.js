@@ -36,8 +36,6 @@ const signUp = async req => {
       const {newToken, newRefreshToken} = JWToken.createTokens({email});
 
       const resData = createUserResult.toObject();
-      resData.id = resData._id;
-      delete resData._id;
       delete resData.password;
       delete resData.createdAt;
       delete resData.updatedAt;
@@ -45,7 +43,11 @@ const signUp = async req => {
       return {
         status: 200,
         res: {
-          results: {...resData, token: newToken, refresh_token: newRefreshToken},
+          results: {
+            ...resData,
+            token: newToken,
+            refresh_token: newRefreshToken,
+          },
           msg: 'Sign Up Success!',
         },
       };
@@ -70,14 +72,16 @@ const profile = async req => {
 
     const resUserData = findUserByIdResult.toObject();
 
-    resUserData.id = resUserData._id;
-    delete resUserData._id;
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
     delete resUserData.password;
 
     const res = {
-      results: {...resUserData, token: newToken, refresh_token: newRefreshToken},
+      results: {
+        ...resUserData,
+        token: newToken,
+        refresh_token: newRefreshToken,
+      },
       msg: 'Get profile Successfully!',
     };
     return {status: 200, res};
@@ -124,8 +128,6 @@ const signIn = async req => {
     const {newToken, newRefreshToken} = JWToken.createTokens({email});
 
     const resUserData = findUserByEmailAndPassword.toObject();
-    resUserData.id = resUserData._id;
-    delete resUserData._id;
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
     delete resUserData.password;
@@ -148,13 +150,13 @@ const signIn = async req => {
 };
 
 const customToken = async req => {
-  const {expiresIn} = req.body;
+  const {expires_in} = req.body;
 
-  const newToken = JWToken.createCustomToken(expiresIn);
+  const newToken = JWToken.createCustomToken(expires_in);
 
   const res = {
     results: {
-      customToken: newToken,
+      custom_token: newToken,
     },
     msg: 'Create custom token Successfully!',
   };
@@ -167,7 +169,9 @@ const deleteUser = async req => {
   const findUserByIdResult = await findUserById(id);
 
   if (findUserByIdResult) {
-    const deleteUserResult = await UserModel.deleteOne({_id: findUserByIdResult._id});
+    const deleteUserResult = await UserModel.deleteOne({
+      _id: findUserByIdResult._id,
+    });
 
     if (deleteUserResult.deletedCount) {
       const res = {

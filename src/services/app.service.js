@@ -34,12 +34,31 @@ const restaurents = async () => {
 const restaurent = async req => {
   const {id} = req.query;
   try {
-    const data = await DishModel.find({parent_id: id});
+    const dataDish = await DishModel.find({parent_id: id});
+    const dataRestaurant = await RestaurantModel.findById(id);
+
+    const dataRes = [];
+
+    dataDish.forEach(item => {
+      const itemObject = item.toObject();
+      delete itemObject.parent_id;
+      delete itemObject.description;
+      delete itemObject.toppings;
+      dataRes.push(itemObject);
+    });
+
     return {
       status: 200,
-      res: {msg: 'Get restaurant successfully!', result: data},
+      res: {
+        msg: 'Get restaurant successfully!',
+        result: {
+          ...dataRestaurant.toObject(),
+          dishs: dataRes,
+        },
+      },
     };
   } catch (err) {
+    console.log(err);
     return {
       status: 400,
       res: {msg: 'Something went wrong!'},
