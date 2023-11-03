@@ -1,6 +1,5 @@
 # Basic server
 
-
 # Contents
 
 - [Notes](#notes)
@@ -38,10 +37,11 @@
 - [Delete](#delete)
 - [Send Verification Code](#send-verification-code)
 - [Verify code](#verify-code)
-- [Categories](#categories)
-- [Restaurants](#restaurants)
-- [Restaurant](#restaurant)
-- [Dish](#dish)
+- Food Hub api
+  - [Categories](#food-hub-categories)
+  - [Restaurants](#food-hub-restaurants)
+  - [Restaurant](#food-hub-restaurant)
+  - [Dish](#food-hub-dish)
 
 # Base URL
 
@@ -520,14 +520,14 @@ mail/verify-code
 }
 ```
 
-# Categories
+# Food Hub Categories
 
 > Get data categories
 
 ### End Point
 
 ```
-app/categories
+food-hub/categories
 ```
 
 ### Method
@@ -575,14 +575,14 @@ app/categories
   }
   ```
 
-# Restaurants
+# Food Hub Restaurants
 
 > Get data of many restaurants
 
 ### End Point
 
 ```
-app/restaurants
+food-hub/restaurants
 ```
 
 ### Method
@@ -642,14 +642,14 @@ app/restaurants
   }
   ```
 
-# Restaurant
+# Food Hub Restaurant
 
 > Get data of a restaurant
 
 ### End Point
 
 ```
-app/restaurant
+food-hub/restaurant
 ```
 
 ### Method
@@ -743,14 +743,14 @@ app/restaurant
   }
   ```
 
-# Dish
+# Food Hub Dish
 
 > Get data dish
 
 ### End Point
 
 ```
-app/dish
+food-hub/dish
 ```
 
 ### Method

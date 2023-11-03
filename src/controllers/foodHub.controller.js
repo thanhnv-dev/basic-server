@@ -1,8 +1,8 @@
-const AppService = require('../services/app.service.js');
+const FoodHubService = require('../services/foodHub.service.js');
 const Log = require('../utils/log.js');
 
 const categories = async (req, res) => {
-  const sendResult = await AppService.categories();
+  const sendResult = await FoodHubService.categories();
 
   Log.request({
     req: req,
@@ -14,7 +14,7 @@ const categories = async (req, res) => {
 };
 
 const restaurents = async (req, res) => {
-  const sendResult = await AppService.restaurents();
+  const sendResult = await FoodHubService.restaurents();
 
   Log.request({
     req: req,
@@ -25,7 +25,7 @@ const restaurents = async (req, res) => {
   return res.status(sendResult.status).json(sendResult.res);
 };
 const restaurent = async (req, res) => {
-  const sendResult = await AppService.restaurent(req);
+  const sendResult = await FoodHubService.restaurent(req);
 
   Log.request({
     req: req,
@@ -36,7 +36,7 @@ const restaurent = async (req, res) => {
   return res.status(sendResult.status).json(sendResult.res);
 };
 const dish = async (req, res) => {
-  const sendResult = await AppService.dish(req);
+  const sendResult = await FoodHubService.dish(req);
 
   Log.request({
     req: req,
