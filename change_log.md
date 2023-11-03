@@ -13,4 +13,4 @@
 5. API **`food-hub/restaurants`** and **`food-hub/restaurant`** Returns mixed data types and mixed variable name format from
 6. Update [Postman collection](https://github.com/thanhnv-dev/basic-server/blob/main/postman_collection.json)
 
-**Read more at [README](https://github.com/thanhnv-dev/basic-server/blob/main/README.md)**
+**Read more at [Basic Server](https://github.com/thanhnv-dev/basic-server)**
