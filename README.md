@@ -522,6 +522,8 @@ mail/verify-code
 
 # Food Hub Categories
 
+Used for [Home Screen](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-721&mode=design&t=Vt5VFpqive8ft7lp-0)
+
 > Get data categories
 
 ### End Point
@@ -576,6 +578,8 @@ food-hub/categories
   ```
 
 # Food Hub Restaurants
+
+Used for [Home Screen](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-721&mode=design&t=Vt5VFpqive8ft7lp-0)
 
 > Get data of many restaurants
 
@@ -643,6 +647,8 @@ food-hub/restaurants
   ```
 
 # Food Hub Restaurant
+
+Used for [Restaurant Details](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1395-2&mode=design&t=Vt5VFpqive8ft7lp-4)
 
 > Get data of a restaurant
 
@@ -744,6 +750,8 @@ food-hub/restaurant
   ```
 
 # Food Hub Dish
+
+Used for [Dish Details](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-643&mode=design&t=qDazJau3e6m8PmgJ-4)
 
 > Get data dish
 
