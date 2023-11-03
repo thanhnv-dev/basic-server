@@ -44,9 +44,9 @@ router.get(
   usersController.profile,
 );
 
-router.post(
+router.delete(
   '/delete',
-  validateParams(signInValidateSchema),
+  validateParams(profileValidateSchema),
   usersController.deleteUser,
 );
 

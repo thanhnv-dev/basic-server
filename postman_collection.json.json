@@ -19,10 +19,10 @@
 									"if (pm.response.code === 200) {",
 									"    const jsonData = pm.response.json().results;",
 									"    const authToken = jsonData.token;",
-									"    const authRefreshToken = jsonData.refreshToken;",
+									"    const authRefreshToken = jsonData.refresh_token;",
 									"    const userId = jsonData.id;",
 									"    pm.collectionVariables.set(\"token\", authToken);",
-									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"    pm.collectionVariables.set(\"refresh_token\", authRefreshToken);",
 									"    pm.collectionVariables.set(\"id\", userId);",
 									"}"
 								],
@@ -38,7 +38,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userName\": \"thanhnv\",\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"user_name\": \"thanhnv\",\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -68,10 +68,10 @@
 									"if (pm.response.code === 200) {",
 									"    const jsonData = pm.response.json().results;",
 									"    const authToken = jsonData.token;",
-									"    const authRefreshToken = jsonData.refreshToken;",
+									"    const authRefreshToken = jsonData.refresh_token;",
 									"    const userId = jsonData.id;",
 									"    pm.collectionVariables.set(\"token\", authToken);",
-									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"    pm.collectionVariables.set(\"refresh_token\", authRefreshToken);",
 									"    pm.collectionVariables.set(\"id\", userId);",
 									"}"
 								],
@@ -87,7 +87,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -138,7 +138,7 @@
 									"            if (response.code === 200) {",
 									"                const jsonData = pm.response.json().results;",
 									"                const authToken = jsonData.token;",
-									"                const authRefreshToken = jsonData.refreshToken;",
+									"                const authRefreshToken = jsonData.refresh_token;",
 									"                pm.collectionVariables.set(\"token\", authToken);",
 									"                pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
 									"            }",
@@ -221,7 +221,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
+							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -312,11 +312,11 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -324,13 +324,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/user/delete",
+							"raw": "{{base_url}}/user/delete?id={{id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"user",
 								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
 							]
 						}
 					},
@@ -428,6 +434,227 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "App",
+			"item": [
+				{
+					"name": "categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/app/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"app",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restaurants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/app/restaurants",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"app",
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/app/restaurant?id=6543711a67951e9e9c2a312a",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"app",
+								"restaurant"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "6543711a67951e9e9c2a312a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dish",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/app/dish?id=6541d0b362c8dd3b531d9a6b",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"app",
+								"dish"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "6541d0b362c8dd3b531d9a6b"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -457,18 +684,18 @@
 			"type": "string"
 		},
 		{
-			"key": "refreshToken",
+			"key": "refresh_token",
 			"value": "",
 			"type": "string"
 		},
 		{
 			"key": "local_base_url",
-			"value": "",
+			"value": "http://localhost:7002",
 			"type": "string"
 		},
 		{
 			"key": "base_url",
-			"value": "",
+			"value": "https://common-api-v1.vercel.app",
 			"type": "string"
 		},
 		{
@@ -478,6 +705,15 @@
 		},
 		{
 			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "code",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "refreshToken",
 			"value": ""
 		}
 	]

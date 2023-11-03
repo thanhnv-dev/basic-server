@@ -36,8 +36,6 @@ const signUp = async req => {
       const {newToken, newRefreshToken} = JWToken.createTokens({email});
 
       const resData = createUserResult.toObject();
-      resData.id = resData._id;
-      delete resData._id;
       delete resData.password;
       delete resData.createdAt;
       delete resData.updatedAt;
@@ -45,7 +43,11 @@ const signUp = async req => {
       return {
         status: 200,
         res: {
-          results: {...resData, token: newToken, refreshToken: newRefreshToken},
+          results: {
+            ...resData,
+            token: newToken,
+            refresh_token: newRefreshToken,
+          },
           msg: 'Sign Up Success!',
         },
       };
@@ -70,13 +72,16 @@ const profile = async req => {
 
     const resUserData = findUserByIdResult.toObject();
 
-    resUserData.id = resUserData._id;
-    delete resUserData._id;
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
+    delete resUserData.password;
 
     const res = {
-      results: {...resUserData, token: newToken, refreshToken: newRefreshToken},
+      results: {
+        ...resUserData,
+        token: newToken,
+        refresh_token: newRefreshToken,
+      },
       msg: 'Get profile Successfully!',
     };
     return {status: 200, res};
@@ -89,17 +94,17 @@ const profile = async req => {
 };
 
 const refreshToken = async req => {
-  const {refreshToken} = req.body;
+  const {refresh_token} = req.body;
 
-  const verifyRefreshTokenResult = JWToken.verifyRefreshToken(refreshToken);
+  const verifyRefreshTokenResult = JWToken.verifyRefreshToken(refresh_token);
 
   if (verifyRefreshTokenResult) {
     const {newToken, newRefreshToken} = JWToken.createTokens({
-      data: refreshToken,
+      data: refresh_token,
     });
 
     const res = {
-      results: {token: newToken, refreshToken: newRefreshToken},
+      results: {token: newToken, refresh_token: newRefreshToken},
       msg: 'Refresh token Successfully!',
     };
     return {status: 200, res};
@@ -123,16 +128,15 @@ const signIn = async req => {
     const {newToken, newRefreshToken} = JWToken.createTokens({email});
 
     const resUserData = findUserByEmailAndPassword.toObject();
-    resUserData.id = resUserData._id;
-    delete resUserData._id;
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
+    delete resUserData.password;
 
     const res = {
       results: {
         ...resUserData,
         token: newToken,
-        refreshToken: newRefreshToken,
+        refresh_token: newRefreshToken,
       },
       msg: 'Sign In Successfully!',
     };
@@ -146,13 +150,13 @@ const signIn = async req => {
 };
 
 const customToken = async req => {
-  const {expiresIn} = req.body;
+  const {expires_in} = req.body;
 
-  const newToken = JWToken.createCustomToken(expiresIn);
+  const newToken = JWToken.createCustomToken(expires_in);
 
   const res = {
     results: {
-      customToken: newToken,
+      custom_token: newToken,
     },
     msg: 'Create custom token Successfully!',
   };
@@ -160,14 +164,14 @@ const customToken = async req => {
 };
 
 const deleteUser = async req => {
-  const {email, password} = req.body;
+  const {id} = req.query;
 
-  const findUserByEmailAndPassword = await UserModel.findOne({
-    email,
-    password,
-  });
-  if (findUserByEmailAndPassword) {
-    const deleteUserResult = await UserModel.deleteOne({email});
+  const findUserByIdResult = await findUserById(id);
+
+  if (findUserByIdResult) {
+    const deleteUserResult = await UserModel.deleteOne({
+      _id: findUserByIdResult._id,
+    });
 
     if (deleteUserResult.deletedCount) {
       const res = {

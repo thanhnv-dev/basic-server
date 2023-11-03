@@ -19,12 +19,12 @@ const emailVelidate = () => {
 };
 
 export const signUpValidateSchema = Joi.object({
-  userName: validateStringRequired().min(3),
+  user_name: validateStringRequired().min(3),
   email: emailVelidate(),
   password: validateStringRequired().min(6),
-  dateOfBirth: validateString(),
+  date_of_birth: validateString(),
   gender: validateString(),
-  phoneNumber: validateString(),
+  phone_number: validateString(),
 });
 
 export const signInValidateSchema = Joi.object({
@@ -41,7 +41,7 @@ export const verifyCodeSchema = Joi.object({
 });
 
 export const refreshTokenValidateSchema = Joi.object({
-  refreshToken: validateStringRequired(),
+  refresh_token: validateStringRequired(),
 });
 
 export const profileValidateSchema = Joi.object({

@@ -13,7 +13,7 @@ const VerificationCodeSchema = new Schema(
 const VerificationCodeModel = mongoose.model(
   'VerificationCode',
   VerificationCodeSchema,
-  'VerificationCodes',
+  'verification_codes',
 );
 
 module.exports = VerificationCodeModel;
