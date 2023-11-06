@@ -190,7 +190,7 @@ const verifyCodeService = async code => {
       if (findUserByEmail) {
         const updateUserResult = await UserModel.updateOne(
           {email},
-          {isVerifiedEmail: true},
+          {is_verified_email: true},
         );
 
         if (!updateUserResult.acknowledged) {
