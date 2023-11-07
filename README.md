@@ -8,6 +8,9 @@
 - [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json.zip)
 - [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 
+<a href="https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json" title="Download" download>Download</a>
+<a href="https://github.com/thanhnv-dev/basic-server/blob/main/postman_collection.json" title="Download2" download>Download</a>
+
 # Notes
 
 ### Api `send-verification-code` and `verify-code`
