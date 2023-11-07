@@ -5,7 +5,7 @@
 - [Notes](#notes)
 - [Api List](#api-list)
 - [Base URL](#base-url)
-- [Postman collection](https://github.com/thanhnv-dev/basic-server/blob/main/postman_collection.json)
+- [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json)
 - [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 
 # Notes
