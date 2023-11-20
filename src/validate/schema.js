@@ -49,7 +49,7 @@ export const profileValidateSchema = Joi.object({
 });
 
 export const customTokenValidateSchema = Joi.object({
-  expiresIn: Joi.string()
+  expires_in: Joi.string()
     .regex(/[smhd]/)
     .required(),
 });

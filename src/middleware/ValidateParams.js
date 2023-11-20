@@ -16,7 +16,7 @@ const validateParams = schema => (req, res, next) => {
 
     if (req.url.includes('custom-token')) {
       return res.status(400).json({
-        msg: 'expiresIn field must be a string starting with a number and ending with the following letters s or m or h or d. s is seconds. m is minute. h is hour . d is day',
+        msg: 'expires_in field must be a string starting with a number and ending with the following letters s or m or h or d. s is seconds. m is minute. h is hour . d is day',
       });
     } else {
       return res.status(400).json({msg: error.details[0].message});

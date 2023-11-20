@@ -268,7 +268,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"expiresIn\": \"20s\"\n}",
+							"raw": "{\n    \"expires_in\": \"20s\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
