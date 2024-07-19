@@ -1,14 +1,27 @@
 # Basic server
 
-# Contents
+## Contents
 
 - [Notes](#notes)
 - [Api List](#api-list)
+  - [Sign Up](#sign-up)
+  - [Sign In](#sign-in)
+  - [Profile](#profile)
+  - [Refresh Token](#refresh-token)
+  - [Custom Token](#custom-token)
+  - [Delete](#delete)
+  - [Send Verification Code](#send-verification-code)
+  - [Verify code](#verify-code)
+  - Food Hub api
+    - [Categories](#food-hub-categories)
+    - [Restaurants](#food-hub-restaurants)
+    - [Restaurant](#food-hub-restaurant)
+    - [Dish](#food-hub-dish)
 - [Base URL](#base-url)
 - [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json.zip)
 - [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 
-# Notes
+## Notes
 
 ### Api `send-verification-code` and `verify-code`
 
@@ -27,41 +40,27 @@
 | Tokens expire      | 401         | Unauthorized |
 | Token is incorrect | 403         | Forbidden    |
 
-# Api List
+## Api List
 
-- [Sign Up](#sign-up)
-- [Sign In](#sign-in)
-- [Profile](#profile)
-- [Refresh Token](#refresh-token)
-- [Custom Token](#custom-token)
-- [Delete](#delete)
-- [Send Verification Code](#send-verification-code)
-- [Verify code](#verify-code)
-- Food Hub api
-  - [Categories](#food-hub-categories)
-  - [Restaurants](#food-hub-restaurants)
-  - [Restaurant](#food-hub-restaurant)
-  - [Dish](#food-hub-dish)
+### Base URL
 
-# Base URL
-
-```
+```jsx
 https://common-api-v1.vercel.app
 ```
 
-# Sign Up
+### Sign Up
 
 > Use to create new account
 
-### End Point
+#### End Point
 
 `user/sign-up`
 
-### Method
+#### Method
 
 **`POST`**
 
-### Parameters
+#### Parameters
 
 | Field Name      | Requirements                                                  | Note                   |
 | :-------------- | :------------------------------------------------------------ | :--------------------- |
@@ -72,7 +71,7 @@ https://common-api-v1.vercel.app
 | `gender`        | - Optional <br/> - `String` type                              |                        |
 | `phone_number`  | - Optional <br/> - `String` type                              |                        |
 
-### Response data type
+#### Response data type
 
 | Field Name          | Type      | Note              |
 | ------------------- | :-------- | :---------------- |
@@ -88,9 +87,9 @@ https://common-api-v1.vercel.app
 | `refresh_token`     | `String`  | Child of `result` |
 | `msg`               | `String`  |                   |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "results": {
         "user_name": "thanhnv",
@@ -107,7 +106,7 @@ https://common-api-v1.vercel.app
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Email registered`**
   ```
@@ -127,21 +126,21 @@ https://common-api-v1.vercel.app
   }
   ```
 
-# Sign In
+### Sign In
 
 > Login
 
-### End Point
+#### End Point
 
-```
+```text
 user/sign-in
 ```
 
-### Method
+#### Method
 
 **`POST`**
 
-### Parameters
+#### Parameters
 
 | Field Name  | Requirements                                                  | Note                   |
 | :---------- | :------------------------------------------------------------ | ---------------------- |
@@ -149,7 +148,7 @@ user/sign-in
 | `email`     | - Required <br/> - `Email` type                               |                        |
 | `password`  | - Required <br/> - `String` type <br/> - Min length is 6 type | Recommend:`encryption` |
 
-### Response data type
+#### Response data type
 
 | Field Name          | Type      | Note              |
 | ------------------- | :-------- | :---------------- |
@@ -165,9 +164,9 @@ user/sign-in
 | `refresh_token`     | `String`  | Child of `result` |
 | `msg`               | `String`  |                   |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "results": {
         "user_name": "thanhnv",
@@ -184,7 +183,7 @@ user/sign-in
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Incorrect account information`**
   ```
@@ -209,29 +208,29 @@ user/sign-in
   }
   ```
 
-# Profile
+### Profile
 
 > Get ueser profile
 
-### End Point
+#### End Point
 
-```
+```text
 user/profile
 ```
 
-### Method
+#### Method
 
 **`GET`**
 
-### Bearer token required
+#### Bearer token required
 
-### Query parameter
+#### Query parameter
 
 | Field Name | Requirements                     | Note |
 | :--------- | :------------------------------- | ---- |
 | `id`       | - Required <br/> - `String` type |      |
 
-### Response data type
+#### Response data type
 
 | Field Name          | Type      | Note              |
 | ------------------- | :-------- | :---------------- |
@@ -247,9 +246,9 @@ user/profile
 | `refresh_token`     | `String`  | Child of `result` |
 | `msg`               | `String`  |                   |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "results": {
         "user_name": "thanhnv",
@@ -266,7 +265,7 @@ user/profile
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Field required / field type incorrect`**
   ```
@@ -280,25 +279,25 @@ user/profile
   }
   ```
 
-# Refresh Token
+### Refresh Token
 
-### End Point
+#### End Point
 
-```
+```text
 user/refresh-token
 ```
 
-### Method
+#### Method
 
 **`POST`**
 
-### Query parameter
+#### Query parameter
 
 | Field Name      | Requirements                     | Note |
 | :-------------- | :------------------------------- | ---- |
 | `refresh_token` | - Required <br/> - `String` type |      |
 
-### Response data type
+#### Response data type
 
 | Field Name      | Type     | Note              |
 | --------------- | :------- | :---------------- |
@@ -307,9 +306,9 @@ user/refresh-token
 | `refresh_token` | `String` | Child of `result` |
 | `msg`           | `String` |                   |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "results": {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxiV0ZwYkNJNkluUm9ZVzVvYm5ZdVpHVjJMbkJsY25OdmJtRnNRR2R0WVdsc0xtTnZiU0lzSW1saGRDSTZNVFk1TnpBek1qZzNOQ3dpWlhod0lqb3hOamszT0RrMk9EYzBmUS56cWQydm01UnU4bGlXQkxFQllJcHlnVG5TWm9iZUhnVjFzZE94dWlNSzNJIiwiaWF0IjoxNjk3MDg0ODQ5LCJleHAiOjE2OTcwOTU2NDl9.O0JOu9IK9ZV5orqU6dnj-qLZgcTNTU36464rF9oT8NQ",
@@ -319,35 +318,35 @@ user/refresh-token
 }
 ```
 
-### Error Response Example
+#### Error Response Example
 
-```
+```json
 {
     "msg": "Forbidden"
 }
 ```
 
-# Custom Token
+### Custom Token
 
 > Create a custom token
 
-### End Point
+#### End Point
 
-```
+```text
 user/custom-token
 ```
 
-### Method
+#### Method
 
 **`POST`**
 
-### Query parameter
+#### Query parameter
 
 | Field Name   | Requirements                                                                                                           | Note                                                                  |
 | :----------- | :--------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | `expires_in` | - Required <br/> - `String` type <br/> - Starting with a number and ending with the following letters s or m or h or d | - s is seconds <br/> - m is minute <br/> - h is hour <br/> - d is day |
 
-### Response data type
+#### Response data type
 
 | Field Name     | Type     | Note              |
 | -------------- | :------- | :---------------- |
@@ -355,9 +354,9 @@ user/custom-token
 | `custom_token` | `String` | Child of `result` |
 | `msg`          | `String` |                   |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "results": {
         "custom_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiY3VzdG9tIHRva2VuIiwiaWF0IjoxNjk3MDg1MTEwLCJleHAiOjE2OTcwODUxMzB9.mM8qquoYJzDEZrUeWISJx7IAK_aFgGqZOQ7UJp8ICqo"
@@ -366,179 +365,179 @@ user/custom-token
 }
 ```
 
-### Error Response Example
+#### Error Response Example
 
-```
+```json
 {
     "msg": "expiresIn field must be a string starting with a number and ending with the following letters s or m or h or d. s is seconds. m is minute. h is hour . d is day"
 }
 ```
 
-# Delete
+### Delete
 
 > Delete user account
 
-### End Point
+#### End Point
 
-```
+```text
 user/delete
 ```
 
-### Method
+#### Method
 
 **`DELETE`**
 
-### Bearer token required
+#### Bearer token required
 
-### Query parameter
+#### Query parameter
 
 | Field Name | Requirements                     | Note |
 | :--------- | :------------------------------- | ---- |
 | `id`       | - Required <br/> - `String` type |      |
 
-### Response data type
+#### Response data type
 
 | Field Name | Type     | Note |
 | ---------- | :------- | :--- |
 | `msg`      | `String` |      |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Account deleted successfully!"
 }
 ```
 
-### Error Response Example
+#### Error Response Example
 
-```
+```json
 {
     "msg": "Account information is incorrect!"
 }
 ```
 
-```
+```json
 {
     "msg": "\"password\" length must be at least 6 characters long"
 }
 ```
 
-# Send Verification Code
+### Send Verification Code
 
 > Send an email containing the verification code to the email associated with the user
 
-### End Point
+#### End Point
 
-```
+```text
 mail/send-verification-code
 ```
 
-### Method
+#### Method
 
 **`POST`**
 
-### Query parameter
+#### Query parameter
 
 | Field Name | Requirements                    | Note |
 | :--------- | :------------------------------ | ---- |
 | `email`    | - Required <br/> - `Email` type |      |
 
-### Response data type
+#### Response data type
 
 | Field Name | Type     | Note |
 | ---------- | :------- | :--- |
 | `msg`      | `String` |      |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Email sent successfully!"
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
-```
+```json
 {
     "msg": "This email is not yet associated with a user."
 }
 ```
 
-```
+```json
 {
     "msg": "This email has been verified!"
 }
 ```
 
-```
+```json
 {
     "msg": "\"email\" must be a valid email"
 }
 ```
 
-# Verify Code
+### Verify Code
 
 > Verify users with verification code
 
-### End Point
+#### End Point
 
-```
+```text
 mail/verify-code
 ```
 
-### Method
+#### Method
 
 **`POST`**
 
-### Query parameter
+#### Query parameter
 
 | Field Name | Requirements                     | Note |
 | :--------- | :------------------------------- | ---- |
 | `code`     | - Required <br/> - `Number` type |      |
 
-### Response data type
+#### Response data type
 
 | Field Name | Type     | Note |
 | ---------- | :------- | :--- |
 | `msg`      | `String` |      |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Verified successfully!"
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
-```
+```json
 {
     "msg": "The verification code is incorrect or has expired!"
 }
 ```
 
-# Food Hub Categories
+### Food Hub Categories
 
 Used for [Home Screen](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-721&mode=design&t=Vt5VFpqive8ft7lp-0)
 
 > Get data categories
 
-### End Point
+#### End Point
 
-```
+```text
 food-hub/categories
 ```
 
-### Method
+#### Method
 
 **`GET`**
 
-### Bearer token required
+#### Bearer token required
 
-### Response data type
+#### Response data type
 
 | Field Name      | Type     | Note              |
 | --------------- | :------- | :---------------- |
@@ -548,9 +547,9 @@ food-hub/categories
 | `image_url`     | `String` | Child of `result` |
 | `msg`           | `String` |                   |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Get categories successfully!",
     "result": [
@@ -568,34 +567,34 @@ food-hub/categories
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Unauthorized`**
-  ```
+  ```json
   {
     msg: 'Unauthorized'
   }
   ```
 
-# Food Hub Restaurants
+### Food Hub Restaurants
 
 Used for [Home Screen](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-721&mode=design&t=Vt5VFpqive8ft7lp-0)
 
 > Get data of many restaurants
 
-### End Point
+#### End Point
 
-```
+```text
 food-hub/restaurants
 ```
 
-### Method
+#### Method
 
 **`GET`**
 
-### Bearer token required
+#### Bearer token required
 
-### Response data type
+#### Response data type
 
 | Field Name             | Type      | Note                           |
 | ---------------------- | :-------- | :----------------------------- |
@@ -613,9 +612,9 @@ food-hub/restaurants
 | `background_image_url` | `String`  | Child of `result`              |
 | `restaurant_image_url` | `String`  | Child of `result`              |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Get restaurants successfully!",
     "result": [
@@ -637,40 +636,40 @@ food-hub/restaurants
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Unauthorized`**
-  ```
+  ```json
   {
     msg: 'Unauthorized'
   }
   ```
 
-# Food Hub Restaurant
+### Food Hub Restaurant
 
 Used for [Restaurant Details](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1395-2&mode=design&t=Vt5VFpqive8ft7lp-4)
 
 > Get data of a restaurant
 
-### End Point
+#### End Point
 
-```
+```text
 food-hub/restaurant
 ```
 
-### Method
+#### Method
 
 **`GET`**
 
-### Bearer token required
+#### Bearer token required
 
-### Query parameter
+#### Query parameter
 
 | Field Name | Requirements                     | Note |
 | :--------- | :------------------------------- | ---- |
 | `id`       | - Required <br/> - `String` type |      |
 
-### Response data type
+#### Response data type
 
 | Field Name             | Type      | Note                           |
 | ---------------------- | :-------- | :----------------------------- |
@@ -695,9 +694,9 @@ food-hub/restaurant
 | `review_star`          | `Number`  | Child of `dishs`               |
 | `price`                | `Number`  | Child of `dishs`               |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Get restaurant successfully!",
     "result": {
@@ -735,39 +734,41 @@ food-hub/restaurant
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Field required / Unauthorized`**
-  ```
+
+  ```json
   {
     "msg": "\"id\" is not allowed to be empty"
   }
   ```
-  ```
+
+  ```json
   {
     msg: 'Unauthorized'
   }
   ```
 
-# Food Hub Dish
+### Food Hub Dish
 
 Used for [Dish Details](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-643&mode=design&t=qDazJau3e6m8PmgJ-4)
 
 > Get data dish
 
-### End Point
+#### End Point
 
-```
+```text
 food-hub/dish
 ```
 
-### Method
+#### Method
 
 **`GET`**
 
-### Bearer token required
+#### Bearer token required
 
-### Query parameter
+#### Query parameter
 
 | Field Name | Requirements                     | Note |
 | :--------- | :------------------------------- | ---- |
@@ -792,9 +793,9 @@ food-hub/dish
 | `price`        | `Number` | Child of `toppings` |
 | `image_url`    | `String` | Child of `toppings` |
 
-### Successful Response Example
+#### Successful Response Example
 
-```
+```json
 {
     "msg": "Get restaurant successfully!",
     "result": {
@@ -830,15 +831,17 @@ food-hub/dish
 }
 ```
 
-### Error Response Examples
+#### Error Response Examples
 
 - **`Field required / Unauthorized`**
-  ```
+  
+  ```json
   {
     "msg": "\"id\" is not allowed to be empty"
   }
   ```
-  ```
+
+  ```json
   {
     msg: 'Unauthorized'
   }
