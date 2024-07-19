@@ -12,7 +12,7 @@
   - [Delete](#delete)
   - [Send Verification Code](#send-verification-code)
   - [Verify code](#verify-code)
-  - Food Hub api
+  - [Food Hub API](#food-hub-api)
     - [Categories](#food-hub-categories)
     - [Restaurants](#food-hub-restaurants)
     - [Restaurant](#food-hub-restaurant)
@@ -518,6 +518,8 @@ mail/verify-code
     "msg": "The verification code is incorrect or has expired!"
 }
 ```
+
+## Food Hub API
 
 ### Food Hub Categories
 
