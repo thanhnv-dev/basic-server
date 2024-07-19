@@ -4,6 +4,7 @@
 
 - [Notes](#notes)
 - [Api List](#api-list)
+  - [Base URL](#base-url)
   - [Sign Up](#sign-up)
   - [Sign In](#sign-in)
   - [Profile](#profile)
@@ -17,7 +18,6 @@
     - [Restaurants](#food-hub-restaurants)
     - [Restaurant](#food-hub-restaurant)
     - [Dish](#food-hub-dish)
-- [Base URL](#base-url)
 - [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json.zip)
 - [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 
