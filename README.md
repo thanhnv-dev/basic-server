@@ -521,7 +521,7 @@ mail/verify-code
 
 ## Food Hub API
 
-### [Figma Design](https://www.figma.com/design/NueFWtgzXMvNDuUNStNHln/Food-Hub?node-id=0-1&t=sirmwOF3b1nqLDg3-1)
+[Figma Design](https://www.figma.com/design/NueFWtgzXMvNDuUNStNHln/Food-Hub?node-id=0-1&t=sirmwOF3b1nqLDg3-1)
 
 ### Food Hub Categories
 
