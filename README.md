@@ -521,6 +521,8 @@ mail/verify-code
 
 ## Food Hub API
 
+### [Figma Design](https://www.figma.com/design/NueFWtgzXMvNDuUNStNHln/Food-Hub?node-id=0-1&t=sirmwOF3b1nqLDg3-1)
+
 ### Food Hub Categories
 
 Used for [Home Screen](https://www.figma.com/file/NueFWtgzXMvNDuUNStNHln/Food-Hub?type=design&node-id=1-721&mode=design&t=Vt5VFpqive8ft7lp-0)
