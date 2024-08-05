@@ -210,7 +210,7 @@ user/sign-in
 
 ### Profile
 
-> Get ueser profile
+> Get user profile
 
 #### End Point
 
