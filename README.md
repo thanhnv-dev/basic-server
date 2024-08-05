@@ -46,6 +46,8 @@
 
 ## Authentication
 
+[Authentication Design](https://www.figma.com/design/ptbx2UnZsuOWvirzTUwGqB/Food-Hub---New-version?node-id=1805-2561&t=stKDwCAbenOl9YDj-4)
+
 ### Base URL
 
 ```jsx
@@ -518,6 +520,8 @@ mail/verify-code
 ```
 
 ## Home
+
+[Home Design](https://www.figma.com/design/ptbx2UnZsuOWvirzTUwGqB/Food-Hub---New-version?node-id=1805-2613&t=stKDwCAbenOl9YDj-4)
 
 ### Food Hub Categories
 
