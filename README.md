@@ -14,7 +14,7 @@
   - [Delete](#delete)
   - [Send Verification Code](#send-verification-code)
   - [Verify code](#verify-code)
-- [Home](#food-hub-api)
+- [Home](#home)
   - [Categories](#food-hub-categories)
   - [Restaurants](#food-hub-restaurants)
   - [Restaurant](#food-hub-restaurant)
