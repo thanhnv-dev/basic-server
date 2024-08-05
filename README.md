@@ -4,6 +4,7 @@
 
 - [Notes](#notes)
 - [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json.zip)
+- [Figma Design](#figma-design)
 - [Authentication](#authentication)
   - [Sign Up](#sign-up)
   - [Sign In](#sign-in)
@@ -13,7 +14,7 @@
   - [Delete](#delete)
   - [Send Verification Code](#send-verification-code)
   - [Verify code](#verify-code)
-- [Food Hub API](#food-hub-api)
+- [Home](#food-hub-api)
   - [Categories](#food-hub-categories)
   - [Restaurants](#food-hub-restaurants)
   - [Restaurant](#food-hub-restaurant)
@@ -38,6 +39,10 @@
 | Failed             | 400         |              |
 | Tokens expire      | 401         | Unauthorized |
 | Token is incorrect | 403         | Forbidden    |
+
+## Figma Design
+
+[Figma Design](https://www.figma.com/design/ptbx2UnZsuOWvirzTUwGqB/Food-Hub---New-version?node-id=1788-3&t=stKDwCAbenOl9YDj-1)
 
 ## Authentication
 
@@ -512,9 +517,7 @@ mail/verify-code
 }
 ```
 
-## Food Hub API
-
-[Figma Design](https://www.figma.com/design/NueFWtgzXMvNDuUNStNHln/Food-Hub?node-id=0-1&t=sirmwOF3b1nqLDg3-1)
+## Home
 
 ### Food Hub Categories
 
