@@ -224,12 +224,6 @@ user/profile
 
 #### Bearer token required
 
-#### Query parameter
-
-| Field Name | Requirements                     | Note |
-| :--------- | :------------------------------- | ---- |
-| `id`       | - Required <br/> - `String` type |      |
-
 #### Response data type
 
 | Field Name          | Type      | Note              |
@@ -609,9 +603,9 @@ food-hub/restaurants
 | `review_count`         | `Number`  | Child of `result`              |
 | `review_star`          | `String`  | Child of `result`              |
 | `tags`                 | `JSON`    | Child of `result`              |
-| `deliveryDescription`  | `Object`  | Child of `result`              |
-| `delivery_fee`         | `String`  | Child of `deliveryDescription` |
-| `delivery_time`        | `String`  | Child of `deliveryDescription` |
+| `delivery_description`  | `Object`  | Child of `result`              |
+| `delivery_fee`         | `String`  | Child of `delivery_description` |
+| `delivery_time`        | `String`  | Child of `delivery_description` |
 | `verify`               | `Boolean` | Child of `result`              |
 | `background_image_url` | `String`  | Child of `result`              |
 | `restaurant_image_url` | `String`  | Child of `result`              |
@@ -628,7 +622,7 @@ food-hub/restaurants
             "review_count": 50,
             "review_star": 4.3,
             "tags": "[\"BURGER\", \"CHICKET\", \"FAST FOOD\"]",
-            "deliveryDescription": {
+            "delivery_description": {
                 "delivery_fee": "true",
                 "delivery_time": "10-15 mins"
             },
@@ -684,9 +678,9 @@ food-hub/restaurant
 | `review_count`         | `Number`  | Child of `result`              |
 | `review_star`          | `Number`  | Child of `result`              |
 | `tags`                 | `JSON`    | Child of `result`              |
-| `deliveryDescription`  | `Object`  | Child of `result`              |
-| `delivery_fee`         | `String`  | Child of `deliveryDescription` |
-| `delivery_time`        | `String`  | Child of `deliveryDescription` |
+| `delivery_description`  | `Object`  | Child of `result`              |
+| `delivery_fee`         | `String`  | Child of `delivery_description` |
+| `delivery_time`        | `String`  | Child of `delivery_description` |
 | `verify`               | `Boolean` | Child of `result`              |
 | `background_image_url` | `String`  | Child of `result`              |
 | `restaurant_image_url` | `String`  | Child of `result`              |
@@ -709,7 +703,7 @@ food-hub/restaurant
         "review_count": 50,
         "review_star": 4.3,
         "tags": "[\"BURGER\", \"CHICKET\", \"FAST FOOD\"]",
-        "deliveryDescription": {
+        "delivery_description": {
             "delivery_fee": "true",
             "delivery_time": "10-15 mins"
         },

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "724df5cf-eb19-49c0-948e-cacf42a1913b",
+		"_postman_id": "ff4aa380-b865-423c-9080-bd529a22a219",
 		"name": "Basic Server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23229989"
+		"_exporter_id": "30367655"
 	},
 	"item": [
 		{
@@ -75,7 +75,8 @@
 									"    pm.collectionVariables.set(\"id\", userId);",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -146,7 +147,8 @@
 									"    });",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -176,19 +178,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/user/profile?id={{id}}",
+							"raw": "{{base_url}}}/user/profile",
 							"host": [
-								"{{base_url}}"
+								"{{base_url}}}"
 							],
 							"path": [
 								"user",
 								"profile"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "{{id}}"
-								}
 							]
 						}
 					},
@@ -268,7 +264,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"expires_in\": \"20s\"\n}",
+							"raw": "{\n    \"expiresIn\": \"20s\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -700,7 +696,7 @@
 		},
 		{
 			"key": "id",
-			"value": "",
+			"value": "65445c7cbc09a859e33a5c19",
 			"type": "string"
 		},
 		{

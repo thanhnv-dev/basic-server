@@ -33,7 +33,9 @@ const signUp = async req => {
     const createUserResult = await newUser.save();
 
     if (createUserResult == newUser) {
-      const {newToken, newRefreshToken} = JWToken.createTokens({email});
+      const {newToken, newRefreshToken} = JWToken.createTokens({
+        id: newUser._id,
+      });
 
       const resData = createUserResult.toObject();
       delete resData.password;
@@ -61,7 +63,10 @@ const signUp = async req => {
 };
 
 const profile = async req => {
-  const {id} = req.query;
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+  const id = data?.payload?._id;
 
   const findUserByIdResult = await findUserById(id);
 
@@ -125,9 +130,11 @@ const signIn = async req => {
   });
 
   if (findUserByEmailAndPassword) {
-    const {newToken, newRefreshToken} = JWToken.createTokens({email});
-
     const resUserData = findUserByEmailAndPassword.toObject();
+
+    const {newToken, newRefreshToken} = JWToken.createTokens({
+      id: resUserData._id,
+    });
     delete resUserData.createdAt;
     delete resUserData.updatedAt;
     delete resUserData.password;

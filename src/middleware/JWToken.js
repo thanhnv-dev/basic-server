@@ -73,6 +73,12 @@ const verifyRefreshToken = token => {
   });
 };
 
+const decodedToken = token => {
+  const decoded = jwt.decode(token, { complete: true });
+
+  return decoded;
+}
+
 module.exports = {
   createToken,
   createRefreshToken,
@@ -82,4 +88,5 @@ module.exports = {
   verifyRefreshToken,
   createTokens,
   createCustomToken,
+  decodedToken
 };
