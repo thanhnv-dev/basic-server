@@ -3,6 +3,8 @@
 ## Contents
 
 - [Notes](#notes)
+- [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json.zip)
+- [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 - [Api List](#api-list)
   - [Base URL](#base-url)
   - [Sign Up](#sign-up)
@@ -18,8 +20,6 @@
     - [Restaurants](#food-hub-restaurants)
     - [Restaurant](#food-hub-restaurant)
     - [Dish](#food-hub-dish)
-- [Postman collection](https://github.com/thanhnv-dev/basic-server/raw/main/postman_collection.json.zip)
-- [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 
 ## Notes
 
