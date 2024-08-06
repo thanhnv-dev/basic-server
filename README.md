@@ -37,7 +37,7 @@
 | :----------------- | :---------- | :----------- |
 | Susccess           | 200         |              |
 | Failed             | 400         |              |
-| Tokens expire      | 401         | Unauthorized |
+| Token expires      | 401         | Unauthorized |
 | Token is incorrect | 403         | Forbidden    |
 
 ## Figma Design
