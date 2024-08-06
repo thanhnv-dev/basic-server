@@ -9,6 +9,8 @@ const {
   customTokenValidateSchema,
 } = require('../validate/schema.js');
 const JWToken = require('../middleware/JWToken.js');
+const multer = require('multer');
+const upload = multer({storage: multer.memoryStorage()});
 
 const router = express.Router();
 
@@ -38,16 +40,16 @@ router.post(
 
 router.use(JWToken.verifyToken);
 
-router.get(
-  '/profile',
-  validateParams(profileValidateSchema),
-  usersController.profile,
+router.get('/profile', usersController.profile);
+
+router.delete('/delete', usersController.deleteUser);
+router.delete(
+  '/update-infomation',
+  validateParams(customTokenValidateSchema),
+  usersController.updateInfomation,
 );
 
-router.delete(
-  '/delete',
-  validateParams(profileValidateSchema),
-  usersController.deleteUser,
-);
+router.use(upload.any());
+router.patch('/update-image', usersController.updateImage);
 
 module.exports = router;

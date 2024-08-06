@@ -53,3 +53,11 @@ export const customTokenValidateSchema = Joi.object({
     .regex(/[smhd]/)
     .required(),
 });
+
+export const updateInfomationValidateSchema = Joi.object({
+  user_name: validateStringRequired().min(3),
+  email: emailVelidate(),
+  date_of_birth: validateString(),
+  gender: validateString(),
+  phone_number: validateString(),
+});

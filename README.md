@@ -8,12 +8,14 @@
 - [Authentication](#authentication)
   - [Sign Up](#sign-up)
   - [Sign In](#sign-in)
-  - [Profile](#profile)
   - [Refresh Token](#refresh-token)
   - [Custom Token](#custom-token)
-  - [Delete](#delete)
   - [Send Verification Code](#send-verification-code)
   - [Verify code](#verify-code)
+- [User](#user)
+  - [Profile](#profile)
+  - [Update Image](#update-image)
+  - [Delete](#delete)
 - [Home](#home)
   - [Categories](#food-hub-categories)
   - [Restaurants](#food-hub-restaurants)
@@ -88,6 +90,7 @@ https://common-api-v1.vercel.app
 | `date_of_birth`     | `String?` | Child of `result` |
 | `gender`            | `String?` | Child of `result` |
 | `phone_number`      | `String?` | Child of `result` |
+| `img_url`           | `String?` | Child of `result` |
 | `is_verified_email` | `Boolean` | Child of `result` |
 | `token`             | `String`  | Child of `result` |
 | `refresh_token`     | `String`  | Child of `result` |
@@ -115,17 +118,21 @@ https://common-api-v1.vercel.app
 #### Error Response Examples
 
 - **`Email registered`**
+
   ```
   {
     "msg": "Email was registered!"
   }
   ```
+
 - **`Field required / field type incorrect`**
+
   ```
   {
     "msg": "\"email\" is required"
   }
   ```
+
   ```
   {
     "msg": "\"email\" must be a valid email"
@@ -165,6 +172,7 @@ user/sign-in
 | `date_of_birth`     | `String?` | Child of `result` |
 | `gender`            | `String?` | Child of `result` |
 | `phone_number`      | `String?` | Child of `result` |
+| `img_url`           | `String?` | Child of `result` |
 | `is_verified_email` | `Boolean` | Child of `result` |
 | `token`             | `String`  | Child of `result` |
 | `refresh_token`     | `String`  | Child of `result` |
@@ -192,90 +200,30 @@ user/sign-in
 #### Error Response Examples
 
 - **`Incorrect account information`**
+
   ```
   {
     "msg": "Account information is incorrect!"
   }
   ```
+
 - **`Field required / field type incorrect`**
+
   ```
   {
       "msg": "email field is required"
   }
   ```
+
   ```
   {
     "msg": "\"password\" is required"
   }
   ```
+
   ```
   {
     "msg": "\"email\" must be a valid email"
-  }
-  ```
-
-### Profile
-
-> Get user profile
-
-#### End Point
-
-```text
-user/profile
-```
-
-#### Method
-
-**`GET`**
-
-#### Bearer token required
-
-#### Response data type
-
-| Field Name          | Type      | Note              |
-| ------------------- | :-------- | :---------------- |
-| `results`           | `Object`  |                   |
-| `_id`               | `String`  | Child of `result` |
-| `user_name`         | `String`  | Child of `result` |
-| `email`             | `String`  | Child of `result` |
-| `date_of_birth`     | `String?` | Child of `result` |
-| `gender`            | `String?` | Child of `result` |
-| `phone_number`      | `String?` | Child of `result` |
-| `is_verified_email` | `Boolean` | Child of `result` |
-| `token`             | `String`  | Child of `result` |
-| `refresh_token`     | `String`  | Child of `result` |
-| `msg`               | `String`  |                   |
-
-#### Successful Response Example
-
-```json
-{
-  "results": {
-    "user_name": "thanhnv",
-    "email": "thanhnv.dev.personal@gmail.com",
-    "date_of_birth": null,
-    "gender": null,
-    "phone_number": null,
-    "is_verified_email": false,
-    "_id": "65445c7cbc09a859e33a5c19",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoYW5obnYuZGV2LnBlcnNvbmFsQGdtYWlsLmNvbSIsImlhdCI6MTY5ODk4MzgwOCwiZXhwIjoxNjk4OTk0NjA4fQ.9ySZHU2yooKoPedctAWwIXJ4a_AKqvGJFtPvGCKmbig",
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoYW5obnYuZGV2LnBlcnNvbmFsQGdtYWlsLmNvbSIsImlhdCI6MTY5ODk4MzgwOCwiZXhwIjoxNjk5ODQ3ODA4fQ.l5KbV24as5qGiIAN4YGq702kK1ltc9m-VcG6aP_w2X4"
-  },
-  "msg": "Get profile Successfully!"
-}
-```
-
-#### Error Response Examples
-
-- **`Field required / field type incorrect`**
-  ```
-  {
-    "msg": "\"id\" is not allowed to be empty"
-  }
-  ```
-  ```
-  {
-    "msg": "User does not exist!"
   }
   ```
 
@@ -370,56 +318,6 @@ user/custom-token
 ```json
 {
   "msg": "expiresIn field must be a string starting with a number and ending with the following letters s or m or h or d. s is seconds. m is minute. h is hour . d is day"
-}
-```
-
-### Delete
-
-> Delete user account
-
-#### End Point
-
-```text
-user/delete
-```
-
-#### Method
-
-**`DELETE`**
-
-#### Bearer token required
-
-#### Query parameter
-
-| Field Name | Requirements                     | Note |
-| :--------- | :------------------------------- | ---- |
-| `id`       | - Required <br/> - `String` type |      |
-
-#### Response data type
-
-| Field Name | Type     | Note |
-| ---------- | :------- | :--- |
-| `msg`      | `String` |      |
-
-#### Successful Response Example
-
-```json
-{
-  "msg": "Account deleted successfully!"
-}
-```
-
-#### Error Response Example
-
-```json
-{
-  "msg": "Account information is incorrect!"
-}
-```
-
-```json
-{
-  "msg": "\"password\" length must be at least 6 characters long"
 }
 ```
 
@@ -519,6 +417,184 @@ mail/verify-code
 }
 ```
 
+## User
+
+### Profile
+
+> Get user profile
+
+#### End Point
+
+```text
+user/profile
+```
+
+#### Method
+
+**`GET`**
+
+#### Bearer token required
+
+#### Response data type
+
+| Field Name          | Type      | Note              |
+| ------------------- | :-------- | :---------------- |
+| `results`           | `Object`  |                   |
+| `_id`               | `String`  | Child of `result` |
+| `user_name`         | `String`  | Child of `result` |
+| `email`             | `String`  | Child of `result` |
+| `date_of_birth`     | `String?` | Child of `result` |
+| `gender`            | `String?` | Child of `result` |
+| `phone_number`      | `String?` | Child of `result` |
+| `img_url`           | `String?` | Child of `result` |
+| `is_verified_email` | `Boolean` | Child of `result` |
+| `token`             | `String`  | Child of `result` |
+| `refresh_token`     | `String`  | Child of `result` |
+| `msg`               | `String`  |                   |
+
+#### Successful Response Example
+
+```json
+{
+  "results": {
+    "user_name": "thanhnv",
+    "email": "thanhnv.dev.personal@gmail.com",
+    "date_of_birth": null,
+    "gender": null,
+    "phone_number": null,
+    "is_verified_email": false,
+    "_id": "65445c7cbc09a859e33a5c19",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoYW5obnYuZGV2LnBlcnNvbmFsQGdtYWlsLmNvbSIsImlhdCI6MTY5ODk4MzgwOCwiZXhwIjoxNjk4OTk0NjA4fQ.9ySZHU2yooKoPedctAWwIXJ4a_AKqvGJFtPvGCKmbig",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoYW5obnYuZGV2LnBlcnNvbmFsQGdtYWlsLmNvbSIsImlhdCI6MTY5ODk4MzgwOCwiZXhwIjoxNjk5ODQ3ODA4fQ.l5KbV24as5qGiIAN4YGq702kK1ltc9m-VcG6aP_w2X4"
+  },
+  "msg": "Get profile Successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+  ```
+  {
+    "msg": "\"id\" is not allowed to be empty"
+  }
+  ```
+
+  ```
+  {
+    "msg": "User does not exist!"
+  }
+  ```
+
+  ### Update image
+
+> Update user image
+
+#### End Point
+
+```text
+user/update-image
+```
+
+#### Method
+
+**`PATCH`**
+
+#### Bearer token required
+
+#### Response data type
+
+| Field Name          | Type      | Note              |
+| ------------------- | :-------- | :---------------- |
+| `results`           | `Object`  |                   |
+| `_id`               | `String`  | Child of `result` |
+| `user_name`         | `String`  | Child of `result` |
+| `email`             | `String`  | Child of `result` |
+| `date_of_birth`     | `String?` | Child of `result` |
+| `gender`            | `String?` | Child of `result` |
+| `phone_number`      | `String?` | Child of `result` |
+| `img_url`           | `String?` | Child of `result` |
+| `is_verified_email` | `Boolean` | Child of `result` |
+| `token`             | `String`  | Child of `result` |
+| `refresh_token`     | `String`  | Child of `result` |
+| `msg`               | `String`  |                   |
+
+#### Successful Response Example
+
+```json
+{
+  "results": {
+    "_id": "65445c7cbc09a859e33a5c19",
+    "user_name": "thanhnv",
+    "email": "thanhnv.dev.personal@gmail.com",
+    "password": "123456@",
+    "date_of_birth": null,
+    "gender": null,
+    "phone_number": null,
+    "is_verified_email": true,
+    "img_url": "https://storage.googleapis.com/basic-server-31577.appspot.com/user_images/65445c7cbc09a859e33a5c19/08_36_47_A%CC%89nh%20JPEG-4C4B-A56B-71-0.jpeg?GoogleAccessId=firebase-adminsdk-bcwy3%40basic-server-31577.iam.gserviceaccount.com&Expires=4102419600&Signature=cP9ceLBV4hSf9S1Cmt%2FO78fPbiJz4ZwKMrdBg3g44vdGk%2FZPSNtgnTjpeFI8V8O2UIlLS4%2B1TMSsTm2Q3%2FO985xBvv5pl7A9SdNyJNr18UBC0RvpGcpxJjGB2e71q7c1IJtL%2B2uLYpiee0NuQTyUpRg5vrcawgCYc%2FOaI9TZGX0E%2Fk%2FswlqDaEnncV6PZ8gzpYNHsTEnwN%2BGXB693mCrX478DRwSmM2Ov8B0fJHKc0X24chYdbPtag483XI3PJvcxaTZ3tcwRzDPed5N7zu91blrLG3fLq1Ks1kk5aaGNZojQvnXkuBru8YT0%2Bklbfc1nNyvmFGclqLkqxtlUNLL5w%3D%3D"
+  },
+  "msg": "Update image successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+  ```
+
+  ```
+
+{
+"msg": "No files found!"
+}
+
+### Delete
+
+> Delete user account
+
+#### End Point
+
+```text
+user/delete
+```
+
+#### Method
+
+**`DELETE`**
+
+#### Bearer token required
+
+#### Response data type
+
+| Field Name | Type     | Note |
+| ---------- | :------- | :--- |
+| `msg`      | `String` |      |
+
+#### Successful Response Example
+
+```json
+{
+  "msg": "Account deleted successfully!"
+}
+```
+
+#### Error Response Example
+
+```json
+{
+  "msg": "Account information is incorrect!"
+}
+```
+
+```json
+{
+  "msg": "\"password\" length must be at least 6 characters long"
+}
+```
+
 ## Home
 
 [Home Design](https://www.figma.com/design/ptbx2UnZsuOWvirzTUwGqB/Food-Hub---New-version?node-id=1805-2613&t=stKDwCAbenOl9YDj-4)
@@ -574,6 +650,7 @@ food-hub/categories
 #### Error Response Examples
 
 - **`Unauthorized`**
+
   ```json
   {
     "msg": "Unauthorized"
@@ -643,6 +720,7 @@ food-hub/restaurants
 #### Error Response Examples
 
 - **`Unauthorized`**
+
   ```json
   {
     "msg": "Unauthorized"

@@ -1,5 +1,7 @@
 const UserModel = require('../models/user.model.js');
 const JWToken = require('../middleware/JWToken.js');
+const admin = require('firebase-admin');
+const {getFileName, getCurrentTimeUTC} = require('../utils/index.js');
 
 const findUserByEmail = async email => {
   const result = await UserModel.findOne({
@@ -66,7 +68,8 @@ const profile = async req => {
   const token = JWToken.getTokenFromRequest(req);
 
   const data = JWToken.decodedToken(token);
-  const id = data?.payload?._id;
+
+  const id = data?.payload?.id;
 
   const findUserByIdResult = await findUserById(id);
 
@@ -171,7 +174,10 @@ const customToken = async req => {
 };
 
 const deleteUser = async req => {
-  const {id} = req.query;
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+  const id = data?.payload?.id;
 
   const findUserByIdResult = await findUserById(id);
 
@@ -199,6 +205,154 @@ const deleteUser = async req => {
   }
 };
 
+const updateInfomation = async req => {
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+  const id = data?.payload?.id;
+
+  const findUserByIdResult = await findUserById(id);
+
+  if (findUserByIdResult) {
+    const deleteUserResult = await UserModel.deleteOne({
+      _id: findUserByIdResult._id,
+    });
+
+    if (deleteUserResult.deletedCount) {
+      const res = {
+        msg: 'Account deleted successfully!',
+      };
+      return {status: 200, res};
+    } else {
+      return {
+        status: 400,
+        res: {msg: 'Something went wrong!'},
+      };
+    }
+  } else {
+    return {
+      status: 400,
+      res: {msg: 'Account information is incorrect!'},
+    };
+  }
+};
+
+const updateImage = async req => {
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+  const id = data?.payload?.id;
+
+  const files = req?.files;
+
+  if (files === undefined || files.length === 0) {
+    return {
+      status: 400,
+      res: {msg: 'No files found!'},
+    };
+  }
+
+  const imageFile = req?.files[0];
+
+  const fileName = imageFile.originalname;
+
+  const userData = await findUserById(id);
+
+  if (!userData) {
+    return {
+      status: 400,
+      res: {msg: 'Account does not exist!'},
+    };
+  }
+
+  if (!imageFile) {
+    return {
+      status: 400,
+      res: {msg: 'No files found!'},
+    };
+  }
+
+  const bucket = admin.storage().bucket();
+
+  if (userData.photo_url && userData.background_url) {
+    const filePathOld = `user_images/${id}/${getFileName(userData.img_url)}`;
+
+    await bucket
+      .file(filePathOld)
+      .delete()
+      .catch(_ => {
+        console.error('Error deleting old file');
+      });
+  }
+
+  const currentDate = getCurrentTimeUTC();
+  const filePath = `user_images/${id}/${currentDate}_${fileName}`;
+
+  const blob = bucket.file(filePath);
+
+  const blobWriter = blob.createWriteStream({
+    metadata: {
+      contentType: imageFile.mimetype,
+    },
+  });
+
+  const finishPromise = new Promise((resolve, reject) => {
+    blobWriter.on('error', _ => {
+      reject(new Error('Something went wrong!'));
+    });
+
+    blobWriter.on('finish', async () => {
+      resolve();
+    });
+  });
+
+  blobWriter.end(imageFile.buffer);
+
+  try {
+    await finishPromise;
+
+    const downloadUrl = await blob.getSignedUrl({
+      action: 'read',
+      expires: '01-01-2100',
+    });
+
+    const updateAvatarRes = await UserModel.updateOne(
+      {
+        _id: id,
+      },
+      {img_url: downloadUrl[0]},
+    );
+
+    if (updateAvatarRes.acknowledged) {
+      const userDataNew = await findUserById(id);
+
+      if (userDataNew) {
+        const resDataUser = userDataNew.toObject();
+        delete resDataUser.createdAt;
+        delete resDataUser.updatedAt;
+
+        return {
+          status: 200,
+          res: {
+            results: resDataUser,
+            msg: 'Update image successfully!',
+          },
+        };
+      }
+    }
+
+    return {
+      status: 400,
+      res: {msg: 'Something went wrong!'},
+    };
+  } catch (error) {
+    return {
+      status: 400,
+      res: {msg: 'Something went wrong!'},
+    };
+  }
+};
+
 module.exports = {
   signUp,
   profile,
@@ -206,4 +360,6 @@ module.exports = {
   signIn,
   customToken,
   deleteUser,
+  updateImage,
+  updateInfomation,
 };

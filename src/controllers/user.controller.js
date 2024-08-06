@@ -73,6 +73,32 @@ const deleteUser = async (req, res) => {
   return res.status(deleteUserResult.status).json(deleteUserResult.res);
 };
 
+const updateImage = async (req, res) => {
+  const uploadImageResult = await UserService.updateImage(req);
+
+  Log.request({
+    req: req,
+    msg: uploadImageResult?.msg,
+    code: uploadImageResult.status,
+  });
+
+  return res.status(uploadImageResult?.status).json(uploadImageResult?.res);
+};
+
+const updateInfomation = async (req, res) => {
+  const updateInfomationResult = await UserService.updateImage(req);
+
+  Log.request({
+    req: req,
+    msg: updateInfomationResult?.msg,
+    code: updateInfomationResult.status,
+  });
+
+  return res
+    .status(updateInfomationResult?.status)
+    .json(updateInfomationResult?.res);
+};
+
 module.exports = {
   signUp,
   profile,
@@ -80,4 +106,6 @@ module.exports = {
   refreshToken,
   customToken,
   deleteUser,
+  updateImage,
+  updateInfomation,
 };
