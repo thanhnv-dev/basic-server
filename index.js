@@ -7,7 +7,7 @@ const admin = require('firebase-admin');
 const swaggerUi = require('swagger-ui-express');
 // const fs = require('fs');
 // const YAML = require('yaml');
-const swaggerDocument = require('./api_docs.json');
+const swaggerDocument = require('./src/api_docs.json');
 const {SERVICE_ACCOUNT, STORAGE_BUCKET} = require('./src/constants/index.js');
 
 db.connect().then(() => {
