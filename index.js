@@ -11,8 +11,11 @@ const swaggerDocument = require('./src/api_docs.json');
 const {SERVICE_ACCOUNT, STORAGE_BUCKET} = require('./src/constants/index.js');
 
 db.connect().then(() => {
-  var options = {
+  const options = {
     explorer: true,
+    swaggerOptions: {
+      url: '/api-docs/swagger.json',
+    },
   };
   admin.initializeApp({
     credential: admin.credential.cert(SERVICE_ACCOUNT),
