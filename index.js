@@ -10,10 +10,6 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./api_docs.json');
 const {SERVICE_ACCOUNT, STORAGE_BUCKET} = require('./src/constants/index.js');
 
-const options = {
-  customCss: '.swagger-ui .topbar { display: none }',
-};
-
 db.connect().then(() => {
   admin.initializeApp({
     credential: admin.credential.cert(SERVICE_ACCOUNT),
@@ -28,11 +24,7 @@ db.connect().then(() => {
   // const file = fs.readFileSync('./api_docs.yaml', 'utf8');
   // const swaggerDocument = YAML.parse(file);
 
-  app.use(
-    '/api-docs',
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument, options),
-  );
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.use('/', apiRoute);
 
   app.listen(PORT, () => {
