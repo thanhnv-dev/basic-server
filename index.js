@@ -5,9 +5,14 @@ const apiRoute = require('./src/routes/router.js');
 const {PORT} = require('./src/constants/index.js');
 const admin = require('firebase-admin');
 const swaggerUi = require('swagger-ui-express');
-const fs = require('fs');
-const YAML = require('yaml');
+// const fs = require('fs');
+// const YAML = require('yaml');
+const swaggerDocument = require('./api_docs.json');
 const {SERVICE_ACCOUNT, STORAGE_BUCKET} = require('./src/constants/index.js');
+
+const options = {
+  customCss: '.swagger-ui .topbar { display: none }',
+};
 
 db.connect().then(() => {
   admin.initializeApp({
@@ -20,10 +25,14 @@ db.connect().then(() => {
   app.use(express.urlencoded({extended: true}));
   app.use(express.json());
 
-  const file = fs.readFileSync('./api_docs.yaml', 'utf8');
-  const swaggerDocument = YAML.parse(file);
+  // const file = fs.readFileSync('./api_docs.yaml', 'utf8');
+  // const swaggerDocument = YAML.parse(file);
 
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument, options),
+  );
   app.use('/', apiRoute);
 
   app.listen(PORT, () => {
