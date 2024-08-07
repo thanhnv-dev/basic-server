@@ -7,59 +7,10 @@
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "Auth",
 			"item": [
 				{
 					"name": "sign-up",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const jsonData = pm.response.json().results;",
-									"    const authToken = jsonData.token;",
-									"    const authRefreshToken = jsonData.refresh_token;",
-									"    const userId = jsonData.id;",
-									"    pm.collectionVariables.set(\"token\", authToken);",
-									"    pm.collectionVariables.set(\"refresh_token\", authRefreshToken);",
-									"    pm.collectionVariables.set(\"id\", userId);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"user_name\": \"thanhnv\",\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/user/sign-up",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"user",
-								"sign-up"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "sign-in",
 					"event": [
 						{
 							"listen": "test",
@@ -88,6 +39,55 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
+							"raw": "{\n    \"user_name\": \"thanhnv\",\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_base_url}}/auth/sign-up",
+							"host": [
+								"{{local_base_url}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refresh_token;",
+									"    const userId = jsonData.id;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refresh_token\", authRefreshToken);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
 							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
 							"options": {
 								"raw": {
@@ -96,18 +96,119 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/user/sign-in",
+							"raw": "{{local_base_url}}/auth/sign-in",
 							"host": [
-								"{{base_url}}"
+								"{{local_base_url}}"
 							],
 							"path": [
-								"user",
+								"auth",
 								"sign-in"
 							]
 						}
 					},
 					"response": []
 				},
+				{
+					"name": "refresh-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/refresh-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "custom-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json().results;",
+									"    const authToken = jsonData.token;",
+									"    const authRefreshToken = jsonData.refreshToken;",
+									"    pm.collectionVariables.set(\"token\", authToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expiresIn\": \"20s\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/custom-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"custom-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
 				{
 					"name": "profile",
 					"event": [
@@ -169,116 +270,17 @@
 						"method": "GET",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"mode": "formdata",
+							"formdata": []
 						},
 						"url": {
-							"raw": "{{base_url}}}/user/profile",
+							"raw": "{{local_base_url}}/user/profile",
 							"host": [
-								"{{base_url}}}"
+								"{{local_base_url}}"
 							],
 							"path": [
 								"user",
 								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "refresh-token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const jsonData = pm.response.json().results;",
-									"    const authToken = jsonData.token;",
-									"    const authRefreshToken = jsonData.refreshToken;",
-									"    pm.collectionVariables.set(\"token\", authToken);",
-									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/user/refresh-token",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"user",
-								"refresh-token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "custom-token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const jsonData = pm.response.json().results;",
-									"    const authToken = jsonData.token;",
-									"    const authRefreshToken = jsonData.refreshToken;",
-									"    pm.collectionVariables.set(\"token\", authToken);",
-									"    pm.collectionVariables.set(\"refreshToken\", authRefreshToken);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"expiresIn\": \"20s\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/user/custom-token",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"user",
-								"custom-token"
 							]
 						}
 					},
@@ -293,7 +295,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -320,19 +323,51 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/user/delete?id={{id}}",
+							"raw": "{{base_url}}/user/delete",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"user",
 								"delete"
-							],
-							"query": [
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "id",
-									"value": "{{id}}"
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
 								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/thanhnguyen/Desktop/CleanShot 2024-08-07 at 11 .33.37@2x.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_base_url}}/user/update-image",
+							"host": [
+								"{{local_base_url}}"
+							],
+							"path": [
+								"user",
+								"update-image"
 							]
 						}
 					},
@@ -695,11 +730,6 @@
 			"type": "string"
 		},
 		{
-			"key": "id",
-			"value": "65445c7cbc09a859e33a5c19",
-			"type": "string"
-		},
-		{
 			"key": "userId",
 			"value": ""
 		},
@@ -710,6 +740,10 @@
 		},
 		{
 			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "id",
 			"value": ""
 		}
 	]

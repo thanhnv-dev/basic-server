@@ -4,19 +4,9 @@ const db = require('./src/configs/db.config.js');
 const apiRoute = require('./src/routes/router.js');
 const {PORT} = require('./src/constants/index.js');
 const admin = require('firebase-admin');
-const swaggerUi = require('swagger-ui-express');
-// const fs = require('fs');
-// const YAML = require('yaml');
-const swaggerDocument = require('./src/api_docs.json');
 const {SERVICE_ACCOUNT, STORAGE_BUCKET} = require('./src/constants/index.js');
 
 db.connect().then(() => {
-  const options = {
-    explorer: true,
-    swaggerOptions: {
-      url: '/api-docs/swagger.json',
-    },
-  };
   admin.initializeApp({
     credential: admin.credential.cert(SERVICE_ACCOUNT),
     storageBucket: STORAGE_BUCKET,
@@ -26,16 +16,6 @@ db.connect().then(() => {
   app.use(cors());
   app.use(express.urlencoded({extended: true}));
   app.use(express.json());
-
-  // const file = fs.readFileSync('./api_docs.yaml', 'utf8');
-  // const swaggerDocument = YAML.parse(file);
-
-  app.use(
-    '/api-docs',
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument, options),
-  );
-  app.get('/api-docs/swagger.json', (req, res) => res.json(swaggerDocument));
   app.use('/', apiRoute);
 
   app.listen(PORT, () => {

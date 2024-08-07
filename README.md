@@ -10,6 +10,7 @@
   - [Sign In](#sign-in)
   - [Refresh Token](#refresh-token)
   - [Custom Token](#custom-token)
+- [Mail](#mail)
   - [Send Verification Code](#send-verification-code)
   - [Verify code](#verify-code)
 - [User](#user)
@@ -62,7 +63,7 @@ https://common-api-v1.vercel.app
 
 #### End Point
 
-`user/sign-up`
+`auth/sign-up`
 
 #### Method
 
@@ -146,7 +147,7 @@ https://common-api-v1.vercel.app
 #### End Point
 
 ```text
-user/sign-in
+auth/sign-in
 ```
 
 #### Method
@@ -232,7 +233,7 @@ user/sign-in
 #### End Point
 
 ```text
-user/refresh-token
+auth/refresh-token
 ```
 
 #### Method
@@ -281,7 +282,7 @@ user/refresh-token
 #### End Point
 
 ```text
-user/custom-token
+auth/custom-token
 ```
 
 #### Method
@@ -320,6 +321,8 @@ user/custom-token
   "msg": "expiresIn field must be a string starting with a number and ending with the following letters s or m or h or d. s is seconds. m is minute. h is hour . d is day"
 }
 ```
+
+## Mail
 
 ### Send Verification Code
 
@@ -487,7 +490,7 @@ user/profile
   }
   ```
 
-  ### Update image
+### Update image
 
 > Update user image
 
@@ -502,6 +505,12 @@ user/update-image
 **`PATCH`**
 
 #### Bearer token required
+
+#### Body
+
+| Field Name | Requirements                                                                                                               | Note |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------- | :--- |
+| `file`     | - Required <br/> - `image/png` type <br/> - `image/jpeg` type <br/> - `image/svg+xml` type <br/> - `image/webp` type <br/> |      |
 
 #### Response data type
 
@@ -544,12 +553,11 @@ user/update-image
 - **`Field required / field type incorrect`**
 
   ```
+  {
+  "msg": "No files found!"
+  }
 
   ```
-
-{
-"msg": "No files found!"
-}
 
 ### Delete
 

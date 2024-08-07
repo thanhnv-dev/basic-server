@@ -1,29 +1,6 @@
 const UserService = require('../services/user.service.js');
 const Log = require('../utils/log.js');
-
-const signIn = async (req, res) => {
-  const signInResult = await UserService.signIn(req);
-
-  Log.request({
-    req: req,
-    msg: signInResult?.res?.msg,
-    code: signInResult.status,
-  });
-
-  return res.status(signInResult.status).json(signInResult.res);
-};
-
-const signUp = async (req, res) => {
-  const signUpResult = await UserService.signUp(req);
-
-  Log.request({
-    req: req,
-    msg: signUpResult?.res?.msg,
-    code: signUpResult.status,
-  });
-
-  return res.status(signUpResult.status).json(signUpResult.res);
-};
+const multer = require('multer');
 
 const profile = async (req, res) => {
   const profileResult = await UserService.profile(req);
@@ -35,30 +12,6 @@ const profile = async (req, res) => {
   });
 
   return res.status(profileResult.status).json(profileResult.res);
-};
-
-const refreshToken = async (req, res) => {
-  const refreshTokenResult = await UserService.refreshToken(req);
-
-  Log.request({
-    req: req,
-    msg: refreshTokenResult?.res?.msg,
-    code: refreshTokenResult.status,
-  });
-
-  return res.status(refreshTokenResult.status).json(refreshTokenResult.res);
-};
-
-const customToken = async (req, res) => {
-  const customTokenResult = await UserService.customToken(req);
-
-  Log.request({
-    req: req,
-    msg: customTokenResult?.res?.msg,
-    code: customTokenResult.status,
-  });
-
-  return res.status(customTokenResult.status).json(customTokenResult.res);
 };
 
 const deleteUser = async (req, res) => {
@@ -73,8 +26,16 @@ const deleteUser = async (req, res) => {
   return res.status(deleteUserResult.status).json(deleteUserResult.res);
 };
 
-const updateImage = async (req, res) => {
-  const uploadImageResult = await UserService.updateImage(req);
+const updateImage = async (req, res, err) => {
+  let uploadImageResult;
+  if (err) {
+    uploadImageResult = {
+      status: 400,
+      res: {msg: "File format is incorrect, only image files are accepted!"},
+    };
+  } else {
+    uploadImageResult = await UserService.updateImage(req);
+  }
 
   Log.request({
     req: req,
@@ -100,11 +61,7 @@ const updateInfomation = async (req, res) => {
 };
 
 module.exports = {
-  signUp,
   profile,
-  signIn,
-  refreshToken,
-  customToken,
   deleteUser,
   updateImage,
   updateInfomation,
