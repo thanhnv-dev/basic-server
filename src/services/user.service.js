@@ -89,34 +89,62 @@ const deleteUser = async req => {
   }
 };
 
-const updateInfomation = async req => {
+const updateInfomations = async req => {
   const token = JWToken.getTokenFromRequest(req);
 
   const data = JWToken.decodedToken(token);
+
   const id = data?.payload?.id;
 
   const findUserByIdResult = await findUserById(id);
 
   if (findUserByIdResult) {
-    const deleteUserResult = await UserModel.deleteOne({
-      _id: findUserByIdResult._id,
-    });
+    const currenEmail = findUserByIdResult.email;
+    const {user_name, email, date_of_birth, gender, phone_number} = req.body;
 
-    if (deleteUserResult.deletedCount) {
-      const res = {
-        msg: 'Account deleted successfully!',
-      };
-      return {status: 200, res};
-    } else {
+    if (!(gender === 'Male' || gender === 'Female')) {
       return {
         status: 400,
-        res: {msg: 'Something went wrong!'},
+        res: {msg: '""gender" must be Male or Female'},
       };
     }
+    const updateAvatarRes = await UserModel.updateMany(
+      {
+        _id: id,
+      },
+      {
+        user_name: user_name,
+        date_of_birth: date_of_birth,
+        gender: gender,
+        phone_number: phone_number,
+        email: email,
+        is_verified_email: email === currenEmail,
+      },
+    );
+
+    if (updateAvatarRes.acknowledged) {
+      const userDataNew = await findUserById(id);
+
+      if (userDataNew) {
+        const resDataUser = userDataNew.toObject();
+        delete resDataUser.createdAt;
+        delete resDataUser.updatedAt;
+
+        return {
+          status: 200,
+          res: {
+            results: resDataUser,
+            msg: 'Update informations successfully!',
+          },
+        };
+      }
+    }
+
+    return {status: 200, res};
   } else {
     return {
       status: 400,
-      res: {msg: 'Account information is incorrect!'},
+      res: {msg: 'User does not exist!'},
     };
   }
 };
@@ -246,5 +274,5 @@ module.exports = {
   profile,
   deleteUser,
   updateImage,
-  updateInfomation,
+  updateInfomations,
 };

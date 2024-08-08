@@ -336,6 +336,43 @@
 					"response": []
 				},
 				{
+					"name": "update-informations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_name\": \"Thanh nv2\",\n    \"email\": \"thanhnv.dev.work@gmail.com\",\n    \"date_of_birth\": \"07/11/2000\",\n    \"gender\": \"Male\",\n    \"phone_number\": \"0345633805\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_base_url}}/user/update-informations",
+							"host": [
+								"{{local_base_url}}"
+							],
+							"path": [
+								"user",
+								"update-informations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update-image",
 					"request": {
 						"auth": {

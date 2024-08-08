@@ -16,6 +16,7 @@
 - [User](#user)
   - [Profile](#profile)
   - [Update Image](#update-image)
+  - [Update informations](#update-informations)
   - [Delete](#delete)
 - [Home](#home)
   - [Categories](#food-hub-categories)
@@ -557,6 +558,78 @@ user/update-image
   "msg": "No files found!"
   }
 
+  ```
+
+### Update informations
+
+> Update user informations
+
+#### End Point
+
+```text
+user/update-informations
+```
+
+#### Method
+
+**`PATCH`**
+
+#### Bearer token required
+
+#### Body
+
+| Field Name      | Requirements                                                              | Note                                                                         |
+| :-------------- | :------------------------------------------------------------------------ | :--------------------------------------------------------------------------- |
+| `user_name`     | - Required <br/> - `String` type <br/> - Min length is 3 type             |                                                                              |
+| `email`         | - Required <br/> - `Email` type                                           | If the email is updated the `is_verified_email` field will update to `false` |
+| `date_of_birth` | - Optional <br/> - `String` type <br/> - Must be `Male` or `Female` <br/> |                                                                              |
+| `gender`        | - Optional <br/> - `String` type                                          |                                                                              |
+| `phone_number`  | - Optional <br/> - `String` type                                          |                                                                              |
+
+#### Response data type
+
+| Field Name          | Type      | Note              |
+| ------------------- | :-------- | :---------------- |
+| `results`           | `Object`  |                   |
+| `_id`               | `String`  | Child of `result` |
+| `user_name`         | `String`  | Child of `result` |
+| `email`             | `String`  | Child of `result` |
+| `date_of_birth`     | `String?` | Child of `result` |
+| `gender`            | `String?` | Child of `result` |
+| `phone_number`      | `String?` | Child of `result` |
+| `img_url`           | `String?` | Child of `result` |
+| `is_verified_email` | `Boolean` | Child of `result` |
+| `token`             | `String`  | Child of `result` |
+| `refresh_token`     | `String`  | Child of `result` |
+| `msg`               | `String`  |                   |
+
+#### Successful Response Example
+
+```json
+{
+  "results": {
+    "_id": "65445c7cbc09a859e33a5c19",
+    "user_name": "Thanh nv2",
+    "email": "thanhnv.dev.work@gmail.com",
+    "password": "123456@",
+    "date_of_birth": "07/11/2000",
+    "gender": "Male",
+    "phone_number": "0345633805",
+    "is_verified_email": true,
+    "img_url": "https://storage.googleapis.com/basic-server-31577.appspot.com/user_images/65445c7cbc09a859e33a5c19/17_29_34_CleanShot%202024-08-07%20at%2011%E2%80%AF.33.37%402x.png?GoogleAccessId=firebase-adminsdk-bcwy3%40basic-server-31577.iam.gserviceaccount.com&Expires=4102419600&Signature=GkUDHx4dpgd%2FJZf7cI6erQ66RBbC5FceNC63IKNE9rCBBfiTOa32nOCxGhNb6DYlfs0aEEl4bb%2BsuNduwVHDD%2B688G%2BIRZzwxJ%2FalWj%2BhOhZbdD40cA8x6GNLuc4mldaNQi1kjJ3cmueIKBqPRXa6D0%2F1zo8RTKiEFZDVlwKRt52EBFixF4bxNgMVFZxYv9KZxSjAbZQWb782pMSlQdpVo30ucfwYTGZomwsFyzbMHqqn0DS2q%2FyaX3rFxERbMikBL8SjJW0h4vOSJ4De%2BEhreZHyfEcwtk1L47HCxTOAsjy81BmgExlza8CVHhIGGLIl1xlTeK0lJ5Cs%2FujZ%2BCHaw%3D%3D"
+  },
+  "msg": "Update informations successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+  ```
+  {
+    "msg": "\"\"gender\" must be Male or Female"
+  }
   ```
 
 ### Delete

@@ -31,7 +31,7 @@ const updateImage = async (req, res, err) => {
   if (err) {
     uploadImageResult = {
       status: 400,
-      res: {msg: "File format is incorrect, only image files are accepted!"},
+      res: {msg: 'File format is incorrect, only image files are accepted!'},
     };
   } else {
     uploadImageResult = await UserService.updateImage(req);
@@ -46,8 +46,8 @@ const updateImage = async (req, res, err) => {
   return res.status(uploadImageResult?.status).json(uploadImageResult?.res);
 };
 
-const updateInfomation = async (req, res) => {
-  const updateInfomationResult = await UserService.updateImage(req);
+const updateInfomations = async (req, res) => {
+  const updateInfomationResult = await UserService.updateInfomations(req);
 
   Log.request({
     req: req,
@@ -64,5 +64,5 @@ module.exports = {
   profile,
   deleteUser,
   updateImage,
-  updateInfomation,
+  updateInfomations,
 };
