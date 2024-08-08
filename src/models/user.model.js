@@ -12,6 +12,7 @@ const UserSchema = new Schema(
     gender: {type: String, default: null},
     phone_number: {type: String, default: null},
     is_verified_email: {type: Boolean, default: false},
+    address_default: {type: String, default: null},
   },
   {timestamps: true, versionKey: false},
 );

@@ -18,14 +18,18 @@
   - [Update Image](#update-image)
   - [Update informations](#update-informations)
   - [Delete](#delete)
-- [Notifications](#notifications)
-  - [Get notifications](#get-notifications)
-  - [Read notification](#read-notification)
+- [Delivery address](#delivery-address)
+  - [Get delivery address](#get-delivery-address)
+  - [Add delivery address](#add-delivery-address)
+  - [Update delivery address](#update-delivery-address)
+  - [Delele delivery address](#delete-delivery-address)
 - [Home](#home)
   - [Categories](#food-hub-categories)
   - [Restaurants](#food-hub-restaurants)
   - [Restaurant](#food-hub-restaurant)
   - [Dish](#food-hub-dish)
+  - [Get notifications](#get-notifications)
+  - [Read notification](#read-notification)
 
 ## Notes
 
@@ -74,14 +78,14 @@ https://common-api-v1.vercel.app
 
 #### Parameters
 
-| Field Name      | Requirements                                                  | Note                   |
-| :-------------- | :------------------------------------------------------------ | :--------------------- |
-| `user_name`     | - Required <br/> - `String` type <br/> - Min length is 3 type |                        |
-| `email`         | - Required <br/> - `Email` type                               |                        |
-| `password`      | - Required <br/> - `String` type <br/> - Min length is 6 type | Recommend:`encryption` |
-| `date_of_birth` | - Optional <br/> - `String` type                              |                        |
-| `gender`        | - Optional <br/> - `String` type                              |                        |
-| `phone_number`  | - Optional <br/> - `String` type                              |                        |
+| Field Name     | Requirements                      | Note |
+| :------------- | :-------------------------------- | :--- |
+| `full_name`    | - Required <br/> - `String` type  |      |
+| `state`        | - Required <br/> - `String` type  |      |
+| `city`         | - Required <br/> - `String` type  |      |
+| `street`       | - Required <br/> - `String` type  |      |
+| `is_default`   | - Required <br/> - `Boolean` type |      |
+| `phone_number` | - Required <br/> - `String` type  |      |
 
 #### Response data type
 
@@ -671,16 +675,18 @@ user/delete
 }
 ```
 
-## Notifications
+## Delivery address
 
-### Get Notifications
+### Get delivery address
 
-> Get Notifications
+Used for [Delivery address Screen](https://www.figma.com/design/ptbx2UnZsuOWvirzTUwGqB/Food-Hub---New-version?node-id=2960-2294&t=kzqDWfUGMwPN102R-4)
+
+> Get delivery address
 
 #### End Point
 
 ```text
-notification
+user/delivery-address
 ```
 
 #### Method
@@ -691,43 +697,154 @@ notification
 
 #### Response data type
 
-| Field Name      | Type                                                                       | Note                     |
-| --------------- | :------------------------------------------------------------------------- | :----------------------- |
-| `results`       | `Object`                                                                   |                          |
-| `total`         | `Number`                                                                   | Child of `result`        |
-| `unread_count`  | `Number`                                                                   | Child of `result`        |
-| `notifications` | `Array`                                                                    | Child of `result`        |
-| `_id`           | `String`                                                                   | Child of `notifications` |
-| `user_id`       | `String`                                                                   | Child of `notifications` |
-| `title`         | `String`                                                                   | Child of `notifications` |
-| `description`   | `String`                                                                   | Child of `notifications` |
-| `unread`        | `Boolean`                                                                  | Child of `notifications` |
-| `type`          | `"Discount"` <br/> `"Offer"` <br/> `"Delivering"` <br/> `"Discount"` <br/> | Child of `notifications` |
-| `createdAt`     | `Date`                                                                     | Child of `notifications` |
-| `msg`           | `String`                                                                   |                          |
+| Field Name     | Type      | Note              |
+| -------------- | :-------- | :---------------- |
+| `results`      | `Object`  |                   |
+| `_id`          | `String`  | Child of `result` |
+| `user_id`      | `String`  | Child of `result` |
+| `full_name`    | `String`  | Child of `result` |
+| `phone_number` | `String?` | Child of `result` |
+| `state`        | `String?` | Child of `result` |
+| `city`         | `String?` | Child of `result` |
+| `street`       | `String?` | Child of `result` |
+| `is_default`   | `Boolean` | Child of `result` |
+| `createdAt`    | `Date`    | Child of `result` |
+| `updatedAt`    | `String`  | Child of `result` |
+| `msg`          | `String`  |                   |
 
 #### Successful Response Example
 
 ```json
 {
-  "results": {
-    "total": 5,
-    "unread_count": 4,
-    "notifications": [
-      {
-        "_id": "66b446db92099337da893d1a",
-        "user_id": "65445c7cbc09a859e33a5c19",
-        "title": "Discount Code",
-        "description": "Congratulations! The discount code 'SAVE20' has been successfully applied. You saved 20% on this order. Your new total is $80. Enjoy your meal!",
-        "unread": false,
-        "type": "Discount",
-        "createdAt": "2024-08-07T09:00:00.000Z",
-        "updatedAt": "2024-08-07T09:00:00.000Z",
-        "__v": 0
-      }
-    ]
-  },
-  "msg": "Get notificaions Successfully!"
+  "results": [
+    {
+      "_id": "66b4597015491beb82720ce2",
+      "user_id": "65445c7cbc09a859e33a5c19",
+      "full_name": "Brock2",
+      "phone_number": "0345633805",
+      "state": "VN",
+      "city": "HN",
+      "street": "DDN",
+      "createdAt": "2024-08-08T05:36:48.381Z",
+      "updatedAt": "2024-08-08T06:09:44.387Z",
+      "is_default": false
+    }
+  ],
+  "msg": "Get delivery address Successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+  ```
+  {
+    "msg": "Forbidden"
+  }
+  ```
+
+### Add delivery address
+
+> Add delivery address
+
+#### End Point
+
+```text
+user/add-delivery-address
+```
+
+#### Method
+
+**`POST`**
+
+#### Bearer token required
+
+#### Parameters
+
+| Field Name     | Type                              | Note |
+| -------------- | :-------------------------------- | :--- |
+| `full_name`    | - Required <br/> - `String` type  |      |
+| `phone_number` | - Required <br/> - `String` type  |      |
+| `state`        | - Required <br/> - `String` type  |      |
+| `city`         | - Required <br/> - `String` type  |      |
+| `street`       | - Required <br/> - `String` type  |      |
+| `is_default`   | - Required <br/> - `Boolean` type |      |
+
+#### Response data type
+
+| Field Name     | Type      | Note              |
+| -------------- | :-------- | :---------------- |
+| `results`      | `Object`  |                   |
+| `_id`          | `String`  | Child of `result` |
+| `user_id`      | `String`  | Child of `result` |
+| `full_name`    | `String`  | Child of `result` |
+| `phone_number` | `String?` | Child of `result` |
+| `state`        | `String?` | Child of `result` |
+| `city`         | `String?` | Child of `result` |
+| `street`       | `String?` | Child of `result` |
+| `is_default`   | `Boolean` | Child of `result` |
+| `createdAt`    | `Date`    | Child of `result` |
+| `updatedAt`    | `String`  | Child of `result` |
+| `msg`          | `String`  |                   |
+
+#### Successful Response Example
+
+```json
+{
+    {
+      "msg": "Add delivery address successfully!"
+    }
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+  ```
+  {
+    "msg": "Forbidden"
+  }
+  ```
+
+### Update delivery address
+
+> Update delivery address
+
+#### End Point
+
+```text
+user/update-delivery-address
+```
+
+#### Method
+
+**`PATCH`**
+
+#### Bearer token required
+
+#### Parameters
+
+| Field Name     | Type                              | Note |
+| -------------- | :-------------------------------- | :--- |
+| `address_id`   | - Required <br/> - `String` type  |      |
+| `full_name`    | - Required <br/> - `String` type  |      |
+| `phone_number` | - Required <br/> - `String` type  |      |
+| `state`        | - Required <br/> - `String` type  |      |
+| `city`         | - Required <br/> - `String` type  |      |
+| `street`       | - Required <br/> - `String` type  |      |
+| `is_default`   | - Required <br/> - `Boolean` type |      |
+
+#### Response data type
+
+| Field Name | Type     | Note |
+| ---------- | :------- | :--- |
+| `msg`      | `String` |      |
+
+#### Successful Response Example
+
+```json
+{
+  "msg": "Update delivery address successfully!"
 }
 ```
 
@@ -741,27 +858,25 @@ notification
   }
   ```
 
-### Read notification
+### Delete delivery address
 
-> Read notification
+> Delete delivery address
 
 #### End Point
 
 ```text
-notification/read
+user/delete-delivery-address
 ```
 
 #### Method
 
-**`PATCH`**
+**`DELETE`**
 
 #### Bearer token required
 
-#### Body
-
-| Field Name | Requirements                                | Note |
-| :--------- | :------------------------------------------ | :--- |
-| `noti_id`  | - Required <br/> - `String` type <br/> type |      |
+| Field Name   | Type                             | Note |
+| ------------ | :------------------------------- | :--- |
+| `address_id` | - Required <br/> - `String` type |      |
 
 #### Response data type
 
@@ -773,17 +888,21 @@ notification/read
 
 ```json
 {
-  "msg": "Read notificaion successfully!"
+  "msg": "Address deleted successfully!"
 }
 ```
 
-#### Error Response Examples
+#### Error Response Example
 
-- **`Field required / field type incorrect`**
-
-```
+```json
 {
-  "msg": "Notification not found!"
+  "msg": "Account information is incorrect!"
+}
+```
+
+```json
+{
+  "msg": "\"password\" length must be at least 6 characters long"
 }
 ```
 
@@ -1120,3 +1239,119 @@ food-hub/dish
     "msg": "Unauthorized"
   }
   ```
+
+### Get Notifications
+
+Used for [Notifications Screen](https://www.figma.com/design/ptbx2UnZsuOWvirzTUwGqB/Food-Hub---New-version?node-id=2960-2294&t=kzqDWfUGMwPN102R-4)
+
+> Get Notifications
+
+#### End Point
+
+```text
+notification
+```
+
+#### Method
+
+**`GET`**
+
+#### Bearer token required
+
+#### Response data type
+
+| Field Name      | Type                                                                       | Note                     |
+| --------------- | :------------------------------------------------------------------------- | :----------------------- |
+| `results`       | `Object`                                                                   |                          |
+| `total`         | `Number`                                                                   | Child of `result`        |
+| `unread_count`  | `Number`                                                                   | Child of `result`        |
+| `notifications` | `Array`                                                                    | Child of `result`        |
+| `_id`           | `String`                                                                   | Child of `notifications` |
+| `user_id`       | `String`                                                                   | Child of `notifications` |
+| `title`         | `String`                                                                   | Child of `notifications` |
+| `description`   | `String`                                                                   | Child of `notifications` |
+| `unread`        | `Boolean`                                                                  | Child of `notifications` |
+| `type`          | `"Discount"` <br/> `"Offer"` <br/> `"Delivering"` <br/> `"Discount"` <br/> | Child of `notifications` |
+| `createdAt`     | `Date`                                                                     | Child of `notifications` |
+| `msg`           | `String`                                                                   |                          |
+
+#### Successful Response Example
+
+```json
+{
+  "results": {
+    "total": 5,
+    "unread_count": 4,
+    "notifications": [
+      {
+        "_id": "66b446db92099337da893d1a",
+        "user_id": "65445c7cbc09a859e33a5c19",
+        "title": "Discount Code",
+        "description": "Congratulations! The discount code 'SAVE20' has been successfully applied. You saved 20% on this order. Your new total is $80. Enjoy your meal!",
+        "unread": false,
+        "type": "Discount",
+        "createdAt": "2024-08-07T09:00:00.000Z",
+        "updatedAt": "2024-08-07T09:00:00.000Z",
+        "__v": 0
+      }
+    ]
+  },
+  "msg": "Get notificaions Successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+  ```
+  {
+    "msg": "Forbidden"
+  }
+  ```
+
+### Read notification
+
+> Read notification
+
+#### End Point
+
+```text
+notification/read
+```
+
+#### Method
+
+**`PATCH`**
+
+#### Bearer token required
+
+#### Body
+
+| Field Name | Requirements                                | Note |
+| :--------- | :------------------------------------------ | :--- |
+| `noti_id`  | - Required <br/> - `String` type <br/> type |      |
+
+#### Response data type
+
+| Field Name | Type     | Note |
+| ---------- | :------- | :--- |
+| `msg`      | `String` |      |
+
+#### Successful Response Example
+
+```json
+{
+  "msg": "Read notificaion successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+```
+{
+  "msg": "Notification not found!"
+}
+```

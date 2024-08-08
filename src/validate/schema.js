@@ -60,6 +60,28 @@ export const updateInfomationValidateSchema = Joi.object({
   gender: validateString(),
   phone_number: validateString(),
 });
+
+export const createDeliveryAddressValidateSchema = Joi.object({
+  full_name: validateStringRequired(),
+  phone_number: validateStringRequired(),
+  state: validateStringRequired(),
+  city: validateStringRequired(),
+  street: validateStringRequired(),
+  is_default: Joi.boolean().required(),
+});
+export const updateDeliveryAddressValidateSchema = Joi.object({
+  address_id: validateStringRequired(),
+  full_name: validateStringRequired(),
+  phone_number: validateStringRequired(),
+  state: validateStringRequired(),
+  city: validateStringRequired(),
+  street: validateStringRequired(),
+  is_default: Joi.boolean().required(),
+});
+
 export const readNotiValidateSchema = Joi.object({
   noti_id: validateStringRequired(),
+});
+export const deleteDeliveryAddressValidateSchema = Joi.object({
+  address_id: validateStringRequired(),
 });

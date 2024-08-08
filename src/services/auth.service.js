@@ -43,6 +43,7 @@ const signUp = async req => {
       delete resData.password;
       delete resData.createdAt;
       delete resData.updatedAt;
+      delete resData.address_default;
 
       return {
         status: 200,
@@ -102,6 +103,7 @@ const signIn = async req => {
       id: resUserData._id,
     });
     delete resUserData.createdAt;
+    delete resUserData.address_default;
     delete resUserData.updatedAt;
     delete resUserData.password;
 

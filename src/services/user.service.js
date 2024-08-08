@@ -1,4 +1,5 @@
 const UserModel = require('../models/user.model.js');
+const DeliveryaddressModel = require('../models/deliveryAddress.model.js');
 const JWToken = require('../middleware/JWToken.js');
 const admin = require('firebase-admin');
 const {getFileName, getCurrentTimeUTC} = require('../utils/index.js');
@@ -30,13 +31,14 @@ const profile = async req => {
   const findUserByIdResult = await findUserById(id);
 
   if (findUserByIdResult) {
-    const email = findUserByIdResult.email;
-
-    const {newToken, newRefreshToken} = JWToken.createTokens({email});
+    const {newToken, newRefreshToken} = JWToken.createTokens({
+      id: findUserByIdResult.id,
+    });
 
     const resUserData = findUserByIdResult.toObject();
 
     delete resUserData.createdAt;
+    delete resUserData.address_default;
     delete resUserData.updatedAt;
     delete resUserData.password;
 
@@ -47,6 +49,155 @@ const profile = async req => {
         refresh_token: newRefreshToken,
       },
       msg: 'Get profile Successfully!',
+    };
+    return {status: 200, res};
+  } else {
+    return {
+      status: 403,
+      res: {msg: 'Forbidden!'},
+    };
+  }
+};
+
+const updateDeliveryAddress = async req => {
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+
+  const id = data?.payload?.id;
+
+  const findUserByIdResult = await findUserById(id);
+
+  if (findUserByIdResult) {
+    const {
+      address_id,
+      full_name,
+      phone_number,
+      state,
+      city,
+      street,
+      is_default,
+    } = req.body;
+
+    const newDeliveryaddress = await DeliveryaddressModel.updateMany(
+      {
+        _id: address_id,
+      },
+      {
+        user_id: id,
+        full_name: full_name,
+        phone_number: phone_number,
+        state: state,
+        city: city,
+        street: street,
+        is_default: is_default,
+      },
+    );
+    if (newDeliveryaddress.acknowledged) {
+      if (is_default) {
+        const updateAvatarRes = await UserModel.updateOne(
+          {
+            _id: id,
+          },
+          {
+            address_default: address_id,
+          },
+        );
+
+        if (updateAvatarRes.acknowledged) {
+          return {
+            status: 200,
+            res: {
+              msg: 'Update delivery address successfully!',
+            },
+          };
+        }
+        return {
+          status: 400,
+          res: {
+            msg: 'Something went wrong!',
+          },
+        };
+      } else {
+        const updateAvatarRes = await UserModel.updateOne(
+          {
+            _id: id,
+          },
+          {
+            address_default:
+              findUserByIdResult?.address_default === address_id
+                ? null
+                : findUserByIdResult?.address_default,
+          },
+        );
+
+        if (updateAvatarRes.acknowledged) {
+          return {
+            status: 200,
+            res: {
+              msg: 'Update delivery address successfully!',
+            },
+          };
+        }
+        return {
+          status: 400,
+          res: {
+            msg: 'Something went wrong!',
+          },
+        };
+      }
+      return {
+        status: 200,
+        res: {
+          msg: 'Update delivery address successfully!',
+        },
+      };
+    }
+    return {
+      status: 400,
+      res: {
+        msg: 'Something went wrong!',
+      },
+    };
+  } else {
+    return {
+      status: 403,
+      res: {msg: 'Forbidden!'},
+    };
+  }
+};
+
+const getDeliveryAddressResult = async req => {
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+
+  const id = data?.payload?.id;
+
+  const findUserByIdResult = await findUserById(id);
+
+  if (findUserByIdResult) {
+    const findAddress = await DeliveryaddressModel.find({
+      user_id: id,
+    });
+
+    const address_default = findUserByIdResult?.address_default;
+
+    const newData = [];
+
+    findAddress.forEach(e => {
+      const eObj = e.toObject();
+
+      const currentData = {
+        ...eObj,
+        is_default: eObj?._id == address_default,
+      };
+      newData.push(currentData);
+    });
+
+    const res = {
+      results: newData,
+      msg: 'Get delivery address Successfully!',
     };
     return {status: 200, res};
   } else {
@@ -84,7 +235,41 @@ const deleteUser = async req => {
   } else {
     return {
       status: 400,
-      res: {msg: 'Account information is incorrect!'},
+      res: {msg: 'Forbidden!'},
+    };
+  }
+};
+
+const deleteDeliveryAddress = async req => {
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+  const id = data?.payload?.id;
+
+  const findUserByIdResult = await findUserById(id);
+
+  const {address_id} = req.body;
+
+  if (findUserByIdResult) {
+    const deleteAddressResult = await DeliveryaddressModel.deleteOne({
+      _id: address_id,
+    });
+
+    if (deleteAddressResult.acknowledged) {
+      const res = {
+        msg: 'Address deleted successfully!',
+      };
+      return {status: 200, res};
+    } else {
+      return {
+        status: 400,
+        res: {msg: 'Something went wrong!'},
+      };
+    }
+  } else {
+    return {
+      status: 400,
+      res: {msg: 'Forbidden!'},
     };
   }
 };
@@ -129,6 +314,8 @@ const updateInfomations = async req => {
         const resDataUser = userDataNew.toObject();
         delete resDataUser.createdAt;
         delete resDataUser.updatedAt;
+        delete resDataUser.address_default;
+        delete resDataUser.password;
 
         return {
           status: 200,
@@ -149,6 +336,75 @@ const updateInfomations = async req => {
   }
 };
 
+const createDeliveryAddress = async req => {
+  const token = JWToken.getTokenFromRequest(req);
+
+  const data = JWToken.decodedToken(token);
+
+  const id = data?.payload?.id;
+
+  const findUserByIdResult = await findUserById(id);
+
+  if (findUserByIdResult) {
+    const {full_name, phone_number, state, city, street, is_default} = req.body;
+
+    const newDeliveryaddress = new DeliveryaddressModel({
+      user_id: id,
+      full_name,
+      phone_number,
+      state,
+      city,
+      street,
+    });
+    await newDeliveryaddress.save();
+    const findAddress = await DeliveryaddressModel.find({
+      user_id: id,
+    });
+    if (
+      findUserByIdResult?.address_default === null ||
+      findUserByIdResult?.address_default === undefined ||
+      is_default ||
+      findAddress?.length === 1
+    ) {
+      const updateAvatarRes = await UserModel.updateOne(
+        {
+          _id: id,
+        },
+        {
+          address_default: newDeliveryaddress?._id,
+        },
+      );
+
+      if (updateAvatarRes.acknowledged) {
+        return {
+          status: 200,
+          res: {
+            msg: 'Add delivery address successfully!',
+          },
+        };
+      }
+
+      return {
+        status: 400,
+        res: {
+          msg: 'Something went wrong!',
+        },
+      };
+    }
+    return {
+      status: 200,
+      res: {
+        msg: 'Add delivery address successfully!',
+      },
+    };
+  } else {
+    return {
+      status: 403,
+      res: {msg: 'Forbidden!'},
+    };
+  }
+};
+
 const updateImage = async req => {
   const token = JWToken.getTokenFromRequest(req);
 
@@ -156,7 +412,6 @@ const updateImage = async req => {
   const id = data?.payload?.id;
 
   const file = req?.file;
-  console.log(file);
 
   if (file === undefined) {
     return {
@@ -247,6 +502,8 @@ const updateImage = async req => {
         const resDataUser = userDataNew.toObject();
         delete resDataUser.createdAt;
         delete resDataUser.updatedAt;
+        delete resDataUser.address_default;
+        delete resDataUser.password;
 
         return {
           status: 200,
@@ -275,4 +532,8 @@ module.exports = {
   deleteUser,
   updateImage,
   updateInfomations,
+  createDeliveryAddress,
+  getDeliveryAddressResult,
+  updateDeliveryAddress,
+  deleteDeliveryAddress,
 };
