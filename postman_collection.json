@@ -210,6 +210,198 @@
 			"name": "User",
 			"item": [
 				{
+					"name": "Delivery Address",
+					"item": [
+						{
+							"name": "add-delivery-address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"full_name\": \"Brock 111\",\n    \"phone_number\": \"0345633805\",\n    \"state\": \"VN\",\n    \"city\": \"HN\",\n    \"street\": \"DDN\",\n    \"is_default\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/add-delivery-address",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"add-delivery-address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update-delivery-address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"address_id\": \"66b45c98b49f41d0935b593c\",\n    \"full_name\": \"Brock4\",\n    \"phone_number\": \"0345633805\",\n    \"state\": \"VN\",\n    \"city\": \"HN\",\n    \"street\": \"DDN\",\n    \"is_default\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/update-delivery-address",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"update-delivery-address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delivery-address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local_base_url}}/user/delivery-address",
+									"host": [
+										"{{local_base_url}}"
+									],
+									"path": [
+										"user",
+										"delivery-address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete-delivery-address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"address_id\": \"66b45c98b49f41d0935b593c\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/delete-delivery-address",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"delete-delivery-address"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "profile",
 					"event": [
 						{
@@ -393,7 +585,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/thanhnguyen/Desktop/CleanShot 2024-08-07 at 11 .33.37@2x.png"
+									"src": "/Users/Admin/Downloads/edit.svg"
 								}
 							]
 						},
