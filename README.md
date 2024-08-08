@@ -18,12 +18,14 @@
   - [Update Image](#update-image)
   - [Update informations](#update-informations)
   - [Delete](#delete)
+- [Notifications](#notifications)
+  - [Get notifications](#get-notifications)
+  - [Read notification](#read-notification)
 - [Home](#home)
   - [Categories](#food-hub-categories)
   - [Restaurants](#food-hub-restaurants)
   - [Restaurant](#food-hub-restaurant)
   - [Dish](#food-hub-dish)
-- [Change log](https://github.com/thanhnv-dev/basic-server/blob/main/change_log.md)
 
 ## Notes
 
@@ -478,16 +480,9 @@ user/profile
 #### Error Response Examples
 
 - **`Field required / field type incorrect`**
-
   ```
   {
-    "msg": "\"id\" is not allowed to be empty"
-  }
-  ```
-
-  ```
-  {
-    "msg": "User does not exist!"
+    "msg": "Forbidden"
   }
   ```
 
@@ -673,6 +668,122 @@ user/delete
 ```json
 {
   "msg": "\"password\" length must be at least 6 characters long"
+}
+```
+
+## Notifications
+
+### Get Notifications
+
+> Get Notifications
+
+#### End Point
+
+```text
+notification
+```
+
+#### Method
+
+**`GET`**
+
+#### Bearer token required
+
+#### Response data type
+
+| Field Name      | Type                                                                       | Note                     |
+| --------------- | :------------------------------------------------------------------------- | :----------------------- |
+| `results`       | `Object`                                                                   |                          |
+| `total`         | `Number`                                                                   | Child of `result`        |
+| `unread_count`  | `Number`                                                                   | Child of `result`        |
+| `notifications` | `Array`                                                                    | Child of `result`        |
+| `_id`           | `String`                                                                   | Child of `notifications` |
+| `user_id`       | `String`                                                                   | Child of `notifications` |
+| `title`         | `String`                                                                   | Child of `notifications` |
+| `description`   | `String`                                                                   | Child of `notifications` |
+| `unread`        | `Boolean`                                                                  | Child of `notifications` |
+| `type`          | `"Discount"` <br/> `"Offer"` <br/> `"Delivering"` <br/> `"Discount"` <br/> | Child of `notifications` |
+| `createdAt`     | `Date`                                                                     | Child of `notifications` |
+| `msg`           | `String`                                                                   |                          |
+
+#### Successful Response Example
+
+```json
+{
+  "results": {
+    "total": 5,
+    "unread_count": 4,
+    "notifications": [
+      {
+        "_id": "66b446db92099337da893d1a",
+        "user_id": "65445c7cbc09a859e33a5c19",
+        "title": "Discount Code",
+        "description": "Congratulations! The discount code 'SAVE20' has been successfully applied. You saved 20% on this order. Your new total is $80. Enjoy your meal!",
+        "unread": false,
+        "type": "Discount",
+        "createdAt": "2024-08-07T09:00:00.000Z",
+        "updatedAt": "2024-08-07T09:00:00.000Z",
+        "__v": 0
+      }
+    ]
+  },
+  "msg": "Get notificaions Successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+  ```
+  {
+    "msg": "Forbidden"
+  }
+  ```
+
+### Read notification
+
+> Read notification
+
+#### End Point
+
+```text
+notification/read
+```
+
+#### Method
+
+**`PATCH`**
+
+#### Bearer token required
+
+#### Body
+
+| Field Name | Requirements                                | Note |
+| :--------- | :------------------------------------------ | :--- |
+| `noti_id`  | - Required <br/> - `String` type <br/> type |      |
+
+#### Response data type
+
+| Field Name | Type     | Note |
+| ---------- | :------- | :--- |
+| `msg`      | `String` |      |
+
+#### Successful Response Example
+
+```json
+{
+  "msg": "Read notificaion successfully!"
+}
+```
+
+#### Error Response Examples
+
+- **`Field required / field type incorrect`**
+
+```
+{
+  "msg": "Notification not found!"
 }
 ```
 

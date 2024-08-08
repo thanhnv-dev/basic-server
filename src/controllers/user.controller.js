@@ -1,6 +1,5 @@
 const UserService = require('../services/user.service.js');
 const Log = require('../utils/log.js');
-const multer = require('multer');
 
 const profile = async (req, res) => {
   const profileResult = await UserService.profile(req);

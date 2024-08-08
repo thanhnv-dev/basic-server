@@ -88,7 +88,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
+							"raw": "{\n    \"email\": \"thanhnv.dev.work@gmail.com\",\n    \"password\": \"123456@\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -717,6 +717,75 @@
 									"key": "id",
 									"value": "6541d0b362c8dd3b531d9a6b"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notificaion",
+			"item": [
+				{
+					"name": "notificaions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notification",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"noti_id\": \"66b446db92099337da893d1a\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_base_url}}/notification/read",
+							"host": [
+								"{{local_base_url}}"
+							],
+							"path": [
+								"notification",
+								"read"
 							]
 						}
 					},

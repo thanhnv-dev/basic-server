@@ -60,3 +60,6 @@ export const updateInfomationValidateSchema = Joi.object({
   gender: validateString(),
   phone_number: validateString(),
 });
+export const readNotiValidateSchema = Joi.object({
+  noti_id: validateStringRequired(),
+});

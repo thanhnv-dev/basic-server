@@ -51,8 +51,8 @@ const profile = async req => {
     return {status: 200, res};
   } else {
     return {
-      status: 400,
-      res: {msg: 'User does not exist!'},
+      status: 403,
+      res: {msg: 'Forbidden!'},
     };
   }
 };
@@ -143,8 +143,8 @@ const updateInfomations = async req => {
     return {status: 200, res};
   } else {
     return {
-      status: 400,
-      res: {msg: 'User does not exist!'},
+      status: 403,
+      res: {msg: 'Forbidden!'},
     };
   }
 };
