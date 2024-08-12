@@ -1,5 +1,5 @@
 const UserModel = require('../models/user.model.js');
-const DeliveryaddressModel = require('../models/deliveryAddress.model.js');
+const DeliveryaddressModel = require('../models/deliveryaddress.model.js');
 const JWToken = require('../middleware/JWToken.js');
 const admin = require('firebase-admin');
 const {getFileName, getCurrentTimeUTC} = require('../utils/index.js');

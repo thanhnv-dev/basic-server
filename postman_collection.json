@@ -47,9 +47,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{local_base_url}}/auth/sign-up",
+							"raw": "{{base_url}}/auth/sign-up",
 							"host": [
-								"{{local_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth",
@@ -96,9 +96,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{local_base_url}}/auth/sign-in",
+							"raw": "{{base_url}}/auth/sign-in",
 							"host": [
-								"{{local_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth",
@@ -338,9 +338,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{local_base_url}}/user/delivery-address",
+									"raw": "{{base_url}}/user/delivery-address",
 									"host": [
-										"{{local_base_url}}"
+										"{{base_url}}"
 									],
 									"path": [
 										"user",
@@ -466,9 +466,9 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{local_base_url}}/user/profile",
+							"raw": "{{base_url}}/user/profile",
 							"host": [
-								"{{local_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"user",
@@ -552,9 +552,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{local_base_url}}/user/update-informations",
+							"raw": "{{base_url}}/user/update-informations",
 							"host": [
-								"{{local_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"user",
@@ -590,9 +590,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{local_base_url}}/user/update-image",
+							"raw": "{{base_url}}/user/update-image",
 							"host": [
-								"{{local_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"user",
@@ -971,9 +971,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{local_base_url}}/notification/read",
+							"raw": "{{base_url}}/notification/read",
 							"host": [
-								"{{local_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"notification",
