@@ -78,14 +78,14 @@ https://common-api-v1.vercel.app
 
 #### Parameters
 
-| Field Name     | Requirements                      | Note |
-| :------------- | :-------------------------------- | :--- |
-| `full_name`    | - Required <br/> - `String` type  |      |
-| `state`        | - Required <br/> - `String` type  |      |
-| `city`         | - Required <br/> - `String` type  |      |
-| `street`       | - Required <br/> - `String` type  |      |
-| `is_default`   | - Required <br/> - `Boolean` type |      |
-| `phone_number` | - Required <br/> - `String` type  |      |
+| Field Name      | Requirements                                                  | Note                   |
+| :-------------- | :------------------------------------------------------------ | :--------------------- |
+| `user_name`     | - Required <br/> - `String` type <br/> - Min length is 3 type |                        |
+| `email`         | - Required <br/> - `Email` type                               |                        |
+| `password`      | - Required <br/> - `String` type <br/> - Min length is 6 type | Recommend:`encryption` |
+| `date_of_birth` | - Optional <br/> - `String` type                              |                        |
+| `gender`        | - Optional <br/> - `String` type                              |                        |
+| `phone_number`  | - Optional <br/> - `String` type                              |                        |
 
 #### Response data type
 

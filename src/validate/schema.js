@@ -20,6 +20,7 @@ const emailVelidate = () => {
 
 export const signUpValidateSchema = Joi.object({
   user_name: validateStringRequired().min(3),
+  password: validateStringRequired().min(6),
   email: emailVelidate(),
   date_of_birth: validateString(),
   gender: validateString(),
