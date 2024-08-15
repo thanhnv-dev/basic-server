@@ -7,7 +7,7 @@ const categories = async () => {
     const data = await CategoryModel.find();
     return {
       status: 200,
-      res: {msg: 'Get categories successfully!', result: data},
+      res: {msg: 'Get categories successfully!', results: data},
     };
   } catch (err) {
     return {
@@ -21,7 +21,7 @@ const restaurents = async () => {
     const data = await RestaurantModel.find();
     return {
       status: 200,
-      res: {msg: 'Get restaurants successfully!', result: data},
+      res: {msg: 'Get restaurants successfully!', results: data},
     };
   } catch (err) {
     return {
@@ -51,7 +51,7 @@ const restaurent = async req => {
       status: 200,
       res: {
         msg: 'Get restaurant successfully!',
-        result: {
+        results: {
           ...dataRestaurant.toObject(),
           dishs: dataRes,
         },
@@ -71,7 +71,7 @@ const dish = async req => {
     const data = await DishModel.findById(id);
     return {
       status: 200,
-      res: {msg: 'Get restaurant successfully!', result: data},
+      res: {msg: 'Get restaurant successfully!', results: data},
     };
   } catch (err) {
     return {
