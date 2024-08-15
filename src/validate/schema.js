@@ -52,6 +52,7 @@ export const customTokenValidateSchema = Joi.object({
   expires_in: Joi.string()
     .regex(/[smhd]/)
     .required(),
+  user_id: validateStringRequired(),
 });
 
 export const updateInfomationValidateSchema = Joi.object({

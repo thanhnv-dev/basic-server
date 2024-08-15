@@ -301,6 +301,7 @@ auth/custom-token
 | Field Name   | Requirements                                                                                                           | Note                                                                  |
 | :----------- | :--------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | `expires_in` | - Required <br/> - `String` type <br/> - Starting with a number and ending with the following letters s or m or h or d | - s is seconds <br/> - m is minute <br/> - h is hour <br/> - d is day |
+| `user_id`    | - Required <br/> - `String`                                                                                            |
 
 #### Response data type
 
@@ -943,7 +944,7 @@ food-hub/categories
 ```json
 {
   "msg": "Get categories successfully!",
-  "result": [
+  "results": [
     {
       "_id": "6541da16f015a8f58288420b",
       "category_name": "Donat",
@@ -1009,7 +1010,7 @@ food-hub/restaurants
 ```json
 {
   "msg": "Get restaurants successfully!",
-  "result": [
+  "results": [
     {
       "_id": "6543711a67951e9e9c2a312a",
       "restaurant_name": "Restaurant 1",
@@ -1092,7 +1093,7 @@ food-hub/restaurant
 ```json
 {
   "msg": "Get restaurant successfully!",
-  "result": {
+  "results": {
     "_id": "6543711a67951e9e9c2a312a",
     "restaurant_name": "Restaurant 1",
     "review_count": 50,
@@ -1191,7 +1192,7 @@ food-hub/dish
 ```json
 {
   "msg": "Get restaurant successfully!",
-  "result": {
+  "results": {
     "_id": "6541d0b362c8dd3b531d9a6b",
     "parent_id": "6543711a67951e9e9c2a312a",
     "dish_name": "Ground Beef Tacos",

@@ -125,9 +125,9 @@ const signIn = async req => {
 };
 
 const customToken = async req => {
-  const {expires_in} = req.body;
+  const {expires_in, user_id} = req.body;
 
-  const newToken = JWToken.createCustomToken(expires_in);
+  const newToken = JWToken.createCustomToken(expires_in, user_id);
 
   const res = {
     results: {

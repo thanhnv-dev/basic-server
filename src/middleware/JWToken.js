@@ -23,10 +23,14 @@ const createToken = data => {
   return token;
 };
 
-const createCustomToken = expiresIn => {
-  const token = jwt.sign({data: 'custom token'}, ACCESS_TOKEN_SECRET, {
-    expiresIn: expiresIn,
-  });
+const createCustomToken = (expiresIn, user_id) => {
+  const token = jwt.sign(
+    {data: 'custom token', id: user_id},
+    ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: expiresIn,
+    },
+  );
   return token;
 };
 
@@ -74,10 +78,10 @@ const verifyRefreshToken = token => {
 };
 
 const decodedToken = token => {
-  const decoded = jwt.decode(token, { complete: true });
+  const decoded = jwt.decode(token, {complete: true});
 
   return decoded;
-}
+};
 
 module.exports = {
   createToken,
@@ -88,5 +92,5 @@ module.exports = {
   verifyRefreshToken,
   createTokens,
   createCustomToken,
-  decodedToken
+  decodedToken,
 };
