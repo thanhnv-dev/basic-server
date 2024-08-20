@@ -170,15 +170,18 @@ const sendVerificationCode = async email => {
       return {status: 400, res: {msg: 'Somthing went wrong!'}};
     }
   } else {
-    return {status: 400, res: {msg: 'This email is not yet associated with a user.'}};
+    return {
+      status: 400,
+      res: {msg: 'This email is not yet associated with a user.'},
+    };
   }
 };
 
 const verifyCodeService = async code => {
   const findCodeResult = await VerificationCodeModel.findOne({code});
-  const email = findCodeResult.email;
-
+  
   if (findCodeResult) {
+    const email = findCodeResult?.email;
     const lastUpdatedTime = findCodeResult.updatedAt;
     const codeDataBase = findCodeResult.code;
     const hasPassed = hasPassed2Minutes(lastUpdatedTime);
