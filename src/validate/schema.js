@@ -73,9 +73,7 @@ export const updateDeliveryAddressValidateSchema = Joi.object({
   address_id: validateStringRequired(),
   full_name: validateStringRequired(),
   phone_number: validateStringRequired(),
-  state: validateStringRequired(),
-  city: validateStringRequired(),
-  street: validateStringRequired(),
+  address: Joi.array().required(),
   is_default: Joi.boolean().required(),
 });
 
