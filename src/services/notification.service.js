@@ -10,7 +10,18 @@ const findAll = async user_id => {
   return result;
 };
 
-const initNotis = async id => {
+const fakeInitNotis = id => {
+  const count = 9;
+  for (let index = 1; index < count; index++) {
+    initNotis(id, `0${index}`);
+  }
+  const count2 = 20;
+  for (let index = 10; index < count2; index++) {
+    initNotis(id, `${index}`);
+  }
+};
+
+const initNotis = async (id, date) => {
   const discountNoti = new NotificaionModel({
     user_id: id,
     title: 'Discount Code',
@@ -18,8 +29,8 @@ const initNotis = async id => {
       "Congratulations! The discount code 'SAVE20' has been successfully applied. You saved 20% on this order. Your new total is $80. Enjoy your meal!",
     unread: true,
     type: 'Discount',
-    createdAt: new Date('2024-08-07T09:00:00.00Z'),
-    updatedAt: new Date('2024-08-07T09:00:00.00Z'),
+    createdAt: new Date(`2024-08-${date}T09:00:00.00Z`),
+    updatedAt: new Date(`2024-08-${date}:00:00.00Z`),
   });
   const offerNoti = new NotificaionModel({
     user_id: id,
@@ -28,8 +39,8 @@ const initNotis = async id => {
       "Today only! Get 20% off your next order with the code 'SAVE20'. Order now to take advantage of this offer!",
     unread: true,
     type: 'Offer',
-    createdAt: new Date('2024-08-07T19:00:00.00Z'),
-    updatedAt: new Date('2024-08-07T19:00:00.00Z'),
+    createdAt: new Date(`2024-08-${date}T19:00:00.00Z`),
+    updatedAt: new Date(`2024-08-${date}T19:00:00.00Z`),
   });
   const deliveringNoti = new NotificaionModel({
     user_id: id,
@@ -38,8 +49,8 @@ const initNotis = async id => {
       "Today only! Get 20% off your next order with the code 'SAVE20'. Order now to take advantage of this offer!",
     unread: true,
     type: 'Delivering',
-    createdAt: new Date('2024-08-05T07:00:00.00Z'),
-    updatedAt: new Date('2024-08-05T07:00:00.00Z'),
+    createdAt: new Date(`2024-08-${date}T07:00:00.00Z`),
+    updatedAt: new Date(`2024-08-${date}T07:00:00.00Z`),
   });
   const deliveredNoti = new NotificaionModel({
     user_id: id,
@@ -48,8 +59,8 @@ const initNotis = async id => {
       'Your order has arrived! Please check and enjoy your meal. Thank you for using our service!',
     unread: true,
     type: 'Delivered',
-    createdAt: new Date('2024-08-05T16:00:00.00Z'),
-    updatedAt: new Date('2024-08-05T16:00:00.00Z'),
+    createdAt: new Date(`2024-08-${date}T16:00:00.00Z`),
+    updatedAt: new Date(`2024-08-${date}T16:00:00.00Z`),
   });
 
   await discountNoti.save();
@@ -188,6 +199,7 @@ const fakeNotis = async (id, todaysNotifications) => {
 };
 
 const getNotis = async req => {
+  const {offset = 0, limit = 10} = req.query;
   const token = JWToken.getTokenFromRequest(req);
   const data = JWToken.decodedToken(token);
   const id = data?.payload?.id;
@@ -195,7 +207,7 @@ const getNotis = async req => {
 
   if (findAllResult) {
     if (findAllResult.length === 0) {
-      initNotis(id);
+      fakeInitNotis(id);
     }
     const now = new Date();
     const todayStart = new Date(
@@ -216,7 +228,9 @@ const getNotis = async req => {
       results: {
         total: findAllResult?.length,
         unread_count: findAllResult?.filter(e => e?.unread === true)?.length,
-        notifications: findAllResult,
+        offset: parseInt(offset, 10),
+        limit: parseInt(limit, 10),
+        notifications: findAllResult?.splice(offset, limit),
       },
       msg: 'Get notificaions Successfully!',
     };

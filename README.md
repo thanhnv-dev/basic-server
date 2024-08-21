@@ -1240,6 +1240,13 @@ notification
 
 #### Bearer token required
 
+#### Query parameter
+
+| Field Name | Requirements                        | Note                        |
+| :--------- | :---------------------------------- | --------------------------- |
+| `offset`   | - `number` type <br/> - default: `0`  | Index where data is started |
+| `limit`    | - `number` type <br/> - default: `10` | Number of data elements     |
+
 #### Response data type
 
 | Field Name      | Type                                                                       | Note                     |
@@ -1247,6 +1254,8 @@ notification
 | `results`       | `Object`                                                                   |                          |
 | `total`         | `Number`                                                                   | Child of `result`        |
 | `unread_count`  | `Number`                                                                   | Child of `result`        |
+| `offset`        | `Array`                                                                    | Child of `result`        |
+| `limit`         | `Array`                                                                    | Child of `result`        |
 | `notifications` | `Array`                                                                    | Child of `result`        |
 | `_id`           | `String`                                                                   | Child of `notifications` |
 | `user_id`       | `String`                                                                   | Child of `notifications` |
@@ -1262,8 +1271,10 @@ notification
 ```json
 {
   "results": {
-    "total": 5,
-    "unread_count": 4,
+    "total": 75,
+    "unread_count": 75,
+    "offset": 20,
+    "limit": 1,
     "notifications": [
       {
         "_id": "66b446db92099337da893d1a",

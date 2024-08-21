@@ -83,3 +83,7 @@ export const readNotiValidateSchema = Joi.object({
 export const deleteDeliveryAddressValidateSchema = Joi.object({
   address_id: validateStringRequired(),
 });
+export const notificationValidateSchema = Joi.object({
+  offset: Joi.number().integer(),
+  limit: Joi.number().integer(),
+});
