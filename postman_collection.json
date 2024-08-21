@@ -88,7 +88,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"thanhnv.dev.work@gmail.com\",\n    \"password\": \"123456@\"\n}",
+							"raw": "{\n    \"email\": \"thanhnv.dev.personal@gmail.com\",\n    \"password\": \"123456@\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +241,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"full_name\": \"Brock 111\",\n    \"phone_number\": \"0345633805\",\n    \"state\": \"VN\",\n    \"city\": \"HN\",\n    \"street\": \"DDN\",\n    \"is_default\": false\n}",
+									"raw": "{\n    \"full_name\": \"Brock 111\",\n    \"phone_number\": \"0345633805\",\n    \"address\": [\n        \"VN, HN, DDn\",\n        \"VN, NTL, TM\"\n    ],\n    \"is_default\": false\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -379,7 +379,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"address_id\": \"66b45c98b49f41d0935b593c\"\n}",
+									"raw": "{\n    \"address_id\": \"66c2f2d556b33fffa1d37bbb\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -661,7 +661,8 @@
 									"const code = jsonData.code;",
 									"pm.collectionVariables.set(\"code\", code);"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -673,7 +674,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"code\": \"111081\"\n}",
+							"raw": "{\n    \"code\": \"491828\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -7,9 +7,7 @@ const DeliveryAddressSchema = new Schema(
     user_id: {type: String},
     full_name: {type: String},
     phone_number: {type: String},
-    state: {type: String},
-    city: {type: String},
-    street: {type: String},
+    address: {type: Array},
   },
   {timestamps: true, versionKey: false},
 );

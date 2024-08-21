@@ -69,15 +69,7 @@ const updateDeliveryAddress = async req => {
   const findUserByIdResult = await findUserById(id);
 
   if (findUserByIdResult) {
-    const {
-      address_id,
-      full_name,
-      phone_number,
-      state,
-      city,
-      street,
-      is_default,
-    } = req.body;
+    const {address_id, full_name, phone_number, address, is_default} = req.body;
 
     const newDeliveryaddress = await DeliveryaddressModel.updateMany(
       {
@@ -87,9 +79,7 @@ const updateDeliveryAddress = async req => {
         user_id: id,
         full_name: full_name,
         phone_number: phone_number,
-        state: state,
-        city: city,
-        street: street,
+        address: address,
         is_default: is_default,
       },
     );
@@ -346,15 +336,13 @@ const createDeliveryAddress = async req => {
   const findUserByIdResult = await findUserById(id);
 
   if (findUserByIdResult) {
-    const {full_name, phone_number, state, city, street, is_default} = req.body;
+    const {full_name, phone_number, address, is_default} = req.body;
 
     const newDeliveryaddress = new DeliveryaddressModel({
       user_id: id,
       full_name,
       phone_number,
-      state,
-      city,
-      street,
+      address,
     });
     await newDeliveryaddress.save();
     const findAddress = await DeliveryaddressModel.find({

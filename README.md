@@ -698,20 +698,18 @@ user/delivery-address
 
 #### Response data type
 
-| Field Name     | Type      | Note              |
-| -------------- | :-------- | :---------------- |
-| `results`      | `Object`  |                   |
-| `_id`          | `String`  | Child of `result` |
-| `user_id`      | `String`  | Child of `result` |
-| `full_name`    | `String`  | Child of `result` |
-| `phone_number` | `String?` | Child of `result` |
-| `state`        | `String?` | Child of `result` |
-| `city`         | `String?` | Child of `result` |
-| `street`       | `String?` | Child of `result` |
-| `is_default`   | `Boolean` | Child of `result` |
-| `createdAt`    | `Date`    | Child of `result` |
-| `updatedAt`    | `String`  | Child of `result` |
-| `msg`          | `String`  |                   |
+| Field Name     | Type            | Note              |
+| -------------- | :-------------- | :---------------- |
+| `results`      | `Object`        |                   |
+| `_id`          | `String`        | Child of `result` |
+| `user_id`      | `String`        | Child of `result` |
+| `full_name`    | `String`        | Child of `result` |
+| `phone_number` | `String?`       | Child of `result` |
+| `address`      | `Array<String>` | Child of `result` |
+| `is_default`   | `Boolean`       | Child of `result` |
+| `createdAt`    | `Date`          | Child of `result` |
+| `updatedAt`    | `String`        | Child of `result` |
+| `msg`          | `String`        |                   |
 
 #### Successful Response Example
 
@@ -719,16 +717,14 @@ user/delivery-address
 {
   "results": [
     {
-      "_id": "66b4597015491beb82720ce2",
-      "user_id": "65445c7cbc09a859e33a5c19",
-      "full_name": "Brock2",
+      "_id": "66c58d536cc6af0c20868d99",
+      "user_id": "66b9ac89c896f03741044ff2",
+      "full_name": "Brock 111",
       "phone_number": "0345633805",
-      "state": "VN",
-      "city": "HN",
-      "street": "DDN",
-      "createdAt": "2024-08-08T05:36:48.381Z",
-      "updatedAt": "2024-08-08T06:09:44.387Z",
-      "is_default": false
+      "address": ["VN, HN, DDn", "VN, NTL, TM"],
+      "createdAt": "2024-08-21T06:46:43.578Z",
+      "updatedAt": "2024-08-21T06:46:43.578Z",
+      "is_default": true
     }
   ],
   "msg": "Get delivery address Successfully!"
@@ -762,31 +758,18 @@ user/add-delivery-address
 
 #### Parameters
 
-| Field Name     | Type                              | Note |
-| -------------- | :-------------------------------- | :--- |
-| `full_name`    | - Required <br/> - `String` type  |      |
-| `phone_number` | - Required <br/> - `String` type  |      |
-| `state`        | - Required <br/> - `String` type  |      |
-| `city`         | - Required <br/> - `String` type  |      |
-| `street`       | - Required <br/> - `String` type  |      |
-| `is_default`   | - Required <br/> - `Boolean` type |      |
+| Field Name     | Type                              | Note              |
+| -------------- | :-------------------------------- | :---------------- |
+| `full_name`    | - Required <br/> - `String` type  |                   |
+| `phone_number` | - Required <br/> - `String` type  |                   |
+| `address`      | `Array<String>`                   | Child of `result` |
+| `is_default`   | - Required <br/> - `Boolean` type |                   |
 
 #### Response data type
 
-| Field Name     | Type      | Note              |
-| -------------- | :-------- | :---------------- |
-| `results`      | `Object`  |                   |
-| `_id`          | `String`  | Child of `result` |
-| `user_id`      | `String`  | Child of `result` |
-| `full_name`    | `String`  | Child of `result` |
-| `phone_number` | `String?` | Child of `result` |
-| `state`        | `String?` | Child of `result` |
-| `city`         | `String?` | Child of `result` |
-| `street`       | `String?` | Child of `result` |
-| `is_default`   | `Boolean` | Child of `result` |
-| `createdAt`    | `Date`    | Child of `result` |
-| `updatedAt`    | `String`  | Child of `result` |
-| `msg`          | `String`  |                   |
+| Field Name | Type     | Note |
+| ---------- | :------- | :--- |
+| `msg`      | `String` |      |
 
 #### Successful Response Example
 
@@ -825,15 +808,13 @@ user/update-delivery-address
 
 #### Parameters
 
-| Field Name     | Type                              | Note |
-| -------------- | :-------------------------------- | :--- |
-| `address_id`   | - Required <br/> - `String` type  |      |
-| `full_name`    | - Required <br/> - `String` type  |      |
-| `phone_number` | - Required <br/> - `String` type  |      |
-| `state`        | - Required <br/> - `String` type  |      |
-| `city`         | - Required <br/> - `String` type  |      |
-| `street`       | - Required <br/> - `String` type  |      |
-| `is_default`   | - Required <br/> - `Boolean` type |      |
+| Field Name     | Type                                    | Note |
+| -------------- | :-------------------------------------- | :--- |
+| `address_id`   | - Required <br/> - `String` type        |      |
+| `full_name`    | - Required <br/> - `String` type        |      |
+| `phone_number` | - Required <br/> - `String` type        |      |
+| `address`      | - Required <br/> - `Array<String>` type |      |
+| `is_default`   | - Required <br/> - `Boolean` type       |      |
 
 #### Response data type
 
