@@ -936,12 +936,22 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/notification",
+							"raw": "{{base_url}}/notification?offset=20&limit=10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"notification"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "20"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
