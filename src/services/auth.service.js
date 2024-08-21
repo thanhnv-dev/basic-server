@@ -67,12 +67,15 @@ const signUp = async req => {
 
 const refreshToken = async req => {
   const {refresh_token} = req.body;
+  const data = JWToken.decodedToken(refresh_token);
+
+  const id = data?.payload?.id;
 
   const verifyRefreshTokenResult = JWToken.verifyRefreshToken(refresh_token);
 
   if (verifyRefreshTokenResult) {
     const {newToken, newRefreshToken} = JWToken.createTokens({
-      data: refresh_token,
+      id: id,
     });
 
     const res = {
