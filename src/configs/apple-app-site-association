@@ -4,7 +4,7 @@
     "details": [
       {
         "appID": "VW66DF8PS8.io.redx.wallet.test",
-        "paths": ["/ton-connect/*"]
+        "paths": ["/ton-connect"]
       }
     ]
   },
