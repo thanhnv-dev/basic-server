@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "6711332582.io.redx.wallet.test",
+        "paths": ["/ton-connect"]
+      }
+    ]
+  },
+  "activitycontinuation": {
+    "apps": ["6711332582.io.redx.wallet.test"]
+  },
+  "webcredentials": {
+    "apps": ["6711332582.io.redx.wallet.test"]
+  }
+}

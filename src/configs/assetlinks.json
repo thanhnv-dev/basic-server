@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "Red X",
+      "package_name": "io.redx.wallet.test",
+      "sha256_cert_fingerprints": [
+        "77:6E:A1:37:EB:3E:B8:23:84:55:85:06:29:35:BA:E2:85:8D:F0:37:E6:3D:90:DD:FD:6F:57:82:0E:2D:20:14"
+      ]
+    }
+  }
+]
