@@ -87,3 +87,10 @@ export const notificationValidateSchema = Joi.object({
   offset: Joi.number().integer(),
   limit: Joi.number().integer(),
 });
+
+export const logValidateSchema = Joi.object({
+  reason: validateString(),
+  device: validateString(),
+  version: validateString(),
+  appId: validateString(),
+});

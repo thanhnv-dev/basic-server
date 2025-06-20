@@ -6,6 +6,7 @@ const authRouter = require('./auth.routes.js');
 const mailRouter = require('./mail.routes.js');
 const foodHubRouter = require('./foodHub.routes.js');
 const notificationRouter = require('./notification.routes.js');
+const customRouter = require('./custom.routes.js');
 
 const apiRoute = express();
 
@@ -55,5 +56,6 @@ apiRoute.use('/auth', authRouter);
 apiRoute.use('/mail', mailRouter);
 apiRoute.use('/food-hub', foodHubRouter);
 apiRoute.use('/notification', notificationRouter);
+apiRoute.use('/custom', customRouter);
 
 module.exports = apiRoute;
