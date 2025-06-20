@@ -45,7 +45,15 @@ const getLog = async (req, res) => {
     `;
 
     customs.forEach((custom, index) => {
-      const createdAt = new Date(custom.createdAt).toLocaleString('vi-VN');
+      const createdAt = new Date(custom.createdAt).toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
       tableHTML += `
         <tr class="${index % 2 === 0 ? 'even' : 'odd'}">
           <td>${custom._id}</td>
