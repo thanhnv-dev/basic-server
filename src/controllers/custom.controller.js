@@ -38,7 +38,8 @@ const getLog = async (req, res) => {
             <th>Device</th>
             <th>Version</th>
             <th>AD ID</th>
-            <th>Created At</th>
+            <th>Date</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -46,9 +47,17 @@ const getLog = async (req, res) => {
 
     customs.forEach((custom, index) => {
       // Convert to Vietnam timezone (GMT+7)
-      const createdAt = new Date(custom.createdAt).toLocaleString('vi-VN', {
-        timeZone: 'Asia/Ho_Chi_Minh',
+      const date = new Date(custom.createdAt);
+      const formattedDate = date.toLocaleDateString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh"
       });
+      const formattedTime = date.toLocaleTimeString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      
       tableHTML += `
         <tr class="${index % 2 === 0 ? 'even' : 'odd'}">
           <td>${custom._id}</td>
@@ -56,7 +65,8 @@ const getLog = async (req, res) => {
           <td>${custom.device || 'N/A'}</td>
           <td>${custom.version || 'N/A'}</td>
           <td>${custom.appId || 'N/A'}</td>
-          <td>${createdAt}</td>
+          <td>${formattedDate}</td>
+          <td>${formattedTime}</td>
         </tr>
       `;
     });
