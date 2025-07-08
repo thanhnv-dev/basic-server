@@ -45,7 +45,10 @@ const getLog = async (req, res) => {
     `;
 
     customs.forEach((custom, index) => {
-      const createdAt = new Date(custom.createdAt).toLocaleString("vi-VN");
+      // Convert to Vietnam timezone (GMT+7)
+      const createdAt = new Date(custom.createdAt).toLocaleString('vi-VN', {
+        timeZone: 'Asia/Ho_Chi_Minh',
+      });
       tableHTML += `
         <tr class="${index % 2 === 0 ? 'even' : 'odd'}">
           <td>${custom._id}</td>
@@ -226,7 +229,9 @@ const getLog = async (req, res) => {
             <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
             
             <div class="timestamp">
-                Last update: ${new Date().toLocaleString('vi-VN')}
+                Last update: ${new Date().toLocaleString('vi-VN', {
+                  timeZone: 'Asia/Ho_Chi_Minh',
+                })}
             </div>
             
             <h3 style="margin-bottom: 15px; color: #333;">📋 Log list</h3>
