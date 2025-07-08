@@ -16,7 +16,7 @@ const log = async (req, res) => {
 const getLog = async (req, res) => {
   // Get custom data from database
   const customDataResult = await CustomService.getAllCustoms();
-  
+
   Log.request({
     req: req,
     msg: customDataResult?.res?.msg,
@@ -24,9 +24,9 @@ const getLog = async (req, res) => {
   });
 
   // Generate HTML table for custom data
-  const generateCustomTable = (customs) => {
+  const generateCustomTable = customs => {
     if (!customs || customs.length === 0) {
-      return '<div class="no-data">Không có dữ liệu</div>';
+      return '<div class="no-data">No data</div>';
     }
 
     let tableHTML = `
@@ -37,7 +37,7 @@ const getLog = async (req, res) => {
             <th>Reason</th>
             <th>Device</th>
             <th>Version</th>
-            <th>App ID</th>
+            <th>AD ID</th>
             <th>Created At</th>
           </tr>
         </thead>
@@ -45,15 +45,7 @@ const getLog = async (req, res) => {
     `;
 
     customs.forEach((custom, index) => {
-      const createdAt = new Date(custom.createdAt).toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      });
+      const createdAt = new Date(custom.createdAt).toLocaleString();
       tableHTML += `
         <tr class="${index % 2 === 0 ? 'even' : 'odd'}">
           <td>${custom._id}</td>
@@ -93,15 +85,15 @@ const getLog = async (req, res) => {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
         
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 0;
+            box-shadow: none;
             overflow: hidden;
         }
         
