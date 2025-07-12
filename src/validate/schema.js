@@ -18,7 +18,7 @@ const emailVelidate = () => {
   });
 };
 
-export const signUpValidateSchema = Joi.object({
+const signUpValidateSchema = Joi.object({
   user_name: validateStringRequired().min(3),
   password: validateStringRequired().min(6),
   email: emailVelidate(),
@@ -27,35 +27,35 @@ export const signUpValidateSchema = Joi.object({
   phone_number: validateString(),
 });
 
-export const signInValidateSchema = Joi.object({
+const signInValidateSchema = Joi.object({
   email: emailVelidate(),
   password: validateStringRequired().min(6),
 });
 
-export const sendVerificationCodeValidateSchema = Joi.object({
+const sendVerificationCodeValidateSchema = Joi.object({
   email: emailVelidate(),
 });
 
-export const verifyCodeSchema = Joi.object({
+const verifyCodeSchema = Joi.object({
   code: validateNumber(),
 });
 
-export const refreshTokenValidateSchema = Joi.object({
+const refreshTokenValidateSchema = Joi.object({
   refresh_token: validateStringRequired(),
 });
 
-export const profileValidateSchema = Joi.object({
+const profileValidateSchema = Joi.object({
   id: validateStringRequired(),
 });
 
-export const customTokenValidateSchema = Joi.object({
+const customTokenValidateSchema = Joi.object({
   expires_in: Joi.string()
     .regex(/[smhd]/)
     .required(),
   user_id: validateStringRequired(),
 });
 
-export const updateInfomationValidateSchema = Joi.object({
+const updateInfomationValidateSchema = Joi.object({
   user_name: validateStringRequired().min(3),
   email: emailVelidate(),
   date_of_birth: validateString(),
@@ -63,13 +63,13 @@ export const updateInfomationValidateSchema = Joi.object({
   phone_number: validateString(),
 });
 
-export const createDeliveryAddressValidateSchema = Joi.object({
+const createDeliveryAddressValidateSchema = Joi.object({
   full_name: validateStringRequired(),
   phone_number: validateStringRequired(),
   address: Joi.array().required(),
   is_default: Joi.boolean().required(),
 });
-export const updateDeliveryAddressValidateSchema = Joi.object({
+const updateDeliveryAddressValidateSchema = Joi.object({
   address_id: validateStringRequired(),
   full_name: validateStringRequired(),
   phone_number: validateStringRequired(),
@@ -77,20 +77,39 @@ export const updateDeliveryAddressValidateSchema = Joi.object({
   is_default: Joi.boolean().required(),
 });
 
-export const readNotiValidateSchema = Joi.object({
+const readNotiValidateSchema = Joi.object({
   noti_id: validateStringRequired(),
 });
-export const deleteDeliveryAddressValidateSchema = Joi.object({
+const deleteDeliveryAddressValidateSchema = Joi.object({
   address_id: validateStringRequired(),
 });
-export const notificationValidateSchema = Joi.object({
+const notificationValidateSchema = Joi.object({
   offset: Joi.number().integer(),
   limit: Joi.number().integer(),
 });
 
-export const logValidateSchema = Joi.object({
+const logValidateSchema = Joi.object({
+  sessionId: validateString(),
+  env: validateString(),
   reason: validateString(),
   device: validateString(),
   version: validateString(),
   appId: validateString(),
 });
+
+module.exports = {
+  signUpValidateSchema,
+  signInValidateSchema,
+  sendVerificationCodeValidateSchema,
+  verifyCodeSchema,
+  refreshTokenValidateSchema,
+  profileValidateSchema,
+  customTokenValidateSchema,
+  updateInfomationValidateSchema,
+  createDeliveryAddressValidateSchema,
+  updateDeliveryAddressValidateSchema,
+  readNotiValidateSchema,
+  deleteDeliveryAddressValidateSchema,
+  notificationValidateSchema,
+  logValidateSchema,
+};

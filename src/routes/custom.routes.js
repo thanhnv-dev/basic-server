@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.post('/log', validateParams(logValidateSchema), customController.log);
 
-router.get('/log', validateParams(logValidateSchema), customController.getLog);
+router.get('/log', customController.getLog);
 
 module.exports = router;

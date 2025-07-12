@@ -33,11 +33,12 @@ const getLog = async (req, res) => {
       <table class="custom-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Session ID</th>
             <th>Reason</th>
             <th>Device</th>
             <th>Version</th>
             <th>AD ID</th>
+            <th>ENV</th>
             <th>Date</th>
             <th>Time</th>
           </tr>
@@ -60,11 +61,12 @@ const getLog = async (req, res) => {
       
       tableHTML += `
         <tr class="${index % 2 === 0 ? 'even' : 'odd'}">
-          <td>${custom._id}</td>
+          <td>${custom.sessionId || '-'}</td>
           <td>${custom.reason || 'N/A'}</td>
           <td>${custom.device || 'N/A'}</td>
           <td>${custom.version || 'N/A'}</td>
           <td>${custom.appId || 'N/A'}</td>
+          <td>${(custom.env || '-').toUpperCase()}</td>
           <td>${formattedDate}</td>
           <td>${formattedTime}</td>
         </tr>
@@ -199,6 +201,39 @@ const getLog = async (req, res) => {
             text-align: center;
         }
         
+        .filter-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .env-filter {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .env-filter:hover {
+            background: #f8f9fa;
+        }
+        
+        .env-filter.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-color: #4facfe;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -244,6 +279,14 @@ const getLog = async (req, res) => {
                 })}
             </div>
             
+            <div class="filter-container">
+                <span class="filter-label">Filter by ENV:</span>
+                <button class="env-filter active" data-env="all">ALL ENV</button>
+                <button class="env-filter" data-env="production">PRODUCTION</button>
+                <button class="env-filter" data-env="test">TEST</button>
+                <button class="env-filter" data-env="staging">STAGING</button>
+            </div>
+            
             <h3 style="margin-bottom: 15px; color: #333;">📋 Log list</h3>
             ${generateCustomTable(customDataResult.res.data)}
         </div>
@@ -264,14 +307,40 @@ const getLog = async (req, res) => {
             const searchInput = document.getElementById('searchInput');
             const table = document.querySelector('.custom-table');
             
-            searchInput.addEventListener('keyup', function() {
-                const searchTerm = this.value.toLowerCase();
+            // ENV filter functionality
+            const envFilters = document.querySelectorAll('.env-filter');
+            let currentEnvFilter = 'all';
+            
+            envFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    // Remove active class from all filters
+                    envFilters.forEach(f => f.classList.remove('active'));
+                    // Add active class to clicked filter
+                    this.classList.add('active');
+                    currentEnvFilter = this.getAttribute('data-env');
+                    
+                    filterTable();
+                });
+            });
+            
+            function filterTable() {
                 const rows = table.querySelectorAll('tbody tr');
+                const searchTerm = searchInput.value.toLowerCase();
                 
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                    const envCell = row.querySelector('td:nth-child(6)'); // ENV column
+                    const envValue = envCell ? envCell.textContent.toLowerCase() : '';
+                    
+                    let showBySearch = text.includes(searchTerm);
+                    let showByEnv = currentEnvFilter === 'all' || envValue === currentEnvFilter;
+                    
+                    row.style.display = (showBySearch && showByEnv) ? '' : 'none';
                 });
+            }
+            
+            searchInput.addEventListener('keyup', function() {
+                filterTable();
             });
         });
     </script>

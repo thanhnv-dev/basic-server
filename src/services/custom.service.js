@@ -1,13 +1,15 @@
 const CustomModel = require('../models/custom.model.js');
 
 const log = async req => {
-  const {reason, device, version, appId} = req.body;
+  const {reason, device, version, appId, sessionId, env} = req.body;
 
   const newCustom = new CustomModel({
     reason: reason,
     device: device,
     version: version,
     appId: appId,
+    sessionId: sessionId,
+    env: env,
   });
 
   const createCustomResult = await newCustom.save();
@@ -24,7 +26,7 @@ const log = async req => {
 
 const getAllCustoms = async () => {
   try {
-    const customs = await CustomModel.find({}).sort({ createdAt: -1 }).limit(100);
+    const customs = await CustomModel.find({}).sort({createdAt: -1}).limit(100);
     return {
       status: 200,
       res: {

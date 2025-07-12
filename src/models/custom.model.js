@@ -8,6 +8,8 @@ const CustomSchema = new Schema(
     device: {type: String},
     version: {type: String},
     appId: {type: String},
+    sessionId: {type: String},
+    env: {type: String},
   },
   {timestamps: true, versionKey: false},
 );
