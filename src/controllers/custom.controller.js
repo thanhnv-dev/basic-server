@@ -29,6 +29,24 @@ const getLog = async (req, res) => {
       return '<div class="no-data">No data</div>';
     }
 
+    // Group by sessionId (only group if sessionId exists and is not '-')
+    const groupedData = {};
+    const ungroupedData = [];
+    
+    customs.forEach(custom => {
+      const sessionId = custom.sessionId;
+      if (sessionId && sessionId !== '-' && sessionId.trim() !== '') {
+        // Group records with valid sessionId
+        if (!groupedData[sessionId]) {
+          groupedData[sessionId] = [];
+        }
+        groupedData[sessionId].push(custom);
+      } else {
+        // Keep records without sessionId as individual rows
+        ungroupedData.push(custom);
+      }
+    });
+
     let tableHTML = `
       <table class="custom-table">
         <thead>
@@ -46,7 +64,55 @@ const getLog = async (req, res) => {
         <tbody>
     `;
 
-    customs.forEach((custom, index) => {
+    let rowIndex = 0;
+    
+    // First, add grouped records
+    Object.keys(groupedData).forEach(sessionId => {
+      const sessionData = groupedData[sessionId];
+      const firstRecord = sessionData[0]; // Use first record for common fields
+      
+      // Convert to Vietnam timezone (GMT+7)
+      const date = new Date(firstRecord.createdAt);
+      const formattedDate = date.toLocaleDateString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh"
+      });
+      const formattedTime = date.toLocaleTimeString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+
+      // Combine all reasons sorted by time with numbering
+      const reasonsWithTime = sessionData
+        .map(record => ({
+          reason: record.reason || 'N/A',
+          createdAt: new Date(record.createdAt)
+        }))
+        .filter(item => item.reason !== 'N/A')
+        .sort((a, b) => a.createdAt - b.createdAt); // Sort by time ascending
+      
+      const combinedReasons = reasonsWithTime.length > 0 
+        ? reasonsWithTime.map((item, index) => `${index + 1}: ${item.reason}`).join('<br>') 
+        : 'N/A';
+      
+      tableHTML += `
+        <tr class="${rowIndex % 2 === 0 ? 'even' : 'odd'}">
+          <td>${sessionId}</td>
+          <td class="reason-cell">${combinedReasons}</td>
+          <td>${firstRecord.device || 'N/A'}</td>
+          <td>${firstRecord.version || 'N/A'}</td>
+          <td>${firstRecord.appId || 'N/A'}</td>
+          <td>${(firstRecord.env || '-').toUpperCase()}</td>
+          <td>${formattedDate}</td>
+          <td>${formattedTime}</td>
+        </tr>
+      `;
+      rowIndex++;
+    });
+    
+    // Then, add ungrouped records as individual rows
+    ungroupedData.forEach(custom => {
       // Convert to Vietnam timezone (GMT+7)
       const date = new Date(custom.createdAt);
       const formattedDate = date.toLocaleDateString("vi-VN", {
@@ -60,7 +126,7 @@ const getLog = async (req, res) => {
       });
       
       tableHTML += `
-        <tr class="${index % 2 === 0 ? 'even' : 'odd'}">
+        <tr class="${rowIndex % 2 === 0 ? 'even' : 'odd'}">
           <td>${custom.sessionId || '-'}</td>
           <td>${custom.reason || 'N/A'}</td>
           <td>${custom.device || 'N/A'}</td>
@@ -71,6 +137,7 @@ const getLog = async (req, res) => {
           <td>${formattedTime}</td>
         </tr>
       `;
+      rowIndex++;
     });
 
     tableHTML += `
@@ -232,6 +299,15 @@ const getLog = async (req, res) => {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
             border-color: #4facfe;
+        }
+        
+        .reason-cell {
+            line-height: 1.4;
+            vertical-align: top;
+        }
+        
+        .reason-cell br {
+            margin-bottom: 4px;
         }
         
         @media (max-width: 768px) {
