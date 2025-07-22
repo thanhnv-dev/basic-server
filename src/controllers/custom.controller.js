@@ -14,16 +14,8 @@ const log = async (req, res) => {
 };
 
 const getLog = async (req, res) => {
-  // Get date parameters from query
-  const { startDate, endDate } = req.query;
-  
   // Get custom data from database
-  let customDataResult;
-  if (startDate && endDate) {
-    customDataResult = await CustomService.getCustomsByDate(startDate, endDate);
-  } else {
-    customDataResult = await CustomService.getAllCustoms();
-  }
+  const customDataResult = await CustomService.getAllCustoms();
 
   Log.request({
     req: req,
@@ -309,38 +301,6 @@ const getLog = async (req, res) => {
             border-color: #4facfe;
         }
         
-        .date-filter {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: white;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-        
-        .date-filter:focus {
-            outline: none;
-            border-color: #4facfe;
-            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
-        }
-        
-        .date-filter-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: transform 0.2s ease;
-        }
-        
-        .date-filter-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-        
         .reason-cell {
             line-height: 1.4;
             vertical-align: top;
@@ -403,16 +363,7 @@ const getLog = async (req, res) => {
                 <button class="env-filter" data-env="staging">STAGING</button>
             </div>
             
-            <div class="filter-container">
-                <span class="filter-label">Filter by Date:</span>
-                <input type="date" id="startDate" class="date-filter">
-                <span>to</span>
-                <input type="date" id="endDate" class="date-filter">
-                <button class="date-filter-btn" onclick="filterByDate()">Filter</button>
-                <button class="date-filter-btn" onclick="clearDateFilter()">Clear</button>
-            </div>
-            
-            <h3 style="margin-bottom: 15px; color: #333;">📋 Log list (Total: ${customDataResult.res.totalCount} records)</h3>
+            <h3 style="margin-bottom: 15px; color: #333;">📋 Log list</h3>
             ${generateCustomTable(customDataResult.res.data)}
         </div>
     </div>
@@ -462,42 +413,6 @@ const getLog = async (req, res) => {
                     
                     row.style.display = (showBySearch && showByEnv) ? '' : 'none';
                 });
-            }
-            
-            // Date filter functionality
-            window.filterByDate = function() {
-                const startDate = document.getElementById('startDate').value;
-                const endDate = document.getElementById('endDate').value;
-                
-                if (!startDate || !endDate) {
-                    alert('Please select both start and end dates');
-                    return;
-                }
-                
-                // Reload page with date parameters
-                const url = new URL(window.location);
-                url.searchParams.set('startDate', startDate);
-                url.searchParams.set('endDate', endDate);
-                window.location.href = url.toString();
-            };
-            
-            window.clearDateFilter = function() {
-                const url = new URL(window.location);
-                url.searchParams.delete('startDate');
-                url.searchParams.delete('endDate');
-                window.location.href = url.toString();
-            };
-            
-            // Set date inputs from URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const startDateParam = urlParams.get('startDate');
-            const endDateParam = urlParams.get('endDate');
-            
-            if (startDateParam) {
-                document.getElementById('startDate').value = startDateParam;
-            }
-            if (endDateParam) {
-                document.getElementById('endDate').value = endDateParam;
             }
             
             searchInput.addEventListener('keyup', function() {
