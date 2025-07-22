@@ -14,8 +14,11 @@ const log = async (req, res) => {
 };
 
 const getLog = async (req, res) => {
+  // Get date parameters from query
+  const { startDate, endDate } = req.query;
+  
   // Get custom data from database
-  const customDataResult = await CustomService.getAllCustoms();
+  const customDataResult = await CustomService.getAllCustoms(startDate, endDate);
 
   Log.request({
     req: req,
@@ -51,14 +54,14 @@ const getLog = async (req, res) => {
       <table class="custom-table">
         <thead>
           <tr>
-            <th>Session ID</th>
+            <th>Date</th>
+            <th>Time</th>
             <th>Reason</th>
             <th>Device</th>
             <th>Version</th>
             <th>AD ID</th>
             <th>ENV</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th>Session ID</th>
           </tr>
         </thead>
         <tbody>
@@ -98,14 +101,14 @@ const getLog = async (req, res) => {
       
       tableHTML += `
         <tr class="${rowIndex % 2 === 0 ? 'even' : 'odd'}">
-          <td>${sessionId}</td>
+          <td>${formattedDate}</td>
+          <td>${formattedTime}</td>
           <td class="reason-cell">${combinedReasons}</td>
           <td>${firstRecord.device || 'N/A'}</td>
           <td>${firstRecord.version || 'N/A'}</td>
           <td>${firstRecord.appId || 'N/A'}</td>
           <td>${(firstRecord.env || '-').toUpperCase()}</td>
-          <td>${formattedDate}</td>
-          <td>${formattedTime}</td>
+          <td>${sessionId}</td>
         </tr>
       `;
       rowIndex++;
@@ -127,14 +130,14 @@ const getLog = async (req, res) => {
       
       tableHTML += `
         <tr class="${rowIndex % 2 === 0 ? 'even' : 'odd'}">
-          <td>${custom.sessionId || '-'}</td>
+          <td>${formattedDate}</td>
+          <td>${formattedTime}</td>
           <td>${custom.reason || 'N/A'}</td>
           <td>${custom.device || 'N/A'}</td>
           <td>${custom.version || 'N/A'}</td>
           <td>${custom.appId || 'N/A'}</td>
           <td>${(custom.env || '-').toUpperCase()}</td>
-          <td>${formattedDate}</td>
-          <td>${formattedTime}</td>
+          <td>${custom.sessionId || '-'}</td>
         </tr>
       `;
       rowIndex++;
@@ -253,38 +256,38 @@ const getLog = async (req, res) => {
         }
         
         /* Column widths */
-        .custom-table th:nth-child(1), .custom-table td:nth-child(1) { /* Session ID */
-            min-width: 120px;
+        .custom-table th:nth-child(1), .custom-table td:nth-child(1) { /* Date */
+            min-width: 100px;
         }
         
-        .custom-table th:nth-child(2), .custom-table td:nth-child(2) { /* Reason */
+        .custom-table th:nth-child(2), .custom-table td:nth-child(2) { /* Time */
+            min-width: 100px;
+        }
+        
+        .custom-table th:nth-child(3), .custom-table td:nth-child(3) { /* Reason */
             min-width: 200px;
             white-space: normal;
             word-wrap: break-word;
         }
         
-        .custom-table th:nth-child(3), .custom-table td:nth-child(3) { /* Device */
+        .custom-table th:nth-child(4), .custom-table td:nth-child(4) { /* Device */
             min-width: 100px;
         }
         
-        .custom-table th:nth-child(4), .custom-table td:nth-child(4) { /* Version */
+        .custom-table th:nth-child(5), .custom-table td:nth-child(5) { /* Version */
             min-width: 80px;
         }
         
-        .custom-table th:nth-child(5), .custom-table td:nth-child(5) { /* AD ID */
+        .custom-table th:nth-child(6), .custom-table td:nth-child(6) { /* AD ID */
             min-width: 120px;
         }
         
-        .custom-table th:nth-child(6), .custom-table td:nth-child(6) { /* ENV */
+        .custom-table th:nth-child(7), .custom-table td:nth-child(7) { /* ENV */
             min-width: 100px;
         }
         
-        .custom-table th:nth-child(7), .custom-table td:nth-child(7) { /* Date */
-            min-width: 100px;
-        }
-        
-        .custom-table th:nth-child(8), .custom-table td:nth-child(8) { /* Time */
-            min-width: 100px;
+        .custom-table th:nth-child(8), .custom-table td:nth-child(8) { /* Session ID */
+            min-width: 120px;
         }
         
         .custom-table tr:hover {
@@ -306,23 +309,7 @@ const getLog = async (req, res) => {
             font-size: 1.1rem;
         }
         
-        .refresh-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: transform 0.2s ease;
-            margin-bottom: 20px;
-        }
-        
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+
         
         .export-btn {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -379,6 +366,38 @@ const getLog = async (req, res) => {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
             border-color: #4facfe;
+        }
+        
+        .date-filter {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .date-filter:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+        }
+        
+        .date-filter-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        
+        .date-filter-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
         
         .reason-cell {
@@ -443,7 +462,6 @@ const getLog = async (req, res) => {
         
         <div class="content">
             <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
                 <button class="export-btn" onclick="exportCSV()">📊 Export CSV</button>
             </div>
             
@@ -459,6 +477,15 @@ const getLog = async (req, res) => {
                 <button class="env-filter" data-env="production">PRODUCTION</button>
                 <button class="env-filter" data-env="test">TEST</button>
                 <button class="env-filter" data-env="staging">STAGING</button>
+            </div>
+            
+            <div class="filter-container">
+                <span class="filter-label">Filter by Date:</span>
+                <input type="date" id="startDate" class="date-filter" placeholder="Start Date">
+                <span>to</span>
+                <input type="date" id="endDate" class="date-filter" placeholder="End Date">
+                <button class="date-filter-btn" onclick="filterByDate()">Filter</button>
+                <button class="date-filter-btn" onclick="clearDateFilter()">Clear</button>
             </div>
             
             <h3 style="margin-bottom: 15px; color: #333;">📋 Log list</h3>
@@ -503,7 +530,7 @@ const getLog = async (req, res) => {
                 
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
-                    const envCell = row.querySelector('td:nth-child(6)'); // ENV column
+                    const envCell = row.querySelector('td:nth-child(7)'); // ENV column (now at position 7)
                     const envValue = envCell ? envCell.textContent.toLowerCase() : '';
                     
                     let showBySearch = text.includes(searchTerm);
@@ -513,13 +540,75 @@ const getLog = async (req, res) => {
                 });
             }
             
+            // Date filter functionality
+            window.filterByDate = function() {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                
+                // Reload page with date parameters
+                const url = new URL(window.location);
+                
+                if (startDate) {
+                    url.searchParams.set('startDate', startDate);
+                } else {
+                    url.searchParams.delete('startDate');
+                }
+                
+                if (endDate) {
+                    url.searchParams.set('endDate', endDate);
+                } else {
+                    url.searchParams.delete('endDate');
+                }
+                
+                window.location.href = url.toString();
+            };
+            
+            window.clearDateFilter = function() {
+                // Clear date inputs
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+                
+                // Reload page without date parameters
+                const url = new URL(window.location);
+                url.searchParams.delete('startDate');
+                url.searchParams.delete('endDate');
+                window.location.href = url.toString();
+            };
+            
+            // Set date inputs from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const startDateParam = urlParams.get('startDate');
+            const endDateParam = urlParams.get('endDate');
+            
+            if (startDateParam) {
+                document.getElementById('startDate').value = startDateParam;
+            }
+            if (endDateParam) {
+                document.getElementById('endDate').value = endDateParam;
+            }
+            
             searchInput.addEventListener('keyup', function() {
                 filterTable();
             });
             
             // Export CSV functionality
             window.exportCSV = function() {
-                const url = '/custom/export-csv';
+                const startDate = document.getElementById('startDate')?.value;
+                const endDate = document.getElementById('endDate')?.value;
+                
+                let url = '/custom/export-csv';
+                const params = new URLSearchParams();
+                
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                
+                if (params.toString()) {
+                    url += '?' + params.toString();
+                }
                 
                 // Create a temporary link to download the file
                 const link = document.createElement('a');
@@ -538,8 +627,11 @@ const getLog = async (req, res) => {
 };
 
 const exportLogCSV = async (req, res) => {
+  // Get date parameters from query
+  const { startDate, endDate } = req.query;
+  
   // Export CSV data
-  const csvResult = await CustomService.exportToCSV();
+  const csvResult = await CustomService.exportToCSV(startDate, endDate);
 
   Log.request({
     req: req,
