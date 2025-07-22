@@ -324,6 +324,23 @@ const getLog = async (req, res) => {
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
+        .export-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
         .timestamp {
             color: #6c757d;
             font-size: 0.9rem;
@@ -425,7 +442,10 @@ const getLog = async (req, res) => {
         </div>
         
         <div class="content">
-            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+                <button class="export-btn" onclick="exportCSV()">📊 Export CSV</button>
+            </div>
             
             <div class="timestamp">
                 Last update: ${new Date().toLocaleString('vi-VN', {
@@ -452,11 +472,6 @@ const getLog = async (req, res) => {
     </div>
     
     <script>
-        // Auto refresh every 60 seconds
-        setTimeout(() => {
-            location.reload();
-        }, 60000);
-        
         // Add search functionality
         document.addEventListener('DOMContentLoaded', function() {
             // Add search input
@@ -501,6 +516,19 @@ const getLog = async (req, res) => {
             searchInput.addEventListener('keyup', function() {
                 filterTable();
             });
+            
+            // Export CSV functionality
+            window.exportCSV = function() {
+                const url = '/custom/export-csv';
+                
+                // Create a temporary link to download the file
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = '';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
         });
     </script>
 </body>
@@ -509,7 +537,27 @@ const getLog = async (req, res) => {
   return res.status(200).send(html);
 };
 
+const exportLogCSV = async (req, res) => {
+  // Export CSV data
+  const csvResult = await CustomService.exportToCSV();
+
+  Log.request({
+    req: req,
+    msg: csvResult?.res?.msg,
+    code: csvResult.status,
+  });
+
+  if (csvResult.status === 200) {
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="${csvResult.res.fileName}"`);
+    return res.status(200).send(csvResult.res.csvContent);
+  } else {
+    return res.status(csvResult.status).json(csvResult.res);
+  }
+};
+
 module.exports = {
   log,
   getLog,
+  exportLogCSV,
 };

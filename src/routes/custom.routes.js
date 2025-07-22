@@ -9,4 +9,6 @@ router.post('/log', validateParams(logValidateSchema), customController.log);
 
 router.get('/log', customController.getLog);
 
+router.get('/export-csv', customController.exportLogCSV);
+
 module.exports = router;
