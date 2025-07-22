@@ -201,14 +201,40 @@ const getLog = async (req, res) => {
             padding: 30px;
         }
         
-        .custom-table {
+        .table-container {
             width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #4facfe #f0f0f0;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3a9bfe 0%, #00e2fe 100%);
+        }
+        
+        .custom-table {
+            min-width: 1000px;
             border-collapse: collapse;
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
         }
         
         .custom-table th {
@@ -217,11 +243,48 @@ const getLog = async (req, res) => {
             padding: 15px;
             text-align: left;
             font-weight: 600;
+            white-space: nowrap;
         }
         
         .custom-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+        
+        /* Column widths */
+        .custom-table th:nth-child(1), .custom-table td:nth-child(1) { /* Session ID */
+            min-width: 120px;
+        }
+        
+        .custom-table th:nth-child(2), .custom-table td:nth-child(2) { /* Reason */
+            min-width: 200px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        
+        .custom-table th:nth-child(3), .custom-table td:nth-child(3) { /* Device */
+            min-width: 100px;
+        }
+        
+        .custom-table th:nth-child(4), .custom-table td:nth-child(4) { /* Version */
+            min-width: 80px;
+        }
+        
+        .custom-table th:nth-child(5), .custom-table td:nth-child(5) { /* AD ID */
+            min-width: 120px;
+        }
+        
+        .custom-table th:nth-child(6), .custom-table td:nth-child(6) { /* ENV */
+            min-width: 100px;
+        }
+        
+        .custom-table th:nth-child(7), .custom-table td:nth-child(7) { /* Date */
+            min-width: 100px;
+        }
+        
+        .custom-table th:nth-child(8), .custom-table td:nth-child(8) { /* Time */
+            min-width: 100px;
         }
         
         .custom-table tr:hover {
@@ -328,13 +391,28 @@ const getLog = async (req, res) => {
                 padding: 20px;
             }
             
+            .table-container {
+                margin: 0 -20px 20px -20px;
+                border-radius: 0;
+            }
+            
             .custom-table {
                 font-size: 0.8rem;
+                min-width: 800px;
             }
             
             .custom-table th,
             .custom-table td {
                 padding: 8px;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-container > * {
+                margin-bottom: 5px;
             }
         }
     </style>
@@ -364,7 +442,12 @@ const getLog = async (req, res) => {
             </div>
             
             <h3 style="margin-bottom: 15px; color: #333;">📋 Log list</h3>
-            ${generateCustomTable(customDataResult.res.data)}
+            <div style="margin-bottom: 10px; color: #666; font-size: 0.9rem; text-align: center;">
+                💡 Scroll horizontally to see all columns
+            </div>
+            <div class="table-container">
+                ${generateCustomTable(customDataResult.res.data)}
+            </div>
         </div>
     </div>
     
