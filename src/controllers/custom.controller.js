@@ -56,8 +56,10 @@ const getLog = async (req, res) => {
           <tr>
             <th>Date</th>
             <th>Time</th>
+            <th>User ID</th>
             <th>Reason</th>
             <th>Device</th>
+            <th>Device ID</th>
             <th>Version</th>
             <th>AD ID</th>
             <th>ENV</th>
@@ -88,23 +90,62 @@ const getLog = async (req, res) => {
 
       // Combine all reasons sorted by time with numbering
       const reasonsWithTime = sessionData
-        .map(record => ({
-          reason: record.reason || 'N/A',
-          createdAt: new Date(record.createdAt)
-        }))
-        .filter(item => item.reason !== 'N/A')
-        .sort((a, b) => a.createdAt - b.createdAt); // Sort by time ascending
+        .map(record => {
+          let reasons = [];
+          // Add reasonList items if they exist (no index needed)
+          if (record.reasonList && Array.isArray(record.reasonList) && record.reasonList.length > 0) {
+            reasons.push(...record.reasonList);
+          }
+          // Add reason if it exists and is not empty (will add index later)
+          if (record.reason && record.reason !== null && record.reason !== undefined && record.reason.trim() !== '' && record.reason !== 'N/A') {
+            reasons.push({ type: 'reason', value: record.reason, createdAt: new Date(record.createdAt) });
+          }
+          return reasons;
+        })
+        .flat()
+        .filter(item => item !== null);
       
-      const combinedReasons = reasonsWithTime.length > 0 
-        ? reasonsWithTime.map((item, index) => `${index + 1}: ${item.reason}`).join('<br>') 
+      // Separate reasonList items and reason items
+      let reasonListItems = [];
+      let reasonItems = [];
+      
+      reasonsWithTime.forEach(item => {
+        if (typeof item === 'string') {
+          // This is from reasonList
+          reasonListItems.push(item);
+        } else if (item.type === 'reason') {
+          // This is from reason field
+          reasonItems.push(item);
+        }
+      });
+      
+      // Sort reason items by time and add index
+      reasonItems.sort((a, b) => a.createdAt - b.createdAt);
+      const indexedReasons = reasonItems.map((item, index) => `${index + 1}: ${item.value}`);
+      
+      // Combine all items
+      const allItems = [...reasonListItems, ...indexedReasons];
+      
+      // Remove duplicates while preserving order
+      const uniqueItems = [];
+      allItems.forEach(item => {
+        if (!uniqueItems.includes(item)) {
+          uniqueItems.push(item);
+        }
+      });
+      
+      const combinedReasons = uniqueItems.length > 0 
+        ? uniqueItems.join('<br>') 
         : 'N/A';
       
       tableHTML += `
         <tr class="${rowIndex % 2 === 0 ? 'even' : 'odd'}">
           <td>${formattedDate}</td>
           <td>${formattedTime}</td>
+          <td>${firstRecord.userId || '-'}</td>
           <td class="reason-cell">${combinedReasons}</td>
           <td>${firstRecord.device || 'N/A'}</td>
+          <td>${firstRecord.deviceId || '-'}</td>
           <td>${firstRecord.version || 'N/A'}</td>
           <td>${firstRecord.appId || 'N/A'}</td>
           <td>${(firstRecord.env || '-').toUpperCase()}</td>
@@ -128,12 +169,35 @@ const getLog = async (req, res) => {
         second: '2-digit'
       });
       
+      // Get reasons for ungrouped record
+      let ungroupedReasonListItems = [];
+      let ungroupedReasonItems = [];
+      
+      if (custom.reasonList && Array.isArray(custom.reasonList) && custom.reasonList.length > 0) {
+        ungroupedReasonListItems.push(...custom.reasonList);
+      }
+      if (custom.reason && custom.reason !== null && custom.reason !== undefined && custom.reason.trim() !== '' && custom.reason !== 'N/A') {
+        ungroupedReasonItems.push(custom.reason);
+      }
+      
+      // Add index only to reason items
+      const indexedUngroupedReasons = ungroupedReasonItems.map((reason, index) => `${index + 1}: ${reason}`);
+      
+      // Combine all items
+      const allUngroupedItems = [...ungroupedReasonListItems, ...indexedUngroupedReasons];
+      
+      const ungroupedCombinedReasons = allUngroupedItems.length > 0 
+        ? allUngroupedItems.join('<br>') 
+        : 'N/A';
+      
       tableHTML += `
         <tr class="${rowIndex % 2 === 0 ? 'even' : 'odd'}">
           <td>${formattedDate}</td>
           <td>${formattedTime}</td>
-          <td>${custom.reason || 'N/A'}</td>
+          <td>${custom.userId || '-'}</td>
+          <td class="reason-cell">${ungroupedCombinedReasons}</td>
           <td>${custom.device || 'N/A'}</td>
+          <td>${custom.deviceId || '-'}</td>
           <td>${custom.version || 'N/A'}</td>
           <td>${custom.appId || 'N/A'}</td>
           <td>${(custom.env || '-').toUpperCase()}</td>
@@ -233,7 +297,7 @@ const getLog = async (req, res) => {
         }
         
         .custom-table {
-            min-width: 1000px;
+            min-width: 1200px;
             border-collapse: collapse;
             background: white;
             border-radius: 10px;
@@ -264,29 +328,37 @@ const getLog = async (req, res) => {
             min-width: 100px;
         }
         
-        .custom-table th:nth-child(3), .custom-table td:nth-child(3) { /* Reason */
+        .custom-table th:nth-child(3), .custom-table td:nth-child(3) { /* User ID */
+            min-width: 120px;
+        }
+        
+        .custom-table th:nth-child(4), .custom-table td:nth-child(4) { /* Reason */
             min-width: 200px;
             white-space: normal;
             word-wrap: break-word;
         }
         
-        .custom-table th:nth-child(4), .custom-table td:nth-child(4) { /* Device */
+        .custom-table th:nth-child(5), .custom-table td:nth-child(5) { /* Device */
             min-width: 100px;
         }
         
-        .custom-table th:nth-child(5), .custom-table td:nth-child(5) { /* Version */
-            min-width: 80px;
-        }
-        
-        .custom-table th:nth-child(6), .custom-table td:nth-child(6) { /* AD ID */
+        .custom-table th:nth-child(6), .custom-table td:nth-child(6) { /* Device ID */
             min-width: 120px;
         }
         
-        .custom-table th:nth-child(7), .custom-table td:nth-child(7) { /* ENV */
+        .custom-table th:nth-child(7), .custom-table td:nth-child(7) { /* Version */
+            min-width: 80px;
+        }
+        
+        .custom-table th:nth-child(8), .custom-table td:nth-child(8) { /* AD ID */
+            min-width: 120px;
+        }
+        
+        .custom-table th:nth-child(9), .custom-table td:nth-child(9) { /* ENV */
             min-width: 100px;
         }
         
-        .custom-table th:nth-child(8), .custom-table td:nth-child(8) { /* Session ID */
+        .custom-table th:nth-child(10), .custom-table td:nth-child(10) { /* Session ID */
             min-width: 120px;
         }
         
@@ -530,7 +602,7 @@ const getLog = async (req, res) => {
                 
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
-                    const envCell = row.querySelector('td:nth-child(7)'); // ENV column (now at position 7)
+                    const envCell = row.querySelector('td:nth-child(9)'); // ENV column (now at position 9)
                     const envValue = envCell ? envCell.textContent.toLowerCase() : '';
                     
                     let showBySearch = text.includes(searchTerm);

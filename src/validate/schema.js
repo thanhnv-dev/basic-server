@@ -89,9 +89,12 @@ const notificationValidateSchema = Joi.object({
 });
 
 const logValidateSchema = Joi.object({
+  reasonList: Joi.array().items(Joi.string()),
+  userId: validateString(),
+  deviceId: validateString(),
   sessionId: validateString(),
   env: validateString(),
-  reason: validateString(),
+  reason: Joi.string().allow(null),
   device: validateString(),
   version: validateString(),
   appId: validateString(),

@@ -4,7 +4,10 @@ const {Schema} = mongoose;
 
 const CustomSchema = new Schema(
   {
-    reason: {type: String},
+    reason: {type: String, default: null},
+    reasonList: [{type: String}],
+    userId: {type: String},
+    deviceId: {type: String},
     device: {type: String},
     version: {type: String},
     appId: {type: String},

@@ -1,7 +1,7 @@
 const CustomModel = require('../models/custom.model.js');
 
 const log = async req => {
-  const {reason, device, version, appId, sessionId, env} = req.body;
+  const {reason, device, version, appId, sessionId, env, reasonList, userId, deviceId} = req.body;
 
   const newCustom = new CustomModel({
     reason: reason,
@@ -10,6 +10,9 @@ const log = async req => {
     appId: appId,
     sessionId: sessionId,
     env: env,
+    reasonList: reasonList,
+    userId: userId,
+    deviceId: deviceId,
   });
 
   const createCustomResult = await newCustom.save();
@@ -158,8 +161,10 @@ const exportToCSV = async (startDate, endDate) => {
     const csvHeaders = [
       'Date',
       'Time',
+      'User ID',
       'Reason', 
       'Device',
+      'Device ID',
       'Version',
       'AD ID',
       'ENV',
@@ -187,22 +192,61 @@ const exportToCSV = async (startDate, endDate) => {
 
       // Combine all reasons sorted by time with numbering
       const reasonsWithTime = sessionData
-        .map(record => ({
-          reason: record.reason || 'N/A',
-          createdAt: new Date(record.createdAt)
-        }))
-        .filter(item => item.reason !== 'N/A')
-        .sort((a, b) => a.createdAt - b.createdAt); // Sort by time ascending
+        .map(record => {
+          let reasons = [];
+          // Add reasonList items if they exist (no index needed)
+          if (record.reasonList && Array.isArray(record.reasonList) && record.reasonList.length > 0) {
+            reasons.push(...record.reasonList);
+          }
+          // Add reason if it exists and is not empty (will add index later)
+          if (record.reason && record.reason !== null && record.reason !== undefined && record.reason.trim() !== '' && record.reason !== 'N/A') {
+            reasons.push({ type: 'reason', value: record.reason, createdAt: new Date(record.createdAt) });
+          }
+          return reasons;
+        })
+        .flat()
+        .filter(item => item !== null);
       
-      const combinedReasons = reasonsWithTime.length > 0 
-        ? reasonsWithTime.map((item, index) => `${index + 1}: ${item.reason}`).join('<br>') 
+      // Separate reasonList items and reason items
+      let reasonListItems = [];
+      let reasonItems = [];
+      
+      reasonsWithTime.forEach(item => {
+        if (typeof item === 'string') {
+          // This is from reasonList
+          reasonListItems.push(item);
+        } else if (item.type === 'reason') {
+          // This is from reason field
+          reasonItems.push(item);
+        }
+      });
+      
+      // Sort reason items by time and add index
+      reasonItems.sort((a, b) => a.createdAt - b.createdAt);
+      const indexedReasons = reasonItems.map((item, index) => `${index + 1}: ${item.value}`);
+      
+      // Combine all items
+      const allItems = [...reasonListItems, ...indexedReasons];
+      
+      // Remove duplicates while preserving order
+      const uniqueItems = [];
+      allItems.forEach(item => {
+        if (!uniqueItems.includes(item)) {
+          uniqueItems.push(item);
+        }
+      });
+      
+      const combinedReasons = uniqueItems.length > 0 
+        ? uniqueItems.join('<br>') 
         : 'N/A';
       
       csvRows.push([
         escapeCSV(formattedDate),
         escapeCSV(formattedTime),
+        escapeCSV(firstRecord.userId || '-'),
         escapeCSV(combinedReasons),
         escapeCSV(firstRecord.device || 'N/A'),
+        escapeCSV(firstRecord.deviceId || '-'),
         escapeCSV(firstRecord.version || 'N/A'),
         escapeCSV(firstRecord.appId || 'N/A'),
         escapeCSV((firstRecord.env || '-').toUpperCase()),
@@ -224,11 +268,34 @@ const exportToCSV = async (startDate, endDate) => {
         second: '2-digit'
       });
       
+      // Get reasons for ungrouped record
+      let ungroupedReasonListItems = [];
+      let ungroupedReasonItems = [];
+      
+      if (custom.reasonList && Array.isArray(custom.reasonList) && custom.reasonList.length > 0) {
+        ungroupedReasonListItems.push(...custom.reasonList);
+      }
+      if (custom.reason && custom.reason !== null && custom.reason !== undefined && custom.reason.trim() !== '' && custom.reason !== 'N/A') {
+        ungroupedReasonItems.push(custom.reason);
+      }
+      
+      // Add index only to reason items
+      const indexedUngroupedReasons = ungroupedReasonItems.map((reason, index) => `${index + 1}: ${reason}`);
+      
+      // Combine all items
+      const allUngroupedItems = [...ungroupedReasonListItems, ...indexedUngroupedReasons];
+      
+      const ungroupedCombinedReasons = allUngroupedItems.length > 0 
+        ? allUngroupedItems.join('<br>') 
+        : 'N/A';
+      
       csvRows.push([
         escapeCSV(formattedDate),
         escapeCSV(formattedTime),
-        escapeCSV(custom.reason || 'N/A'),
+        escapeCSV(custom.userId || '-'),
+        escapeCSV(ungroupedCombinedReasons),
         escapeCSV(custom.device || 'N/A'),
+        escapeCSV(custom.deviceId || '-'),
         escapeCSV(custom.version || 'N/A'),
         escapeCSV(custom.appId || 'N/A'),
         escapeCSV((custom.env || '-').toUpperCase()),
