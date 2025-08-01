@@ -27,7 +27,7 @@ const log = async req => {
   }
 };
 
-const getAllCustoms = async (startDate, endDate) => {
+const getAllCustoms = async (startDate, endDate, page = 1, limit = 50) => {
   try {
     const query = {};
     
@@ -51,8 +51,16 @@ const getAllCustoms = async (startDate, endDate) => {
       };
     }
     
-    const customs = await CustomModel.find(query).sort({createdAt: -1});
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+    
+    const customs = await CustomModel.find(query)
+      .sort({createdAt: -1})
+      .skip(skip)
+      .limit(limit);
+    
     const totalCount = await CustomModel.countDocuments(query);
+    const totalPages = Math.ceil(totalCount / limit);
     
     return {
       status: 200,
@@ -60,6 +68,11 @@ const getAllCustoms = async (startDate, endDate) => {
         msg: 'Get customs success!',
         data: customs,
         totalCount: totalCount,
+        totalPages: totalPages,
+        currentPage: page,
+        limit: limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
       },
     };
   } catch (error) {

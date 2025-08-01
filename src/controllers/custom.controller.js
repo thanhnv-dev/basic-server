@@ -15,10 +15,13 @@ const log = async (req, res) => {
 
 const getLog = async (req, res) => {
   // Get date parameters from query
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate, page = 1 } = req.query;
   
-  // Get custom data from database
-  const customDataResult = await CustomService.getAllCustoms(startDate, endDate);
+  // Convert page to number and ensure it's at least 1
+  const pageNumber = Math.max(1, parseInt(page) || 1);
+  
+  // Get custom data from database with pagination
+  const customDataResult = await CustomService.getAllCustoms(startDate, endDate, pageNumber, 50);
 
   Log.request({
     req: req,
@@ -481,6 +484,58 @@ const getLog = async (req, res) => {
             margin-bottom: 4px;
         }
         
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .pagination-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            min-width: 40px;
+        }
+        
+        .pagination-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .pagination-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .pagination-btn.current {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .pagination-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 60px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .pagination-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+        }
+        
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -522,6 +577,23 @@ const getLog = async (req, res) => {
             .filter-container > * {
                 margin-bottom: 5px;
             }
+            
+            .pagination-container {
+                gap: 5px;
+                font-size: 0.8rem;
+            }
+            
+            .pagination-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+                min-width: 35px;
+            }
+            
+            .pagination-input {
+                width: 50px;
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -541,6 +613,11 @@ const getLog = async (req, res) => {
                 Last update: ${new Date().toLocaleString('vi-VN', {
                   timeZone: 'Asia/Ho_Chi_Minh',
                 })}
+            </div>
+            
+            <div class="pagination-info" style="text-align: center; margin-bottom: 15px; color: #666; font-size: 0.9rem;">
+                📄 Page ${customDataResult.res.currentPage} of ${customDataResult.res.totalPages} 
+                (${customDataResult.res.totalCount} total records, showing ${customDataResult.res.data.length} records)
             </div>
             
             <div class="filter-container">
@@ -566,6 +643,29 @@ const getLog = async (req, res) => {
             </div>
             <div class="table-container">
                 ${generateCustomTable(customDataResult.res.data)}
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="pagination-container">
+                <button class="pagination-btn" onclick="goToPage(1)" ${customDataResult.res.currentPage === 1 ? 'disabled' : ''}>
+                    ⏮️ First
+                </button>
+                <button class="pagination-btn" onclick="goToPage(${customDataResult.res.currentPage - 1})" ${!customDataResult.res.hasPrevPage ? 'disabled' : ''}>
+                    ⬅️ Prev
+                </button>
+                
+                <span style="margin: 0 10px; font-weight: 600; color: #333;">
+                    Page 
+                    <input type="number" id="pageInput" class="pagination-input" value="${customDataResult.res.currentPage}" min="1" max="${customDataResult.res.totalPages}" onchange="goToInputPage()" onkeypress="handlePageInputKeypress(event)">
+                    of ${customDataResult.res.totalPages}
+                </span>
+                
+                <button class="pagination-btn" onclick="goToPage(${customDataResult.res.currentPage + 1})" ${!customDataResult.res.hasNextPage ? 'disabled' : ''}>
+                    Next ➡️
+                </button>
+                <button class="pagination-btn" onclick="goToPage(${customDataResult.res.totalPages})" ${customDataResult.res.currentPage === customDataResult.res.totalPages ? 'disabled' : ''}>
+                    Last ⏭️
+                </button>
             </div>
         </div>
     </div>
@@ -612,12 +712,39 @@ const getLog = async (req, res) => {
                 });
             }
             
+            // Pagination functionality
+            window.goToPage = function(page) {
+                const url = new URL(window.location);
+                url.searchParams.set('page', page);
+                window.location.href = url.toString();
+            };
+            
+            window.goToInputPage = function() {
+                const pageInput = document.getElementById('pageInput');
+                const page = parseInt(pageInput.value);
+                const maxPage = ${customDataResult.res.totalPages};
+                
+                if (page >= 1 && page <= maxPage) {
+                    goToPage(page);
+                } else {
+                    // Reset input to current page if invalid
+                    pageInput.value = ${customDataResult.res.currentPage};
+                    alert('Trang phải từ 1 đến ' + maxPage);
+                }
+            };
+            
+            window.handlePageInputKeypress = function(event) {
+                if (event.key === 'Enter') {
+                    goToInputPage();
+                }
+            };
+            
             // Date filter functionality
             window.filterByDate = function() {
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
                 
-                // Reload page with date parameters
+                // Reload page with date parameters and reset to page 1
                 const url = new URL(window.location);
                 
                 if (startDate) {
@@ -632,6 +759,9 @@ const getLog = async (req, res) => {
                     url.searchParams.delete('endDate');
                 }
                 
+                // Reset to page 1 when filtering
+                url.searchParams.set('page', 1);
+                
                 window.location.href = url.toString();
             };
             
@@ -640,10 +770,11 @@ const getLog = async (req, res) => {
                 document.getElementById('startDate').value = '';
                 document.getElementById('endDate').value = '';
                 
-                // Reload page without date parameters
+                // Reload page without date parameters and reset to page 1
                 const url = new URL(window.location);
                 url.searchParams.delete('startDate');
                 url.searchParams.delete('endDate');
+                url.searchParams.set('page', 1);
                 window.location.href = url.toString();
             };
             
@@ -651,6 +782,7 @@ const getLog = async (req, res) => {
             const urlParams = new URLSearchParams(window.location.search);
             const startDateParam = urlParams.get('startDate');
             const endDateParam = urlParams.get('endDate');
+            const pageParam = urlParams.get('page');
             
             if (startDateParam) {
                 document.getElementById('startDate').value = startDateParam;
