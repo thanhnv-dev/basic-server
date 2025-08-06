@@ -1,7 +1,7 @@
 const CustomModel = require('../models/custom.model.js');
 
 const log = async req => {
-  const {reason, device, version, appId, sessionId, env, reasonList, userId, deviceId} = req.body;
+  const {reason, device, version, appId, sessionId, env, reasonList, userId, deviceId, isSuccess} = req.body;
 
   const newCustom = new CustomModel({
     reason: reason,
@@ -13,6 +13,7 @@ const log = async req => {
     reasonList: reasonList,
     userId: userId,
     deviceId: deviceId,
+    isSuccess: isSuccess,
   });
 
   const createCustomResult = await newCustom.save();

@@ -13,6 +13,7 @@ const CustomSchema = new Schema(
     appId: {type: String},
     sessionId: {type: String},
     env: {type: String},
+    isSuccess: {type: Boolean, default: null},
   },
   {timestamps: true, versionKey: false},
 );

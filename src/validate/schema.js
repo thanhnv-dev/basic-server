@@ -98,6 +98,7 @@ const logValidateSchema = Joi.object({
   device: validateString(),
   version: validateString(),
   appId: validateString(),
+  isSuccess: Joi.boolean().default(null),
 });
 
 module.exports = {
